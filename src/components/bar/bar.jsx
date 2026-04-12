@@ -16,6 +16,10 @@ function Bar() {
                 <text className='label desktop'>PROJECTS</text>
                 <Icon className='iconSection mobile' icon={'tdesign:code'} />
             </Link>
+            <Link className={`buttonSection ${section === 'experience' ? 'active' : ''}`} to="/experience">
+                <text className='label desktop'>EXPERIENCE</text>
+                <Icon className='iconSection mobile' icon={'mdi:briefcase'} />
+            </Link>
             <Link className={`buttonSection ${section === 'skills' ? 'active' : ''}`} to="/skills">
                 <text className='label desktop'>SKILLS & LANGUAGES</text>
                 <Icon className='iconSection mobile' icon={'ion:stats-chart'} style={{height:33}}/>

@@ -9,16 +9,23 @@ const skills =
     reactNative: {
         label: 'R. Native',
         info: 'React Native is a mobile application development framework that uses React, a JavaScript library for building user interfaces, and allows developers to create native applications for iOS and Android using JavaScript and React. Unlike React, which is used for developing web applications, React Native focuses on mobile application development, using native components instead of web components ',
-        skill: 66,
+        skill: 62,
         icon: 'skill-icons:react-dark'
     },
 
     ai: {
         label: 'AI',
-        info: 'Classical AI, also known as rule-based AI, focuses on developing systems that can perform specific tasks using predefined rules and heuristics. Unlike modern AI, which focuses on machine learning and adaptation from data, classical AI is based on human-established logic and rules',
-        skill: 75,
+        info: 'Artificial Intelligence covers the design of systems capable of solving problems that normally require human reasoning, including planning, search, optimization, probabilistic reasoning, knowledge representation, and applied intelligent automation. It provides the theoretical and practical foundation for building decision-capable software across research and production environments.',
+        skill: 84,
         // icon: 'logos:openai-icon',
         svg: process.env.PUBLIC_URL + "/images/icons/skills/ai2.png",
+    },
+
+    llmAi: {
+        label: 'LLM / AI',
+        info: 'Large Language Model and applied AI work focused on prompt engineering, agent design, retrieval-augmented generation, tool orchestration, evaluation, and production integration. This includes building assistants that connect models with external systems, shaping reliable prompts, and designing flows that improve accuracy, traceability, and user value.',
+        skill: 97,
+        icon: 'simple-icons:openai'
     },
 
     simulation: {
@@ -45,7 +52,7 @@ const skills =
     irs: {
         label: 'IRS',
         info: 'Information retrieval systems are tools or techniques that allow users to search and retrieve information from a collection of documents or databases. This process begins when a user makes a query to the system, which is a formal statement of the need for information. Information retrieval systems are fundamental in various applications, such as internet search engines, recommendation systems, knowledge management systems, and more',
-        skill: 83,
+        skill: 79,
         svg: process.env.PUBLIC_URL + "/images/icons/skills/ts1.png",
         // icon: 'logos:typesense-icon'
     },
@@ -60,7 +67,7 @@ const skills =
     compiler: {
         label: 'Compilers',
         info: 'A compiler is a program that translates code written in a high-level programming language to another language, usually a low-level one such as machine code or assembly. This translation process is known as compilation. Building a compiler involves dividing the process into phases, which include source program analysis and object program synthesis. Analysis verifies the correctness of the source program according to the language definition, while synthesis generates the output in the object language',
-        skill: 81,
+        skill: 77,
         // icon: 'websymbol:code'
         svg: process.env.PUBLIC_URL + "/images/icons/skills/compiler2.png",
     },
@@ -132,9 +139,16 @@ const skills =
     },
     mcp: {
         label: 'MCP',
-        info: "The Model Context Protocol (MCP) is an open standard developed by Anthropic that connects AI systems with external data sources and tools in a standardized way. It resolves two main limitations of AI models: their short memory and inability to interact directly with external files and applications. Instead of loading all information into the model's memory, MCP allows access to needed data in real-time, requesting only the specific information required at each moment.",
-        skill: 60,
+        info: 'The Model Context Protocol (MCP) is a standardized way to connect AI assistants with tools, APIs, files, databases, and other execution contexts. It is especially valuable for building robust AI systems with controlled tool access, structured context retrieval, and reusable integrations across local and remote environments. Strong MCP capability means being able to design, expose, consume, and troubleshoot tool-driven AI workflows reliably.',
+        skill: 95,
         svg: process.env.PUBLIC_URL + "/images/icons/skills/mcp.png",
+    },
+
+    godot: {
+        label: 'Godot',
+        info: 'Godot is an open-source game engine for 2D and 3D development with a lightweight workflow, strong scene-based architecture, and fast iteration for gameplay systems, UI, and deployment. It is well suited for prototyping and production work involving gameplay programming, tooling, animation, and cross-platform publishing.',
+        skill: 85,
+        icon: 'logos:godot-icon'
     },
 }
 export default skills

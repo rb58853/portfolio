@@ -48,6 +48,27 @@
   z-index: 1;
 }
 
+.App-transition-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  background:
+    radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.2) 48%, rgba(0, 0, 0, 0.88) 100%),
+    #000;
+  animation: appVignetteFade 700ms ease-out forwards;
+}
+
+@keyframes appVignetteFade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 @media(max-width:500px) {
   .App {
     place-content: flex-start;

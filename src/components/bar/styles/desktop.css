@@ -20,16 +20,18 @@
     height: 32px;
     place-items: center;
     padding: 9px 18px;
-    gap: 24px;
+    gap: 18px;
 
 }
 
 .buttonSection {
     color: var(--text-color);
     font-weight: 600;
+    font-size: clamp(0.64rem, 0.95vw, 0.8rem);
     letter-spacing: 0.4px;
     text-decoration: none;
     opacity: 0.8;
+    white-space: nowrap;
     transition: color 200ms ease, opacity 200ms ease, transform 200ms ease;
 }
 

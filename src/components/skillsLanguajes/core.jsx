@@ -1,6 +1,7 @@
 import './styles/desktop.css'
 import './styles/mobile.css'
 import '../../styles/style.css'
+import { createPortal } from 'react-dom'
 
 import skills from '../../environment/data/skills.js'
 import languages from '../../environment/data/languages.js'
@@ -8,9 +9,14 @@ import { sortDictionaryByValue } from '../../utils/sortDictionary.js'
 import { Icon } from '@iconify/react/dist/iconify.js'
 
 export function InfoBox({ info, active }) {
-    return <div className={`infoBox ${active ? 'active' : ''}`}>
-        {info}
-    </div>
+    if (typeof document === 'undefined') return null
+
+    return createPortal(
+        <div className={`infoBox ${active ? 'active' : ''}`}>
+            {info}
+        </div>,
+        document.body
+    )
 }
 
 
