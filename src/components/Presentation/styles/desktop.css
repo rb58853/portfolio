@@ -132,3 +132,31 @@
 
 
 }
+
+:root[data-theme='light'] .viewMyWork {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.50);
+}
+
+:root[data-theme='light'] .viewWorkButton {
+    background-color: transparent;
+    border-color: rgba(0, 0, 0, 0.50);
+    color: var(--text-color);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+:root[data-theme='light'] .viewWorkButton:hover {
+    color: rgb(255, 255, 255);
+}
+
+:root[data-theme='light'] .viewWorkButton.active {
+    background-color: rgb(23, 120, 134);
+    border-color: rgb(23, 120, 134);
+    color: rgb(250, 253, 255);
+}
+
+:root[data-theme='light'] .viewMyWorkContain>p {
+    color: rgb(241, 247, 255);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+}
