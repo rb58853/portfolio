@@ -63,6 +63,11 @@
         color: var(--default-highlight-color);
     }
 
+    .iconSection {
+        width: 28px;
+        height: 28px;
+    }
+
     .chatButton.active {
         display: none;
     }

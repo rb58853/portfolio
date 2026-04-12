@@ -22,7 +22,7 @@ function Bar() {
             </Link>
             <Link className={`buttonSection ${section === 'skills' ? 'active' : ''}`} to="/skills">
                 <text className='label desktop'>SKILLS & LANGUAGES</text>
-                <Icon className='iconSection mobile' icon={'ion:stats-chart'} style={{height:33}}/>
+                <Icon className='iconSection mobile' icon={'ion:stats-chart'} />
             </Link>
             <Link className={`buttonSection ${section === 'about' ? 'active' : ''}`} to="/about">
                 <text className='label desktop'>ABOUT</text>
