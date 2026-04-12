@@ -41,7 +41,6 @@ function ContributionsBox() {
 function YearView({ data }) {
     const [currentMonth, setCurrentMonth] = useState('none')
     const dispatch = useDispatch()
-    const [keyId, setKeyId] = useState(0)
 
     const myContrs = useRef(null);
 
@@ -67,9 +66,8 @@ function YearView({ data }) {
     }
 
 
-    const weekViews = weeks.map(week => {
-        // setKeyId(key+1);
-        return <WeekView key={keyId} week={week} currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
+    const weekViews = weeks.map((week, index) => {
+        return <WeekView key={index} week={week} currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
     })
 
     return <div ref={myContrs} className="yearView">

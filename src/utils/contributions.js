@@ -36,8 +36,7 @@ export async function AssistantData() {
 }
 
 export async function retrieveContributionData(userName = 'rb58853') {
-  let TOKEN = process.env.REACT_APP_GITHUB_TOKEN + "1234567890";
-  TOKEN = TOKEN.slice(0, TOKEN.length - 10)
+  const TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
   const variables = { userName };
   const body = {
     query,

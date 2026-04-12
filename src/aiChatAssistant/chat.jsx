@@ -17,27 +17,11 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 // const url = 'wss://dev.chat.flowychat.com/api/ws/chat';
 const url = cvAssistantDomain;
 const user = "rb58853"
-const token = "w6Ig502ZWHQhFrUEezK6SoGDAbeaFoUdgqIO2_OPkTQ="
-
-function crearWebSocketConHeaders(url) {
-    // Crear una conexión HTTP para el handshake inicial
-    const xhr = new XMLHttpRequest();
-
-    // Configurar los headers
-    xhr.open('GET', url, false);
-    xhr.setRequestHeader('API-KEY', token);
-
-    // Realizar la petición
-    xhr.send();
-
-    // Crear la conexión WebSocket después del handshake exitoso
-    return new WebSocket(url);
-}
+const token = process.env.REACT_APP_CHAT_TOKEN
 
 function connectWebSocket(url, configMessage) {
     return new Promise((resolve, reject) => {
-        // const ws = new WebSocket(url + user);
-        const ws = crearWebSocketConHeaders(url + user);
+        const ws = new WebSocket(url + user);
 
         ws.onopen = () => {
             console.log('Conectado al servidor');
