@@ -10,7 +10,7 @@ import { ChatButton, ThemeButton } from './components/bar/floatButtons';
 
 function App({ content }) {
   return (
-    <div className="App">
+    <div className={`App ${window.location.hash === '#/' ? 'App--no-bottom-space' : ''}`}>
       <Provider store={store}>
         <Bar />
         <ThemeButton />

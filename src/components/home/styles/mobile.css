@@ -29,6 +29,6 @@
 @media(max-width:500px) {
     .home {
         margin-top: 16px;
-        margin-bottom: 80px;
+        margin-bottom: 0;
     }
 }

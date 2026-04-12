@@ -10,6 +10,11 @@
   color: white;
   position: relative;
   overflow: hidden;
+  padding-bottom: 100px;
+}
+
+.App--no-bottom-space {
+  padding-bottom: 0;
 }
 
 .App::before,
