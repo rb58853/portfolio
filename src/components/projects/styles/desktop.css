@@ -1,5 +1,5 @@
 .projects {
-    background-color: var(--projects-background-color);
+    background-color: transparent;
     width: 100%;
     display: flex;
     place-items: center;
@@ -17,38 +17,44 @@
     flex-direction: column;
     place-content: center;
     place-items: center;
-    gap: 20px;
-    width: min(max(90%, 800px), max(1400px, 120vh));
+    gap: 24px;
+    width: min(94%, 1220px);
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
 }
 
 .skillsBar {
     overflow-x: auto;
     display: flex;
-    max-width: 90%;
+    max-width: 95%;
+    gap: 6px;
+    padding: 0;
 }
 
 .buttonSkill {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: transparent;
     color: var(--skill-label-color);
-
-    padding-inline: 11px;
+    padding: 8px 12px;
+    border-radius: 0;
+    border: 1px solid transparent;
     border: none;
-    font-size: 22px;
+    font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
-    transition-property: background-color, color;
-    transition-duration: 500ms;
-    transition-timing-function: ease-in-out;
+    transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
 
 .buttonSkill.active {
     background-color: var(--default-highlight-color);
-    transition-duration: 500ms;
     color: white;
 }
 
 .buttonSkill:hover {
     background-color: var(--default-hover-color);
-    transition-duration: 100ms;
+    border-color: var(--surface-border);
 }
 
 .buttonSkill.active:hover {
@@ -104,6 +110,9 @@
     width: 100%;
     scale: 0;
 
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
     transition-property: scale;
     transition-duration: 400ms;
     transition-timing-function: ease-in-out;
@@ -131,8 +140,6 @@
 .projectBox.active {
     scale: 1;
 }
-
-
 
 .projectBoxInfoBackground {
     background-color: var(--projects-background-color);
@@ -191,7 +198,6 @@
 .projectBoxInfo>h1 {
     font-size: 22px;
     text-align: center;
-    /* margin-top: 0px; */
     margin-bottom: 0px;
 }
 
@@ -201,11 +207,14 @@
 }
 
 .viewProjectButton {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: transparent;
     border: solid 2px var(--default-highlight-color);
     padding: 10px;
     padding-inline: 30px;
+    border-radius: 0;
     font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
     margin-top: 10%;
     cursor: pointer;
     color: var(--text-color);
@@ -263,6 +272,8 @@
     flex-direction: column;
     place-items: center;
     background-color: var(--project-window-color);
+    border-radius: 0;
+    border: none;
     scale: 0.5;
     transition-property: scale;
     transition-duration: 300ms;
@@ -421,6 +432,7 @@
 
 .proyectWindowText>h1 {
     font-size: 22px;
+    line-height: normal;
     margin-bottom: 0px;
 }
 
@@ -438,7 +450,9 @@
     border: solid 2px var(--default-highlight-color);
     padding: 10px;
     padding-inline: 30px;
+    border-radius: 0;
     font-size: 18px;
+    font-weight: 500;
     cursor: pointer;
     width: fit-content;
     color: var(--default-highlight-color);
@@ -479,7 +493,7 @@
     aspect-ratio: 1/1;
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    opacity: 0.6;
+    opacity: 0.7;
     cursor: pointer;
     scale: 1;
 
@@ -489,7 +503,7 @@
 }
 
 .buttonClose:hover {
-    opacity: 0.8;
+    opacity: 1;
     scale: 1.2;
 }
 

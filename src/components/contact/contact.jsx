@@ -3,7 +3,8 @@ import './styles/desktop.css'
 
 
 function Contact() {
-    const socialsView = Object.keys(socials).map((key) => {
+    const socialKeys = ['github', 'gmail', 'telegram', 'whatsapp']
+    const socialsView = socialKeys.filter((key) => socials[key]).map((key) => {
         return <ButtonSocial social={key} />
     })
 

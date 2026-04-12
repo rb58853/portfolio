@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { name } from '../../environment/data/about'
 import './styles/desktop.css'
 import './styles/mobile.css'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import setFloatButtonState from '../../redux/websocket/functions'
 
 function Presentation({ app }) {
     const [indexActive, setIndexActive] = useState(-1)
-    const dispatch = useDispatch()
 
     return (
         <section className="presentation">
@@ -44,9 +41,6 @@ function Presentation({ app }) {
 }
 
 function ChatWithMe({ setIndexActive, indexActive }) {
-
-   
-
     return (
         <Link to='/chat' className='viewMyWork'
             onMouseOver={() => { setIndexActive(1) }}

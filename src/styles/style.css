@@ -1,14 +1,15 @@
 .defaultHeader {
-    font-size: 42px;
-    font-weight: 600;
+    font-size: clamp(2rem, 3.6vw, 3.3rem);
+    font-weight: 400;
     color: var(--text-color);
     place-self: center;
     transition-property: color;
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
+    text-wrap: balance;
 }
 
 button {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', sans-serif;
 }
 

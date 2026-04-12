@@ -1,6 +1,6 @@
 .contact {
-    background-color: var(--bar-color);
-    padding-block: 100px;
+    background-color: transparent;
+    padding-block: 90px;
     width: 100%;
     display: flex;
     place-content: center;
@@ -16,25 +16,33 @@
 .socials {
     display: flex;
     place-content: center;
-    gap: min(20px,5%);
+    gap: min(18px, 4%);
     max-width: min(800px,90%);
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, var(--surface-2), var(--surface-1));
+    border: 1px solid var(--surface-border);
+    box-shadow: var(--soft-shadow);
 }
 
 .socialButton {
     height: 60px;
     width: 60px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: color-mix(in srgb, var(--default-highlight-color) 10%, transparent);
     display: flex;
     place-content: center;
     place-items: center;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 20%, transparent);
     scale: 1;
-    transition-property: scale, background-color;
+    transition-property: scale, background-color, border-color;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
 }
 .socialButton:hover {
-    scale: 1.05;
-    background-color: var(--secundary-highlight-color);
+    scale: 1.08;
+    background-color: color-mix(in srgb, var(--secundary-highlight-color) 28%, var(--default-highlight-color));
+    border-color: transparent;
 }
 
 .socialIcon {

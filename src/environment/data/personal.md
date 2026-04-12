@@ -8,9 +8,10 @@
 **GitHub:** [rb58853](https://github.com/rb58853)  
 **Gmail:** rb58853@gmail.com  
 **Telegram:** [@rb58853](https://t.me/rb58853)  
-**Citizenship:** Cuban, Spanish  
-**Location:** Havana, Cuba  
-**Phone:** +53 58486223  
+**WhatsApp:** [Write me directly](https://wa.me/34642581503)  
+**Citizenship:** Spanish  
+**Location:** Madrid, Spain  
+**Phone:** +34 642 58 15 03  
 
 ## About Me
 

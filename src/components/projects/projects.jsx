@@ -12,6 +12,7 @@ import setSectionFunction from '../../redux/sections/functions'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { usePreferences } from '../../preferences/preferencesContext'
 
 
 function Projects() {
@@ -22,9 +23,6 @@ function Projects() {
     return (
         <section onFocus={setSectionFunction(dispatch, 'projects')} className="projects">
             <div className="projectsContent">
-                {/* <h1 className='defaultHeader'>
-                    Projects
-                </h1> */}
                 <SkillsBar setSkill={setSkill} skillState={skill} />
                 <Container setProject={setProject} setWindowProject={setWindowProject} skill={skill} />
 
@@ -50,7 +48,7 @@ function SkillsBar({ setSkill, skillState }) {
             <button className={`buttonSkill ${skill === skillState ? 'active' : ''}`}
                 onClick={() => setSkill(skill)}
             >
-                {skill}
+                {skill === 'All' ? 'All' : skill}
             </button>)
     })
 
@@ -196,6 +194,7 @@ export function ProjectBox({ project, setProject, setWindowProject, active, tran
 }
 
 export function ProjectWindow({ project, setWindowProject, windowProject }) {
+    const { theme } = usePreferences()
     const textRef = React.useRef();
     const [boxInfoActive, setBoxInfoActive] = useState(false)
     const info = studentInfo(project.asStudent)
@@ -256,7 +255,7 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
                                 className={`viewOnGithub ${windowProject ? 'active' : ''}`}> Read paper </a>}
 
                             {project.sitie && <a href={project.sitie}
-                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> Visit sitie </a>}
+                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> Visit site </a>}
 
                             {project.app && <a href={project.app}
                                 className={`viewOnGithub ${windowProject ? 'active' : ''}`}> App </a>}
@@ -264,7 +263,7 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
                             <button className='buttonClose'
                                 onClick={() => { setWindowProject(false) }}
                             >
-                                <img className='closeImage' src={process.env.PUBLIC_URL + `/images/icons/${env.mode}/close.png`} alt="" />
+                                <img className='closeImage' src={process.env.PUBLIC_URL + `/images/icons/${theme}/close.png`} alt="" />
                             </button>
                         </div>
                     </div>

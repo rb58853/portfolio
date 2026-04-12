@@ -6,7 +6,7 @@
         right: auto;
 
 
-        max-width: 100%;
+        max-width: 96%;
         z-index: 2;
         background-color: var(--bar-color);
     }
@@ -16,14 +16,14 @@
 @media(max-width:500px) {
     .bar {
         top: auto;
-        bottom: 0;
-        width: 100%;
-        height: 50px;
+        bottom: 12px;
+        width: min(94%, 520px);
+        height: 54px;
         font-size: 40px;
         place-items: center;
-        border-top: solid 1px rgba(255, 255, 255, 0.119);
-        border-radius: 0px;
-        background-color: rgb(15, 15, 20);
+        border: solid 1px var(--surface-border);
+        border-radius: 16px;
+        background-color: var(--bar-color);
     }
 
     .barContent {
@@ -36,7 +36,21 @@
         gap: 0px;
         place-content: space-between;
         max-width: 100%;
-        width: 80%;
+        width: 95%;
+    }
+
+    .barControls {
+        display: flex;
+        gap: 4px;
+        margin-left: 0;
+    }
+
+    .preferenceButton {
+        min-width: 28px;
+        height: 24px;
+        padding: 0 6px;
+        font-size: 9px;
+        border-radius: 8px;
     }
 
     .buttonSection {
@@ -52,4 +66,14 @@
     .chatButton.active {
         display: none;
     }
+
+    .themeToggleButton {
+        top: auto;
+        right: 16px;
+        bottom: 78px;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
 }

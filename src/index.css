@@ -1,12 +1,30 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Manrope', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text-color);
+  background: var(--hero-gradient);
   background-color: var(--background-color);
+  min-height: 100vh;
+  letter-spacing: 0.1px;
+  transition: background-color 350ms ease, color 350ms ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'DM Serif Display', serif;
+  letter-spacing: 0.4px;
 }
 
 code {
@@ -16,21 +34,22 @@ code {
 
 /* Cambia el ancho de la scrollbar */
 ::-webkit-scrollbar {
-  width: 0px; /* Ancho de la scrollbar */
+  width: 8px;
   height: 5px;
 }
 
 /* Estilo del track (fondo de la scrollbar) */
 ::-webkit-scrollbar-track {
-  background: #ffffff1c; /* Color de fondo del track */
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Estilo del thumb (parte deslizante de la scrollbar) */
 ::-webkit-scrollbar-thumb {
-  background: #ffffff6c; /* Color del thumb */
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 99px;
 }
 
 /* Cambia el color del thumb al pasar el mouse por encima */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff9c; /* Color del thumb al pasar el mouse */
+  background: rgba(255, 255, 255, 0.6);
 }

@@ -4,9 +4,43 @@
   flex-direction: column;
   place-items: center;
   place-content: start;
+  background: var(--hero-gradient);
   background-color: var(--background-color);
   min-height: 100vh;
-  color: white
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.App::before,
+.App::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.App::before {
+  width: min(45vw, 520px);
+  height: min(45vw, 520px);
+  left: -10%;
+  top: -12%;
+  background: color-mix(in srgb, var(--default-highlight-color) 24%, transparent);
+}
+
+.App::after {
+  width: min(32vw, 420px);
+  height: min(32vw, 420px);
+  right: -8%;
+  bottom: -15%;
+  background: color-mix(in srgb, var(--secundary-highlight-color) 22%, transparent);
+}
+
+.App > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media(max-width:500px) {

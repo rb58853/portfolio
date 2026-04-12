@@ -1,38 +1,45 @@
-:root {
-    --bar-color: rgb(25, 25, 29, 1);
-    --background-color: rgba(20, 20, 22, 1);
-    --chat-background-color: rgb(25, 25, 28, 1);
+:root,
+:root[data-theme='dark'] {
+    --bar-color: rgba(24, 28, 36, 0.82);
+    --background-color: rgb(12, 16, 24);
+    --chat-background-color: rgb(20, 24, 32);
 
-    --line-color: rgba(255, 255, 255, 0.2);
-    --text-color: rgb(240, 240, 240);
+    --line-color: rgba(204, 224, 255, 0.2);
+    --text-color: rgb(236, 242, 252);
 
-    --contribution-color: rgb(4, 194, 201);
+    --contribution-color: rgb(97, 224, 218);
     
-    --default-highlight-color: rgb(4, 194, 201);
-    --secundary-highlight-color: rgb(4, 194, 201);
+    --default-highlight-color: rgb(97, 224, 218);
+    --secundary-highlight-color: rgb(255, 191, 128);
 
-    --presentation-background-color: rgb(30, 30, 30);
+    --presentation-background-color: rgba(24, 30, 42, 0.85);
     --presentation-button-border-color: white;
 
-    --about-background-color: rgba(35, 35, 35, 1);
-    --info-box-background-color: rgb(50, 50, 50, 1);
+    --about-background-color: rgba(18, 23, 34, 0.78);
+    --info-box-background-color: rgba(26, 33, 46, 0.92);
 
-    --progress-bar-background-color: rgba(255, 255, 255, 0.1);
-    --progress-bar-color:  rgb(180, 180, 180);
-    --progress-bar-highlight-color: rgb(4, 194, 201);
-    --progress-bar-label-color: rgb(43, 45, 45);
-    --progress-bar-label-highlight-color: rgb(0, 81, 83);
+    --progress-bar-background-color: rgba(255, 255, 255, 0.12);
+    --progress-bar-color:  rgb(186, 199, 216);
+    --progress-bar-highlight-color: rgb(97, 224, 218);
+    --progress-bar-label-color: rgb(23, 31, 44);
+    --progress-bar-label-highlight-color: rgb(45, 122, 129);
 
-    --default-container-background-color: rgb(255, 255, 255, 0.01);
+    --default-container-background-color: rgba(255, 255, 255, 0.04);
 
-    --projects-background-color:  rgba(20, 20, 22, 1);
-    --skill-label-color: rgba(200, 200, 200, 1);
+    --projects-background-color: rgba(12, 16, 24, 0.92);
+    --skill-label-color: rgba(220, 231, 249, 0.9);
 
-    --default-hover-color: rgba(0, 0, 0, 0.1);
+    --default-hover-color: rgba(255, 255, 255, 0.08);
 
-    --project-window-color: rgba(30, 30, 30);
+    --project-window-color: rgba(17, 22, 32, 0.98);
 
-    --my-messages-background-color: rgb(4, 104, 111);
-    --input-message-backgroundcolor: rgb(38, 38, 42, 1)
+    --my-messages-background-color: rgb(35, 105, 116);
+    --input-message-backgroundcolor: rgb(24, 29, 40);
+
+    --surface-1: rgba(26, 32, 44, 0.72);
+    --surface-2: rgba(34, 42, 57, 0.82);
+    --surface-border: rgba(170, 205, 255, 0.2);
+    --soft-shadow: 0 16px 40px rgba(2, 5, 10, 0.35);
+    --hero-gradient: radial-gradient(circle at 15% 12%, rgba(97, 224, 218, 0.2), transparent 38%), radial-gradient(circle at 82% 20%, rgba(255, 191, 128, 0.16), transparent 35%), linear-gradient(160deg, rgb(10, 13, 20) 0%, rgb(15, 20, 30) 52%, rgb(9, 12, 20) 100%);
 
 }

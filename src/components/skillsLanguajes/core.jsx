@@ -17,7 +17,6 @@ export function InfoBox({ info, active }) {
 export function Languages({ setBoxInfoActive, setInfo, boxInfoActive }) {
     const languagesView = Object.values(SortedBars(languages)).map((item) => {
         return <ProgressBar label={item.label} icon={item.icon} svg={item.svg} info={item.info} percentage={item.skill} setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} />
-        // return <ProgressBar label={item.label} icon={item.icon} info={item.info} percentage={item.skill} setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} />
     })
 
     return (

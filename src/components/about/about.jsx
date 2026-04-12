@@ -3,11 +3,9 @@ import './styles/mobile.css'
 import '../../styles/style.css'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import Contact from '../contact/contact.jsx'
-import { aboutMe, interests, know, languages, personalInformation, studyFields } from '../../environment/data/personal.js'
 import { useDispatch } from 'react-redux'
-import { setSection } from '../../redux/sections/sectionSlice.jsx'
 import setSectionFunction from '../../redux/sections/functions.jsx'
+import { aboutMe, know, languages, personalInformation, studyFields } from '../../environment/data/personal.js'
 
 function About() {
     const dispatch = useDispatch()
@@ -20,16 +18,10 @@ function About() {
                             <Text value={"## Personal information"} />
                             <Text value={personalInformation} />
                         </div>
-                        {/* <div>
-                            Aqui va foto y eso
-                            <Contact />
-                        </div> */}
                     </div>
 
                     <div className='line' />
                     <Text value={aboutMe} />
-                    {/* <div className='line' /> */}
-                    {/* <Text value={interests} /> */}
                     <div className='line' />
                     <div className='columsOrRows'>
                         <Text value={studyFields} />
