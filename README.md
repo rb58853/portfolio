@@ -1,33 +1,124 @@
-# Getting Started with Create React App
+# Portfolio — Raúl Beltrán Gómez
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Personal portfolio and interactive CV built with **React 18**.  
+Live: [rb58853.github.io/CV](https://rb58853.github.io/CV)
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Multi-section SPA** — Home, About, Experience, Projects, Skills, Contributions, and Contact.
+- **Theme switcher** — dark / light mode with CSS custom properties.
+- **AI chat assistant** — WebSocket-based assistant that answers questions about the CV.
+- **GitHub contributions graph** — fetches real contribution data via the GitHub API.
+- **Responsive layout** — fluid grid that adapts from mobile to widescreen.
+- **React Router v6** — client-side routing with animated page transitions.
+- **Redux Toolkit** — global state for sections, contributions, and WebSocket lifecycle.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Layer | Library / Tool |
+|-------|---------------|
+| UI | React 18, JSX |
+| State | Redux Toolkit, React-Redux |
+| Routing | React Router DOM v6 |
+| Styling | Plain CSS (no preprocessor), CSS custom properties |
+| HTTP | Axios |
+| Markdown | react-markdown + remark-gfm |
+| Icons | @iconify/react |
+| Build | Create React App (react-scripts 5) |
+| Serve | nginx 1.27-alpine (Docker) |
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting started
 
-### `npm run build`
+### With Docker (recommended for production)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+See [Quickstart.MD](Quickstart.MD) for a step-by-step guide.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cp .env.example .env   # fill in your tokens
+docker compose up --build -d
+# → http://localhost:3000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Local development
+
+**Prerequisites:** Node.js ≥ 18, npm ≥ 9.
+
+```bash
+npm install
+cp .env.example .env   # optional — app works without tokens
+npm start              # http://localhost:3000
+```
+
+### Production build (no Docker)
+
+```bash
+npm run build
+# Serve the build/ folder with any static file server
+npx serve -s build
+```
+
+---
+
+## Environment variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `REACT_APP_GITHUB_TOKEN` | GitHub token for contribution graph | *(disabled if empty)* |
+| `REACT_APP_CHAT_TOKEN` | Auth token for the AI chat assistant | *(disabled if empty)* |
+| `PUBLIC_URL` | Base URL path for assets and routing | `/` |
+
+Copy `.env.example` to `.env` and fill in values before building.
+
+> **Security** — `REACT_APP_*` variables are embedded at build time into the JS bundle. Never store highly sensitive secrets here; use read-only, scoped tokens only.
+
+---
+
+## Project structure
+
+```
+src/
+├── aiChatAssistant/     # WebSocket chat UI and logic
+├── components/          # Section components (Home, About, Projects …)
+├── environment/         # Static data (projects, skills, experience …)
+│   ├── data/
+│   └── styles/          # dark.css / light.css theme files
+├── hooks/               # Custom React hooks
+├── options/             # Theme toggle UI
+├── preferences/         # Theme context provider
+├── redux/               # Redux slices and store
+├── routes/              # Route definitions
+└── styles/              # Global and responsive CSS
+```
+
+---
+
+## Deployment
+
+### GitHub Pages
+
+```bash
+npm run deploy           # runs build then gh-pages -d build
+```
+
+The `homepage` field in `package.json` is set to `https://rb58853.github.io/CV`.
+
+### Docker / VPS
+
+```bash
+docker compose up --build -d
+```
+
+For HTTPS, terminate TLS at a reverse proxy (nginx, Traefik, Caddy) and proxy to the container on port 3000.
+
+---
+
+## License
+
+MIT © Raúl Beltrán Gómez
 
 ### `npm run eject`
 

@@ -1,0 +1,28 @@
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PUBLIC_URL: ${PUBLIC_URL:-/}
+        REACT_APP_GITHUB_TOKEN: ${REACT_APP_GITHUB_TOKEN:-}
+        REACT_APP_CHAT_TOKEN: ${REACT_APP_CHAT_TOKEN:-}
+    image: portfolio:latest
+    container_name: portfolio
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:80"
+    environment:
+      - TZ=UTC
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
