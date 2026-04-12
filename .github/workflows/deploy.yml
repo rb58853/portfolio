@@ -1,0 +1,52 @@
+name: Develop - Deploy
+
+on:
+  push:
+    branches:
+      - deploy
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+env:
+  VPS_WORKING_DIR: /srv/https/rb58853.net/portfolio
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure remote directory exists
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: mkdir -p ${{ env.VPS_WORKING_DIR }}
+
+      - name: Copy project files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          source: Dockerfile,docker-compose.yml,nginx.conf,package.json,package-lock.json,public,src,.dockerignore
+          target: ${{ env.VPS_WORKING_DIR }}
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            mkdir -p ${{ env.VPS_WORKING_DIR }}
+            cd ${{ env.VPS_WORKING_DIR }}
+            ls -la
+            docker compose down --remove-orphans
+            docker compose build --no-cache
+            docker compose up -d --build
