@@ -76,6 +76,12 @@ const languages =
         skill: 15,
         icon: 'devicon:haskell'
     },
+    gdscript: {
+        label: 'GDScript',
+        info: 'GDScript is the high-level scripting language designed for the Godot Engine. It offers a lightweight syntax inspired by Python, tight integration with Godot nodes and scenes, and fast iteration for gameplay logic, tools, UI behavior, and game systems.',
+        skill: 80,
+        icon: 'devicon:godot'
+    },
     rust: {
         label: 'Rust',
         info: 'Rust is a modern systems programming language focused on safety and performance, designed to compete with C++ while maintaining memory security guarantees. It excels in systems programming, embedded systems, game development, and high-performance computing applications. ',

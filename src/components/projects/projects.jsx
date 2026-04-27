@@ -14,6 +14,29 @@ import remarkGfm from 'remark-gfm'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { usePreferences } from '../../preferences/preferencesContext'
 
+function isVideoAsset(path = '') {
+    return path.toLowerCase().endsWith('.webm')
+}
+
+function ProjectAsset({ path, className = '', width, preview = false }) {
+    const source = process.env.PUBLIC_URL + path
+
+    if (isVideoAsset(path)) {
+        return <video
+            className={className}
+            src={source}
+            style={width ? { width } : undefined}
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={!preview}
+        />
+    }
+
+    return <img className={className} src={source} alt='' style={width ? { width } : undefined} />
+}
+
 
 function Projects() {
     const [skill, setSkill] = useState('All')
@@ -138,6 +161,7 @@ export function ProjectBox({ project, setProject, setWindowProject, active, tran
     const [activeInfo, setActiveInfo] = useState('')
     const [activeButton, setActiveButton] = useState('')
     const widthFromColumns = 100 / columns;
+    const previewAsset = project.image || project.images[0]
     useLayoutEffect(() => {
         if (translate)
             setStateTranslate(translate)
@@ -158,12 +182,8 @@ export function ProjectBox({ project, setProject, setWindowProject, active, tran
             >
                 <div className={`projectBoxInfoBackground ${activeInfo}`} />
 
-                {project.image ?
-                    <img className={`projectBoxImage`}
-                        src={process.env.PUBLIC_URL + project.image} alt='' />
-                    :
-                    project.images[0] && <img className={`projectBoxImage`}
-                        src={process.env.PUBLIC_URL + project.images[0]} alt='' />}
+                {previewAsset &&
+                    <ProjectAsset path={previewAsset} className={`projectBoxImage`} preview={true} />}
 
                 {!project.images[0] && !project.image &&
                     <div className='noImageProject'>
@@ -279,6 +299,7 @@ function ProjectWindowImage({ project, hide, setHide }) {
     const { width } = useSize(carruselRef)
     const [indexImage, setIndexImage] = useState(0)
     const size = useSize(carruselRef)
+    const assets = project.images?.length ? project.images : (project.image ? [project.image] : [])
 
     useEffect(() => {
         carruselImagesRef.current.scrollTo({
@@ -288,9 +309,12 @@ function ProjectWindowImage({ project, hide, setHide }) {
     }, [indexImage, width])
 
     const images = [];
-    project.images.forEach(path => {
-        images.push(<img className={`carruselImage ${hide ? 'hide' : ''}`} src={process.env.PUBLIC_URL + path} alt=""
-            style={{ width: width }} />)
+    assets.forEach(path => {
+        images.push(<ProjectAsset
+            path={path}
+            className={`carruselImage ${hide ? 'hide' : ''}`}
+            width={width}
+        />)
     })
 
     return <div className={`carruselContainer ${hide ? 'hide' : ''}`} ref={carruselRef}

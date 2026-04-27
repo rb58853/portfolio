@@ -1,6 +1,8 @@
 const projects = {
+    
+
     fastchatMCP: {
-        skills: ['MCP', 'LLM / AI', 'Fastapi'],
+        skills: ['LLM', 'AI'],
         title: 'Fastchat-MCP',
         description: 'Fastchat-MCP is a Python chat client for connecting to MCP servers through a simple natural-language interface. It supports stdio and HTTPStream transports, uses LiteLLM to work with multiple model providers through a unified gateway, and includes configurable MCP server setup, system prompts, API/WebSocket integration, and optional persistence through external services.',
         languages: ['Python'],
@@ -8,7 +10,7 @@ const projects = {
             framework: 'FastAPI, LiteLLM, MCP',
             keywords: 'MCP client, LiteLLM, HTTPStream, stdio, WebSocket API, LLM, AI, NLP.'
         },
-        image: '/projects/fastchatMCP/image.png',
+        image: '/projects/fastchatMCP/fastchat.png',
         images: [
             '/projects/fastchatMCP/4.png',
             '/projects/fastchatMCP/1.png',
@@ -132,6 +134,58 @@ const projects = {
             '/projects/arcaneAscent/Trailer.gif',
         ],
         github: 'https://github.com/rb58853/Arcane-Ascent',
+    },
+    portfolio: {
+        skills: ['ReactJS'],
+        title: 'Portfolio',
+        description: 'Personal portfolio and interactive CV built as a responsive React single-page application. It includes themed navigation across professional sections, a GitHub contributions integration, and a WebSocket-based AI assistant that answers questions about the profile, experience, and projects.',
+        languages: ['JavaScript', 'HTML', 'CSS'],
+        features: {
+            framework: 'React 18, Redux Toolkit, React Router',
+            keywords: 'ReactJS app, Docker Deploy, responsive SPA, AI chat assistant integration'
+        },
+        image: '/projects/portfolio/image.png',
+        images: ['/projects/portfolio/portfolio.png'],
+        github: 'https://github.com/rb58853/portfolio',
+        sitie: 'https://portofolio.rb58853.net',
+    },
+    chatbot: {
+        skills: ['ML', "IRS", 'AI', 'LLM'],
+        title: 'Devman ChatBot',
+        description: 'Project Description: Enhancing E-commerce Product Discovery with Embeddings and OpenAI GPT API. In the rapidly evolving landscape of e-commerce, enhancing product discovery has become crucial for businesses aiming to stand out amidst fierce competition. This project leverages cutting-edge technologies such as embeddings, IRS with Typesense, natural language processing (NLP) techniques powered by the OpenAI GPT API, and advanced information retrieval methods utilizing vector models to revolutionize how customers find products on online stores.',
+
+        languages: ["Python"],
+        features: {
+            keywords: "Ecomerse chat-bot, typesense data, embeddings, NLP (Natural Language process), products retrieval."
+        },
+        image: '/projects/chatBot/image.jpg',
+        images: ['/projects/chatBot/image.jpg'],
+    },
+    cvAssistant: {
+        skills: ['ML', 'AI', 'LLM'],
+        title: 'Portfolio Assistant Bot',
+        description: "This project represents an innovative integration of advanced technologies in artificial intelligence and machine learning to create a personal assistant capable of efficiently processing and analyzing information. This project was developed using Python.\
+        \n### Overview\
+        \nThe project combines several key elements:\
+        \n- A personal assistant based on NLP and machine learning\
+        \n- Interacts with the GitHub API to access repository information\
+        \n- Uses the OpenAI API and GPT-4 mini for advanced language processing\
+        \n- Designed as open-source software to promote collaboration and continuous development\
+        \n### Project Objective\
+        \nThe main objective of this project is to develop an advanced virtual assistant that acts as the user's digital representative in job interviews and professional conversations. This assistant is designed to:\
+        \n- Use the user's personal and professional information to personalize its performance\
+        \n- Evaluate compatibility between job positions and the user's skills\
+        \n- Learn and continuously improve based on user feedback",
+
+        languages: ["Python"],
+        features: {
+            keywords: "NLP (Natural Language process), Open source code, fastapi, cifrated data."
+        },
+        images: ['/projects/cvAssistant/images/1.jpg'],
+        // images: ['/projects/cvAssistant/images/1.jpg',
+        //     '/projects/cvAssistant/images/2.jpg',
+        //     '/projects/cvAssistant/images/3.jpg'],
+        github: 'https://github.com/samura99/cv-assitant',
     },
     colorProblem: {
         skills: ['DAA'],
@@ -298,44 +352,6 @@ const projects = {
         asStudent: 3,
     },
 
-    chatbot: {
-        skills: ['ML', "IRS", 'AI'],
-        title: 'Devman ChatBot',
-        description: 'Project Description: Enhancing E-commerce Product Discovery with Embeddings and OpenAI GPT API. In the rapidly evolving landscape of e-commerce, enhancing product discovery has become crucial for businesses aiming to stand out amidst fierce competition. This project leverages cutting-edge technologies such as embeddings, IRS with Typesense, natural language processing (NLP) techniques powered by the OpenAI GPT API, and advanced information retrieval methods utilizing vector models to revolutionize how customers find products on online stores.',
-
-        languages: ["Python"],
-        features: {
-            keywords: "Ecomerse chat-bot, typesense data, embeddings, NLP (Natural Language process), products retrieval."
-        },
-        image: '/projects/chatBot/image.jpg',
-        images: ['/projects/chatBot/image.jpg'],
-    },
-    cvAssistant: {
-        skills: ['ML', 'AI'],
-        title: 'Portfolio Assistant Bot',
-        description: "This project represents an innovative integration of advanced technologies in artificial intelligence and machine learning to create a personal assistant capable of efficiently processing and analyzing information. This project was developed using Python.\
-        \n### Overview\
-        \nThe project combines several key elements:\
-        \n- A personal assistant based on NLP and machine learning\
-        \n- Interacts with the GitHub API to access repository information\
-        \n- Uses the OpenAI API and GPT-4 mini for advanced language processing\
-        \n- Designed as open-source software to promote collaboration and continuous development\
-        \n### Project Objective\
-        \nThe main objective of this project is to develop an advanced virtual assistant that acts as the user's digital representative in job interviews and professional conversations. This assistant is designed to:\
-        \n- Use the user's personal and professional information to personalize its performance\
-        \n- Evaluate compatibility between job positions and the user's skills\
-        \n- Learn and continuously improve based on user feedback",
-
-        languages: ["Python"],
-        features: {
-            keywords: "NLP (Natural Language process), Open source code, fastapi, cifrated data."
-        },
-        images: ['/projects/cvAssistant/images/1.jpg'],
-        // images: ['/projects/cvAssistant/images/1.jpg',
-        //     '/projects/cvAssistant/images/2.jpg',
-        //     '/projects/cvAssistant/images/3.jpg'],
-        github: 'https://github.com/samura99/cv-assitant',
-    },
 
     
 
