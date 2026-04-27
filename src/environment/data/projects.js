@@ -21,7 +21,7 @@ const projects = {
         github: 'https://github.com/rb58853/fastchat-mcp',
     },
     audioML: {
-        skills: ['ML', 'AI'],
+        skills: [ 'AI'],
         languages: ["Python"],
         title: 'Audio Genre Classification',
         description: 'The classification of music genres plays a crucial role in modern digital audio signal processing applications. In this study, we propose several machine learning approaches to accurately categorize music tracks into predefined genres. Each approach uses different sets of features that can be extracted from songs; ranging from common ones like MFCC (Mel-frequency cepstral coefficients) and direct audio signals to less explored features in this context such as song lyrics and Wavelet Transform. To evaluate the models, we use the GTZAN reference dataset in the field. The results obtained highlight that song lyrics do not contribute much to classification, at least in the dataset used. The other models show results consistent with the state of the art, with an accuracy between 75% and 80%.',
@@ -40,7 +40,7 @@ const projects = {
 
 
     IRSImagesCLIP: {
-        skills: ["IRS", "ML", 'AI'],
+        skills: ["IRS", 'AI'],
         title: 'Image Retrieval System using Machine Learning',
         description: 'In this project, the problem of precise image retrieval is addressed. The work employs a new approach: the application of the Segment Anything (SAM) segmentation models and the Constractive Language-Image Pretraining (CLIP) model for the generation of multimodal embeddings. Special emphasis is placed on image retrieval via precise queries, taking into account the position of image segments that compose the same, processing both text and images.',
         languages: ["Python"],
@@ -150,7 +150,7 @@ const projects = {
         sitie: 'https://portofolio.rb58853.net',
     },
     chatbot: {
-        skills: ['ML', "IRS", 'AI', 'LLM'],
+        skills: [, "IRS", 'AI', 'LLM'],
         title: 'Devman ChatBot',
         description: 'Project Description: Enhancing E-commerce Product Discovery with Embeddings and OpenAI GPT API. In the rapidly evolving landscape of e-commerce, enhancing product discovery has become crucial for businesses aiming to stand out amidst fierce competition. This project leverages cutting-edge technologies such as embeddings, IRS with Typesense, natural language processing (NLP) techniques powered by the OpenAI GPT API, and advanced information retrieval methods utilizing vector models to revolutionize how customers find products on online stores.',
 
@@ -162,7 +162,7 @@ const projects = {
         images: ['/projects/chatBot/image.jpg'],
     },
     cvAssistant: {
-        skills: ['ML', 'AI', 'LLM'],
+        skills: [, 'AI', 'LLM'],
         title: 'Portfolio Assistant Bot',
         description: "This project represents an innovative integration of advanced technologies in artificial intelligence and machine learning to create a personal assistant capable of efficiently processing and analyzing information. This project was developed using Python.\
         \n### Overview\

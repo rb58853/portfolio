@@ -13,6 +13,7 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { usePreferences } from '../../preferences/preferencesContext'
+import { createPortal } from 'react-dom'
 
 function isVideoAsset(path = '') {
     return path.toLowerCase().endsWith('.webm')
@@ -236,7 +237,7 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
     const details = Object.keys(project.features).map((key) => {
         return <text><b>{key}: </b> {project.features[key]}</text>
     })
-    return (
+    const modal = (
         <div className={`projectWindowBack ${windowProject ? 'active' : ''}`}>
             <InfoBox info={info} active={boxInfoActive} />
 
@@ -291,6 +292,8 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
             </div>
         </div>
     )
+
+    return createPortal(modal, document.body)
 }
 
 function ProjectWindowImage({ project, hide, setHide }) {

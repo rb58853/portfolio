@@ -245,7 +245,7 @@
     background-color: rgba(0, 0, 0, 0.467);
     backdrop-filter: blur(10px);
     /* top: 0px; */
-    z-index: 5;
+    z-index: 1200;
     place-content: center;
     place-items: center;
     display: flex;
@@ -279,6 +279,7 @@
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
     pointer-events: none;
+    z-index: 1201;
 }
 
 
