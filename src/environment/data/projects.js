@@ -1,5 +1,23 @@
 const projects = {
+    fastchatMCP: {
+        skills: ['MCP', 'LLM / AI', 'Fastapi'],
+        title: 'Fastchat-MCP',
+        description: 'Fastchat-MCP is a Python chat client for connecting to MCP servers through a simple natural-language interface. It supports stdio and HTTPStream transports, uses LiteLLM to work with multiple model providers through a unified gateway, and includes configurable MCP server setup, system prompts, API/WebSocket integration, and optional persistence through external services.',
+        languages: ['Python'],
+        features: {
+            framework: 'FastAPI, LiteLLM, MCP',
+            keywords: 'MCP client, LiteLLM, HTTPStream, stdio, WebSocket API, LLM, AI, NLP.'
+        },
+        image: '/projects/fastchatMCP/image.png',
+        images: [
+            '/projects/fastchatMCP/4.png',
+            '/projects/fastchatMCP/1.png',
+            '/projects/fastchatMCP/2.png',
+            '/projects/fastchatMCP/3.webm',
 
+        ],
+        github: 'https://github.com/rb58853/fastchat-mcp',
+    },
     audioML: {
         skills: ['ML', 'AI'],
         languages: ["Python"],
@@ -17,6 +35,7 @@ const projects = {
         app: null,
         asStudent: 4,
     },
+
 
     IRSImagesCLIP: {
         skills: ["IRS", "ML", 'AI'],
@@ -317,6 +336,8 @@ const projects = {
         //     '/projects/cvAssistant/images/3.jpg'],
         github: 'https://github.com/samura99/cv-assitant',
     },
+
+    
 
 }
 export default projects
