@@ -1,115 +1,96 @@
-.home {
+/* ---------- Header ---------- */
+
+.hmHeader {
     display: flex;
-    flex-direction: row;
-    place-items: center;
-    place-content: center;
-    width: min(95%, 1320px);
-    max-width: 100vw;
+    flex-direction: column;
+    gap: 22px;
+    padding-bottom: 52px;
+}
+
+.hmTitle {
+    margin: 0;
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+}
+
+.hmName {
+    color: var(--pg-accent);
+}
+
+.hmRole {
+    display: block;
+    color: var(--pg-muted);
+}
+
+/* ---------- Contact ---------- */
+
+.hmContactBody {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+    min-width: 0;
+}
+
+.hmContact {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--pg-hairline);
+}
+
+.hmRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px 8px 12px 0;
+    border-bottom: 1px solid var(--pg-hairline);
+    font-size: 0.94rem;
+    color: var(--pg-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+}
+
+.hmRow>span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hmRowIcon {
+    flex: none;
+    font-size: 18px;
+    color: var(--pg-faint);
+    transition: color 200ms ease;
+}
+
+a.hmRow:hover {
     color: var(--text-color);
-    gap: 28px;
-    margin-top: 85px;
-    min-height: calc(90vh - 60px);
 }
 
-.profileSection {
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-    margin-top: 0px;
-    flex-shrink: 0;
-    min-width: 33%;
-    max-width: 40%;
-
+a.hmRow:hover .hmRowIcon {
+    color: var(--pg-accent);
 }
 
-.profile {
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(155deg, var(--surface-2), var(--surface-1));
-    height: fit-content;
-    margin-top: 0px;
-    border-radius: 20px;
-    border: 1px solid var(--surface-border);
-    box-shadow: var(--soft-shadow);
-    backdrop-filter: blur(14px);
-    flex-shrink: 0;
-    padding: 18px;
-}
-
-.profilePhotoAndName {
-    display: flex;
-    place-items: center;
-    height: 110px;
-    gap: 14px;
-    padding-right: 10px;
-}
-
-.profilePhotoAndName>div>h3,
-h4 {
-    margin-block: 5px;
-}
-
-.photo {
-    height: 95%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid color-mix(in srgb, var(--default-highlight-color) 40%, transparent);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-}
-
-.info {
-    margin-top: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    place-items: center;
-}
-
-.info>div{
-    cursor:default;
-    /* pointer-events: none; */
-}
-
-.infoRow {
-    display: flex;
-    gap: 8px;
-    place-items: center;
-    padding: 8px 10px;
-    border-radius: 10px;
-    font-size: 16px;
+.hmMore {
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--pg-accent);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     color: var(--text-color);
     text-decoration: none;
-    width: fit-content;
-    width: 97%;
-    border: 1px solid transparent;
-    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
-
+    transition: color 180ms ease;
 }
 
-.infoRow:hover {
-    background-color: color-mix(in srgb, var(--default-highlight-color) 9%, transparent);
-    border-color: color-mix(in srgb, var(--default-highlight-color) 25%, transparent);
-    transform: translateX(3px);
+.hmMore::after {
+    content: ' \2192';
+    color: var(--pg-accent);
 }
 
-.icon {
-    font-size: 130%;
-}
-
-.aboutText {
-    margin-top: 20px;
-    margin-left: 4px;
-    margin-right: auto;
-    color: var(--default-highlight-color);
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-}
-
-.plusInfo{
-    border: solid 1px rgba(255, 255, 255, 0.151);
-    padding: 10px;
-    border-radius: 7px;
-    margin-top: 10px;
+.hmMore:hover {
+    color: var(--pg-accent);
 }

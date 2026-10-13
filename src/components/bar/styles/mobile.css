@@ -1,71 +1,49 @@
-@media(max-width:900px) {
-    .bar {
-        position: fixed;
-
-        left: auto;
-        right: auto;
-
-
-        max-width: 96%;
-        z-index: 2;
-        background-color: var(--bar-color);
+@media(max-width:700px) {
+    .barContent {
+        gap: 18px;
     }
 
+    .buttonSection {
+        font-size: 0.66rem;
+        letter-spacing: 0.1em;
+    }
 }
 
 @media(max-width:500px) {
     .bar {
         top: auto;
-        bottom: 12px;
-        width: min(94%, 520px);
-        height: 54px;
-        font-size: 40px;
-        place-items: center;
-        border: solid 1px var(--surface-border);
-        border-radius: 16px;
-        background-color: var(--bar-color);
+        bottom: 0;
+        border-bottom: none;
+        border-top: 1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
     }
 
     .barContent {
-        font-size: 90%;
-        display: flex;
         width: 100%;
-        height: 25px;
-        place-items: center;
-        padding: 10px;
-        gap: 0px;
-        place-content: space-between;
-        max-width: 100%;
-        width: 95%;
+        height: 58px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        padding: 0 22px;
     }
 
-    .barControls {
+    .barContent>.buttonSection {
         display: flex;
-        gap: 4px;
-        margin-left: 0;
-    }
-
-    .preferenceButton {
-        min-width: 28px;
-        height: 24px;
+        align-items: center;
+        height: 100%;
+        margin: 0;
         padding: 0 6px;
-        font-size: 9px;
-        border-radius: 8px;
+        border-bottom: none;
+        color: color-mix(in srgb, var(--text-color) 55%, transparent);
     }
 
-    .buttonSection {
-        color: var(--text-color);
-    }
-    .buttonSection:hover {
-        color: var(--default-highlight-color);
-    }
-    .buttonSection.active {
+    .barContent>.buttonSection:hover,
+    .barContent>.buttonSection.active {
         color: var(--default-highlight-color);
     }
 
     .iconSection {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
     }
 
     .chatButton.active {
@@ -74,11 +52,12 @@
 
     .themeToggleButton {
         top: auto;
-        right: 16px;
-        bottom: 78px;
+        right: 14px;
+        bottom: 72px;
         width: 40px;
         height: 40px;
-        font-size: 20px;
+        background-color: var(--bar-color);
+        border-color: color-mix(in srgb, var(--text-color) 12%, transparent);
+        backdrop-filter: blur(12px);
     }
-
 }

@@ -1,50 +1,44 @@
-.presentation {
-    height: auto;
-    color: var(--text-color);
+.selectSpace {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 48px;
+}
+
+.viewMyWork {
     display: flex;
-    place-content: center;
-    place-items: center;
-    font-size: 35px;
-    font-weight: 500;
     flex-direction: column;
-    width: fit-content;
-    max-width: 50%;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
 }
 
-.presentationText{
-    text-align: center;
-}
-.presentationText>*{
-    margin-block: 0px;
-}
-
-
-.nameText {
-    color: var(--default-highlight-color);
+.viewMyWork>p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--pg-muted);
 }
 
+.viewMyWorkNote {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pg-faint);
+}
 
 .viewWorkButton {
-    pointer-events: auto;
-    background-color: rgba(0, 0, 0, 0);
-    border: solid 1px;
-    border-color: rgb(255,255,255,0.2);
-    padding: 15px;
-    padding-inline: 30px;
-    font-size: 24px;
-    margin-top: 40px;
-    cursor: pointer;
-    color: white;
-    z-index: 3;
-    max-width: 90%;
+    padding: 12px 28px;
+    border: 1px solid color-mix(in srgb, var(--text-color) 24%, transparent);
     border-radius: 3px;
-    z-index: 0;
-
-
-    transition-property: color, background-color, border-color, box-shadow;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-color);
+    transition-property: border-color, box-shadow;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
-
 }
 
 .viewWorkButton.active {
@@ -54,108 +48,4 @@
     border-color: color-mix(in srgb, var(--default-highlight-color) 75%, transparent);
     box-shadow: 0 0 16px color-mix(in srgb, var(--default-highlight-color) 35%, transparent),
         inset 0 0 12px color-mix(in srgb, var(--default-highlight-color) 12%, transparent);
-}
-
-.selectSpace {
-    display: flex;
-    /* width: 100%; */
-    place-content: center;
-    place-items: center;
-    padding-block: 30px;
-    gap: 5%;
-
-}
-
-.viewMyWork {
-    /* background-color: blueviolet; */
-    font-size: 20px;
-    width: min(350px, 50%);
-    aspect-ratio: 3/5;
-    overflow-y: hidden;
-    
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    gap: 20px;
-    border: solid 1px rgba(255, 255, 255, 0.137);
-    cursor: pointer;
-    border-radius: 5px;
-    pointer-events: auto;
-    color: var(--text-color);
-    text-decoration: none;
-
-
-    transition-property: transform;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
-
-}
-
-.viewMyWork:hover {
-    transform: scale(1.02);
-}
-
-.viewMyWorkContain {
-    width: 90%;
-    margin-top: 0px;
-    position: relative;
-    flex-grow: 1;
-    display: flex;
-    place-content: center;
-}
-
-.viewMyWorkContain>p {
-    position: relative;
-    z-index: 0;
-    width: 95%;
-    font-size: 90%;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-}
-
-.backImage {
-    width: 100%;
-    height: 95%;
-    display: flex;
-    position: absolute;
-    object-fit: cover;
-    z-index: 0;
-    opacity: 0.5;
-    filter:saturate(0) blur(10px);
-    pointer-events: none;
-
-
-    transition-property: filter, opacity;
-    transition-duration: 400ms;
-    transition-timing-function: ease-in-out;
-}
-.backImage.active {
-    filter:saturate(1) blur(0px);
-    opacity: 1;
-    z-index: 2;
-
-
-}
-
-:root[data-theme='light'] .viewMyWork {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.50);
-}
-
-:root[data-theme='light'] .viewWorkButton {
-    background-color: transparent;
-    border-color: rgba(0, 0, 0, 0.50);
-    color: var(--text-color);
-    font-weight: 700;
-    letter-spacing: 0.4px;
-}
-
-:root[data-theme='light'] .viewWorkButton.active {
-    background-color: transparent;
-    border-color: color-mix(in srgb, var(--default-highlight-color) 80%, transparent);
-    color: var(--text-color);
-}
-
-:root[data-theme='light'] .viewMyWorkContain>p {
-    color: rgb(241, 247, 255);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
 }

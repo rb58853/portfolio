@@ -18,7 +18,7 @@
 }
 
 .projectsContent {
-    width: min(90%, 1220px);
+    width: min(90%, 1040px);
     display: flex;
     flex-direction: column;
 }

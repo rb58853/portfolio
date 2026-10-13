@@ -1,34 +1,16 @@
 @media(max-width:900px) {
-    .home {
-        display: flex;
-        flex-direction: column;
-        width: 95%;
-        color: var(--text-color);
-        gap: 24px;
-        place-items: center;
-        place-content: start;
-
-
-    }
-
-    .profileSection {
-        display: flex;
-        flex-direction: column;
-        height: fit-content;
-        margin-top: 0px;
-        flex-shrink: 0;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .profile {
-        width: calc(100%-10px);
+    .hmContact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media(max-width:500px) {
-    .home {
-        margin-top: 16px;
-        margin-bottom: 90px;
+@media(max-width:640px) {
+    .hmHeader {
+        gap: 16px;
+        padding-bottom: 40px;
+    }
+
+    .hmContact {
+        grid-template-columns: 1fr;
     }
 }

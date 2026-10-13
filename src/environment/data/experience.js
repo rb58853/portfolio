@@ -61,11 +61,11 @@ export const workExperience = [
         summary: 'Designed and maintained MCP-based systems for enterprise automation, connecting LLM-powered assistants with secure business workflows and extensible backend services.',
         achievements: [
             'Developed and extended MCP servers and clients, including both proprietary and open-source components, with robust prompt and tool design practices.',
-            'Implemented secure authentication flows with OAuth 2.1 and header-based schemes, keeping the architecture configurable, extensible, and production-ready.',
+            'Implemented secure authentication flows, keeping the architecture configurable, extensible, and production-ready.',
             'Built automation modules for business data, calendar operations, internal queries, and process orchestration through LLM-driven interactions.',
             'Created NLP solutions that converted natural-language audio inputs into business templates and structured documents while optimizing API performance and integration reliability.',
         ],
-        stack: ['MCP', 'LLMs', 'REST APIs', 'OAuth 2.1', 'NLP', 'Automation'],
+        stack: ['MCP', 'LLMs', 'REST APIs', 'NLP', 'Automation'],
     },
     {
         company: 'Word Games',

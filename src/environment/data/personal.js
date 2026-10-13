@@ -99,7 +99,6 @@ export const know = `## Knowledge Areas
 - Large Language Models and prompt workflows
 - NLP and chatbot systems
 - FastAPI, REST APIs, and WebSockets
-- OAuth 2.1 and header-based authentication
 - Information retrieval and search-driven experiences
 - Unity gameplay systems and game tooling
 

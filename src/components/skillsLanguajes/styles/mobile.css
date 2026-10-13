@@ -1,31 +1,12 @@
-@media(max-width:800px) {
-    .skillsAndLenguagesColums {
-        flex-direction: column;
-        place-items: center;
-
-        gap: 30px;
-        width: 100%;
+@media(max-width:900px) {
+    .infoBox {
+        bottom: 96px;
     }
+}
+
+@media(max-width:640px) {
     .progressBarsContainer {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        width: 100%;
-    }   
-    .progressBar {
-        position: relative;
-        min-width: 90px;
-        width: 90px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px 22px;
     }
-    .skillsAndLenguagesColums>div{
-        display: flex;
-        flex-direction: column;
-        place-items: center;
-    }
-}
-
-@media(max-width:500px) {
-.skillsAndLenguagesBox{
-    margin-top: 0px;
-    margin-bottom: 80px;
-}
 }

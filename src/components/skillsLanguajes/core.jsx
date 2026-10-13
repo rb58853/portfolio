@@ -20,34 +20,25 @@ export function InfoBox({ info, active }) {
 }
 
 
-export function Languages({ setBoxInfoActive, setInfo, boxInfoActive }) {
-    const languagesView = Object.values(SortedBars(languages)).map((item) => {
-        return <ProgressBar label={item.label} icon={item.icon} svg={item.svg} info={item.info} percentage={item.skill} setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} />
-    })
-
+function BarsSection({ title, items, first = false, setBoxInfoActive, setInfo, boxInfoActive }) {
     return (
-        <div>
-            <h1>Languages</h1>
+        <section className={`pageSection ${first ? 'first' : ''}`}>
+            <h2 className='pageLabel'>{title}</h2>
             <div className='progressBarsContainer'>
-                {languagesView}
+                {SortedBars(items).map((item) => (
+                    <ProgressBar key={item.label} label={item.label} icon={item.icon} svg={item.svg} info={item.info} percentage={item.skill} setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} />
+                ))}
             </div>
-        </div>
+        </section>
     )
 }
 
-export function Skills({ setBoxInfoActive, setInfo, boxInfoActive }) {
-    const skillsView = Object.values(SortedBars(skills)).map((item) => {
-        return <ProgressBar label={item.label} icon={item.icon} svg={item.svg} info={item.info} percentage={item.skill} setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} />
-    })
+export function Languages(props) {
+    return <BarsSection title='Languages' items={languages} first {...props} />
+}
 
-    return (
-        <div>
-            <h1>Skills</h1>
-            <div className='progressBarsContainer'>
-                {skillsView}
-            </div>
-        </div>
-    )
+export function Skills(props) {
+    return <BarsSection title='Skills' items={skills} {...props} />
 }
 
 function ProgressBar({ label, icon, svg, info, percentage, setBoxInfoActive, setInfo, boxInfoActive }) {
@@ -65,10 +56,9 @@ function ProgressBar({ label, icon, svg, info, percentage, setBoxInfoActive, set
             <label className={`progressBarLabel ${label === boxInfoActive ? 'highlight' : ''}`}>
 
                 {icon && <Icon className='skillIcon' icon={icon} />}
-                {svg && <img className='skillIconImg' src={svg} alt="icon" />}
+                {svg && <img className='skillIconImg' src={svg} alt="" />}
 
-                {label}
-
+                <span>{label}</span>
             </label>
 
             <div className='progressBarBackground'>

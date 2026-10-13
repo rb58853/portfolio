@@ -31,10 +31,13 @@ function ContributionsBox() {
     // return <div>
     //     {git_token}
     // </div>
-    return (data && <div className="contributions">
-        {data && `${total} contributions in the last year`}
-        {data && <YearView data={data} />}
-    </div>
+    return (data && <section className='pageSection'>
+        <h2 className='pageLabel'>GitHub activity</h2>
+        <div className="contributions">
+            {`${total} contributions in the last year`}
+            <YearView data={data} />
+        </div>
+    </section>
     );
 }
 
@@ -81,7 +84,7 @@ function YearView({ data }) {
 
 function WeekView({ week, currentMonth, setCurrentMonth }) {
     const daysColumn = week['contributionDays'].map(day => {
-        return <DayView day={day} />
+        return <DayView key={day['date']} day={day} />
     })
     let month = 'j'
 
@@ -105,11 +108,7 @@ function DayView({ day }) {
         opacity = Math.max(0.15, opacity)
 
     return <div className="backgroundSquare">
-        <div className="simpleSquare" style={{ opacity: opacity }}>
-            <div className="infoDay">
-                {/* {day['contributionCount']} */}
-            </div>
-        </div>
+        <div className="simpleSquare" style={{ opacity: opacity }} />
     </div>
 }
 

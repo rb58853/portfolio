@@ -1,36 +1,30 @@
-.contributions{
-    border: solid 1px rgba(255, 255, 255, 0.11);
-    padding: 5px;
-    border-radius: 7px;
-    margin-top: 10px;
-}
-
-:root[data-theme='light'] .contributions {
-    border-color: rgba(117, 93, 58, 0.25);
-    background-color: rgba(240, 235, 226, 0.6);
-}
-
-:root[data-theme='light'] .backgroundSquare {
-    background-color: rgba(42, 34, 23, 0.08);
+.contributions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    font-size: 0.96rem;
+    color: var(--pg-muted);
 }
 
 .yearView {
     width: 100%;
     overflow-x: auto;
-    padding-block: 5px;
-    /* background-color: blue; */
+    scrollbar-width: none;
+}
+
+.yearView::-webkit-scrollbar {
+    display: none;
 }
 
 .contributionsBox {
     display: flex;
     flex-direction: row;
     gap: 2px;
-    /* background-color: rgb(10, 10, 10); */
     width: fit-content;
 }
 
 .weekView {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -40,10 +34,8 @@
     position: relative;
     height: 12px;
     width: 12px;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: color-mix(in srgb, var(--text-color) 8%, transparent);
     border-radius: 2px;
-    /* overflow: hidden; */
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
 .simpleSquare {
@@ -52,14 +44,4 @@
     width: 100%;
     height: 100%;
     border-radius: 2px;
-}
-
-.infoDay {
-    position: absolute;
-    top: -30px;
-    background-color: gray;
-}
-
-.month {
-    width: 12px;
 }

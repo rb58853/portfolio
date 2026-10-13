@@ -1,57 +1,5 @@
-@media(max-width:1150px) {
-
-    .viewWorkButton {
-        font-size: 100%;
-    }
-    .presentation {
-        max-width: 100%;
-    }
-}
-@media(max-width:630px) {
-    .presentation {
-        height: auto;
-        max-width: 100%;
-
-        width: 100%;
-        font-size: 6vw;
-        font-weight: 500;
-
-    }
-    .presentationText{
-        width: 90%;
-    }
-    .viewMyWork{
-        overflow-y: visible;
-        aspect-ratio: auto;
-        max-width: 100%;
-        width: 100%;
-    }
+@media(max-width:640px) {
     .selectSpace {
-        display: flex;
-        place-content: center;
-        place-items: center;
-        padding-block: 30px;
-        gap: 5%;
-        max-width: 100%;
-    }
-
-    .viewWorkButton {
-        /* font-size: 70%; */
-        border-width: 2px;
-    }
-
-    .selectSpace {
-        flex-direction: column;
-        /* background-color: blueviolet; */
-        gap: 20px;
-    }
-
-    .viewMyWork {
-        width: 90%;
-    }
-
-    .viewWorkButton {
-        font-size: 24px;
-    
+        grid-template-columns: 1fr;
     }
 }

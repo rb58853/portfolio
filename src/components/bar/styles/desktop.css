@@ -1,90 +1,84 @@
+/* ---------- Top bar ---------- */
+
 .bar {
     position: fixed;
-    width: fit-content;
-    top: 20px;
-    max-width: 95%;
-    background-color: var(--bar-color);
-    border: 1px solid var(--surface-border);
-    border-radius: 18px;
-    backdrop-filter: blur(20px) saturate(1.2);
-    box-shadow: var(--soft-shadow);
-    place-content: center;
-    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 3;
-
+    display: flex;
+    place-content: center;
+    background-color: color-mix(in srgb, var(--background-color) 78%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
+    backdrop-filter: blur(16px);
 }
 
 .barContent {
+    width: min(90%, 1040px);
+    height: 56px;
     display: flex;
-    width: 100%;
-    height: 32px;
-    place-items: center;
-    padding: 9px 18px;
-    gap: 18px;
+    align-items: stretch;
+    gap: 30px;
+    padding-right: 48px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
 
+.barContent::-webkit-scrollbar {
+    display: none;
 }
 
 .buttonSection {
-    color: var(--text-color);
+    border-bottom: 1px solid transparent;
+    font-size: 0.72rem;
     font-weight: 600;
-    font-size: clamp(0.64rem, 0.95vw, 0.8rem);
-    letter-spacing: 0.4px;
+    letter-spacing: 0.16em;
+    color: color-mix(in srgb, var(--text-color) 62%, transparent);
     text-decoration: none;
-    opacity: 0.8;
     white-space: nowrap;
-    transition: color 200ms ease, opacity 200ms ease, transform 200ms ease;
+    transition: color 200ms ease, border-color 200ms ease;
+}
+
+.barContent>.buttonSection:not(.mobile) {
+    display: flex;
+    align-items: center;
 }
 
 .buttonSection:hover {
     color: var(--text-color);
-    opacity: 1;
-    transform: translateY(-1px);
-
 }
 
 .buttonSection.active {
     color: var(--text-color);
-    opacity: 1;
+    border-bottom-color: var(--default-highlight-color);
 }
 
-.barControls {
-    display: flex;
-    gap: 8px;
-    margin-left: 6px;
-}
+/* ---------- Theme toggle (sits at the right end of the bar) ---------- */
 
-.preferenceButton {
-    border: 1px solid var(--surface-border);
+.themeToggleButton {
+    position: fixed;
+    z-index: 4;
+    top: 10px;
+    right: calc(max(5vw, (100vw - 1040px) / 2) - 9px);
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
     background-color: transparent;
-    color: var(--text-color);
-    height: 30px;
-    min-width: 44px;
-    padding: 0 10px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: color-mix(in srgb, var(--text-color) 62%, transparent);
+    font-size: 18px;
     cursor: pointer;
-    opacity: 0.9;
-    letter-spacing: 0.4px;
-    transition: background-color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+    transition: color 180ms ease, border-color 180ms ease;
 }
 
-.preferenceButton:hover {
-    background-color: var(--default-hover-color);
-    border-color: var(--default-highlight-color);
-    opacity: 1;
+.themeToggleButton:hover {
+    color: var(--text-color);
+    border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
 }
 
-
-.barLine {
-    width: 100%;
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.219);
-}
-
-.verticalLine {
-    display: none;
-}
+/* ---------- Chat shortcut ---------- */
 
 .chatButton {
     display: none;
@@ -93,46 +87,24 @@
 .chatButton.active {
     display: block;
     position: fixed;
-    bottom: 3%;
-    right: 3%;
-    font-size: 30px;
-    padding: 14px;
-    border-radius: 16px;
-    background: linear-gradient(145deg, var(--default-highlight-color), color-mix(in srgb, var(--secundary-highlight-color) 45%, var(--default-highlight-color)));
-    color: var(--text-color);
     z-index: 3;
-    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 45%, white);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
-    transition: scale 200ms ease-in-out, box-shadow 200ms ease-in-out;
+    right: max(24px, 3%);
+    bottom: max(24px, 3%);
+    width: 48px;
+    height: 48px;
+    padding: 13px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 55%, transparent);
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--default-highlight-color) 24%, var(--background-color)),
+            color-mix(in srgb, var(--secundary-highlight-color) 18%, var(--background-color)));
+    color: var(--text-color);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--default-highlight-color) 20%, transparent);
+    transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .chatButton:hover {
-    scale: 1.15;
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
-}
-
-.themeToggleButton {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--surface-border);
-    background-color: var(--bar-color);
-    color: var(--text-color);
-    display: grid;
-    place-items: center;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 4;
-    backdrop-filter: blur(18px) saturate(1.1);
-    box-shadow: var(--soft-shadow);
-    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
-}
-
-.themeToggleButton:hover {
-    transform: translateY(-1px);
-    border-color: var(--default-highlight-color);
-    background-color: var(--default-hover-color);
+    border-color: color-mix(in srgb, var(--default-highlight-color) 85%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--default-highlight-color) 40%, transparent),
+        inset 0 0 12px color-mix(in srgb, var(--default-highlight-color) 14%, transparent);
 }
