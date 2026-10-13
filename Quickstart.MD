@@ -79,7 +79,7 @@ PUBLIC_URL=/portfolio docker compose up --build -d
 
 ## Health check
 
-The container exposes a health endpoint at the root `/`. Docker polls it every 30 s.
+The container exposes a health endpoint at the root `/`. Docker polls it every 30 s on `127.0.0.1` (inside the container `localhost` resolves to IPv6, where nginx does not listen).
 
 ```bash
 docker inspect --format='{{.State.Health.Status}}' portfolio

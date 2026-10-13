@@ -185,7 +185,7 @@ Source code is proprietary.',
         image: '/projects/portfolio/image.png',
         images: ['/projects/portfolio/portfolio.png'],
         github: 'https://github.com/rb58853/portfolio',
-        sitie: 'https://portofolio.rb58853.net',
+        sitie: 'https://portfolio.rb58853.net',
     },
     chatbot: {
         skills: [, "IRS", 'AI', 'LLM'],
