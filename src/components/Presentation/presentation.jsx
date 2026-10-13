@@ -17,7 +17,7 @@ function Presentation() {
                     Designed space to offer you an integrated vision of my practical experience and technical skills, evidenced in real projects executed both during my studies and in work environments.
                 </Entry>
 
-                <Entry to='/chat' label='Chat with me' note='VPS missed online (in process)'
+                <Entry to='/chat' label='Chat with me'
                     active={indexActive === 1}
                     onEnter={() => setIndexActive(1)} onLeave={() => setIndexActive(-1)}>
                     Space to interact with my Natural Language Processing AI, designed to provide you with answers about my information, projects, or skills based on your messages. This chat facilitates smooth and direct communication with the AI, allowing you to establish an interactive and effective conversation "with me".

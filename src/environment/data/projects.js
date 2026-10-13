@@ -176,10 +176,10 @@ Source code is proprietary.',
     portfolio: {
         skills: ['ReactJS'],
         title: 'Portfolio',
-        description: 'Personal portfolio and interactive CV built as a responsive React single-page application. It includes themed navigation across professional sections, a GitHub contributions integration, and a WebSocket-based AI assistant that answers questions about the profile, experience, and projects.',
-        languages: ['JavaScript', 'HTML', 'CSS'],
+        description: 'Personal portfolio and interactive CV built as a responsive React single-page application. It includes themed navigation across professional sections, a GitHub contributions integration, and a WebSocket-based AI assistant that answers questions about the profile, experience, and projects. The assistant runs on a FastAPI and LiteLLM backend in the same repository and answers from a YAML knowledge base.',
+        languages: ['JavaScript', 'HTML', 'CSS', 'Python'],
         features: {
-            framework: 'React 18, Redux Toolkit, React Router',
+            framework: 'React 18, Redux Toolkit, React Router, FastAPI, LiteLLM',
             keywords: 'ReactJS app, Docker Deploy, responsive SPA, AI chat assistant integration'
         },
         image: '/projects/portfolio/image.png',

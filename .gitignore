@@ -23,3 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 # package.json
 .env
+
+# backend
+backend/.venv/
+__pycache__/
+.pytest_cache/

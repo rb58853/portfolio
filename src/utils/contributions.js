@@ -17,24 +17,6 @@ query($userName:String!) {
 }
 `
 
-export async function AssistantData() {
-  const headers = {
-    'Content-Type': 'application/json'
-  };
-
-  try {
-    const response = await axios.get(
-      'http://77.237.243.163:8001/my-keys/api/get/data/assistant',
-      { headers }
-    );
-    return response.data;
-
-  } catch (error) {
-    console.error("Error fetching data:", error.message);
-    throw error;
-  }
-}
-
 export async function retrieveContributionData(userName = 'rb58853') {
   const TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
   const variables = { userName };

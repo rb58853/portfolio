@@ -6,18 +6,21 @@ import { usePreferences } from "../../preferences/preferencesContext";
 
 export function ChatButton() {
     const { pathname } = useLocation()
+    if (pathname === '/chat') return null
 
-    return <SectionLink state={{ from: pathname }} to='/chat'>
-        <Icon className={`chatButton desktop active`} icon={'ci:chat'}/>
+    return <SectionLink className='chatButton desktop' aria-label='Open the assistant'
+        state={{ from: pathname }} to='/chat'>
+        <Icon icon={'ci:chat'} />
     </SectionLink>
 }
 
 export function ThemeButton() {
     const { theme, toggleTheme } = usePreferences()
+    const { pathname } = useLocation()
 
     return (
         <button
-            className='themeToggleButton'
+            className={`themeToggleButton ${pathname === '/chat' ? 'inChat' : ''}`}
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >

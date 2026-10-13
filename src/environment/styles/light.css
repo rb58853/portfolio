@@ -34,6 +34,9 @@
 
     --info-box-color: rgba(238, 243, 240, 0.9);
 
+    --my-messages-background-color: rgb(214, 230, 222);
+    --input-message-backgroundcolor: rgb(255, 255, 255);
+
     --surface-1: rgba(252, 252, 251, 0.78);
     --surface-2: rgba(248, 248, 246, 0.92);
     --surface-border: rgba(28, 31, 30, 0.14);

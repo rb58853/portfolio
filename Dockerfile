@@ -6,11 +6,9 @@ FROM node:20-alpine AS builder
 # Build-time environment variables (passed via --build-arg)
 ARG PUBLIC_URL=/
 ARG REACT_APP_GITHUB_TOKEN
-ARG REACT_APP_CHAT_TOKEN
 
 ENV PUBLIC_URL=$PUBLIC_URL \
     REACT_APP_GITHUB_TOKEN=$REACT_APP_GITHUB_TOKEN \
-    REACT_APP_CHAT_TOKEN=$REACT_APP_CHAT_TOKEN \
     NODE_ENV=production \
     CI=false
 

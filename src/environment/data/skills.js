@@ -1,13 +1,16 @@
+// `name` is how the assistant is asked about a skill when its label is an abbreviation
 const skills =
 {
     reactJs: {
         label: 'ReactJs',
+        name: 'ReactJS',
         info: 'ReactJS, also known as React.js or ReactJS, is an open-source and free JavaScript library for building user interfaces based on components. It is used to build the user-facing part of a web application. React allows developers to create interactive and dynamic web applications by creating and nesting components and other functionalities',
         skill: 75,
         icon: 'logos:react'
     },
     reactNative: {
         label: 'R. Native',
+        name: 'React Native',
         info: 'React Native is a mobile application development framework that uses React, a JavaScript library for building user interfaces, and allows developers to create native applications for iOS and Android using JavaScript and React. Unlike React, which is used for developing web applications, React Native focuses on mobile application development, using native components instead of web components ',
         skill: 62,
         icon: 'skill-icons:react-dark'
@@ -15,6 +18,7 @@ const skills =
 
     ai: {
         label: 'AI',
+        name: 'artificial intelligence',
         info: 'Artificial Intelligence covers the design of systems capable of solving problems that normally require human reasoning, including planning, search, optimization, probabilistic reasoning, knowledge representation, and applied intelligent automation. It provides the theoretical and practical foundation for building decision-capable software across research and production environments.',
         skill: 84,
         // icon: 'logos:openai-icon',
@@ -23,6 +27,7 @@ const skills =
 
     llmAi: {
         label: 'LLM / AI',
+        name: 'LLMs and applied AI',
         info: 'Large Language Model and applied AI work focused on prompt engineering, agent design, retrieval-augmented generation, tool orchestration, evaluation, and production integration. This includes building assistants that connect models with external systems, shaping reliable prompts, and designing flows that improve accuracy, traceability, and user value.',
         skill: 97,
         icon: 'simple-icons:openai'
@@ -36,6 +41,7 @@ const skills =
     },
     machineLearning: {
         label: 'ML',
+        name: 'machine learning',
         info: 'Machine Learning (ML) is a branch of artificial intelligence (AI) that focuses on developing computer systems capable of learning from data and improving their performance over time without needing to be explicitly programmed. It is applicable across a wide range of industries, including healthcare, defense, financial services, marketing, and security services. Machine learning is a rapidly growing field with numerous research and development opportunities',
         skill: 85,
         // icon: 'logos:tensorflow',
@@ -44,6 +50,7 @@ const skills =
 
     computerVision: {
         label: 'Vision',
+        name: 'computer vision',
         info: 'Computer vision for production systems: object and keypoint detection, point-cloud processing, OCR, camera calibration and pixel-to-robot coordinate mapping. Applied to industrial robot guidance, with models trained, benchmarked and deployed on GPU through ONNX Runtime.',
         skill: 88,
         icon: 'mdi:eye-outline'
@@ -58,6 +65,7 @@ const skills =
 
     net: {
         label: '.Net',
+        name: '.NET',
         info: '.NET is a software development framework created by Microsoft that provides a runtime environment and a set of libraries and tools for building and running applications on Windows operating systems. This framework includes a variety of programming languages, such as C#, F#, and Visual Basic, and supports a range of application types, including desktop, web, mobile, and gaming applications',
         skill: 45,
         icon: 'skill-icons:dotnet'
@@ -65,6 +73,7 @@ const skills =
 
     irs: {
         label: 'IRS',
+        name: 'information retrieval systems',
         info: 'Information retrieval systems are tools or techniques that allow users to search and retrieve information from a collection of documents or databases. This process begins when a user makes a query to the system, which is a formal statement of the need for information. Information retrieval systems are fundamental in various applications, such as internet search engines, recommendation systems, knowledge management systems, and more',
         skill: 79,
         svg: process.env.PUBLIC_URL + "/images/icons/skills/ts1.png",
@@ -73,6 +82,7 @@ const skills =
 
     daa: {
         label: 'DAA',
+        name: 'design and analysis of algorithms',
         info: 'The design and analysis of algorithms is a crucial field in computing that focuses on creating algorithms to solve specific problems, as well as analyzing and demonstrating their complexity. The field of algorithm design and analysis addresses one of the millennium problems, known as the P vs NP problem, which is fundamental in computational complexity theory',
         skill: 95,
         icon: 'logos:google-cloud-functions'
@@ -88,6 +98,7 @@ const skills =
 
     ds: {
         label: 'Dist Sys',
+        name: 'distributed systems',
         info: 'A distributed system is a set of computer programs that use computational resources on different computing nodes to achieve a common goal. These systems, also known as "distributed computing," use different nodes to communicate and synchronize through a common network. The primary purpose of distributed systems is to eliminate bottlenecks or central points of failure in a system',
         skill: 55,
         // icon: 'lucide:network',
@@ -96,6 +107,7 @@ const skills =
 
     os: {
         label: 'OS',
+        name: 'operating systems',
         info: 'Operating systems are software programs that manage the hardware resources of a computer, such as the CPU, memory, storage, and input/output devices. Working with operating systems through a shell is a way to interact with the operating system through text commands',
         skill: 45,
         icon: 'logos:debian',
@@ -128,6 +140,7 @@ const skills =
 
     fastapi: {
         label: 'Fastapi',
+        name: 'FastAPI',
         info: 'FastAPI is a modern Python framework for building web APIs with high speed and low code. It is characterized by its superior speed compared to frameworks like Flask and Django, automatic documentation, and native support for async/await.',
         skill: 80,
         icon: 'skill-icons:fastapi'
@@ -135,6 +148,7 @@ const skills =
 
     telegramBot: {
         label: 'Tele bot',
+        name: 'Telegram bots',
         info: 'A Telegram bot is a program designed to interact with users through the Telegram messaging platform. These bots can perform various functions, such as answering queries, providing information, and automating tasks.',
         skill: 40,
         icon: 'logos:telegram'

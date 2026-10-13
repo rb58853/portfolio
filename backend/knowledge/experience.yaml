@@ -1,0 +1,77 @@
+# Work history, most recent first. Mirrors src/environment/data/experience.js,
+# except where a `scope` note says how much weight something really carries.
+
+intro: >
+  From computer vision that guides industrial robots on the plant floor to LLM
+  assistants connected to business systems: AI, backend and tooling that has
+  to work reliably outside the lab.
+
+roles:
+  - company: Promart Automatizaciones
+    role: Computer Vision, Machine Learning and Software Developer
+    period: Jun 2026 - Present
+    location: Spain, on-site and plant commissioning
+    area: Industrial AI
+    summary: >
+      Builds the computer vision, machine learning and software platform behind
+      a robotic cell for the dairy industry, from model training and camera
+      calibration to APIs, desktop tooling, simulators and on-site validation.
+    achievements:
+      - Detection models for a robotic teat-sealing cell on rotary milking parlours. RF-DETR teat detection finds 99.4% of teats on the test set, and a proprietary pose model for leg posture gates robot entry.
+      - Inference latency cut to 7.7 ms on average with 3x lower jitter by moving models to ONNX Runtime on GPU, packaged with embedded contracts and golden tests for the production vision program.
+      - Data and tooling platform around the models, with an S3 gateway with presigned transfers, Tauri and Rust desktop apps, an Android field-capture app and operator dashboards.
+      - Monitoring and control platform for the robot of the cell. A C# API of about 100 endpoints with a typed client generated from its OpenAPI contract, a React and Tauri desktop app with separate read-only and controller zones, and continuous servo-effort telemetry with remote monitoring.
+      - Simulators that run the cell end to end without hardware. A control-logic simulator validated against the real controller across 637 variables, and a robot simulator that transpiles the production robot programs to Python.
+    stack: [Python, PyTorch, RF-DETR, ONNX Runtime, OpenCV, FastAPI, "C#", .NET, React, Tauri, Rust, S3]
+    related_project: dairyRobotCell
+    confidentiality: Source code and internal details are proprietary.
+
+  - company: Cogitia
+    role: MCP Protocol, Large Language Models, Chatbots and REST API Developer
+    period: May 2025 - Feb 2026
+    location: Havana, Cuba, remote for Madrid, Spain
+    area: Enterprise AI
+    summary: >
+      Designed and maintained MCP-based systems for enterprise automation,
+      connecting LLM-powered assistants with secure business workflows and
+      extensible backend services.
+    achievements:
+      - Developed and extended MCP servers and clients, both proprietary and open source, with robust prompt and tool design.
+      - Implemented secure authentication flows, keeping the architecture configurable, extensible and production-ready.
+      - Built automation modules for business data, calendar operations, internal queries and process orchestration through LLM-driven interactions.
+      - Created NLP solutions that turned natural-language audio into business templates and structured documents, while optimising API performance and integration reliability.
+    stack: [MCP, LLMs, REST APIs, NLP, Automation]
+    related_project: fastchatMCP
+
+  - company: Word Games
+    role: Game Developer, Development Team
+    period: Oct 2024 - May 2025
+    location: Havana, Cuba, remote for Bogotá, Colombia
+    area: Game Development
+    summary: >
+      Gameplay engineering for commercial game development, covering shipping
+      features and supporting tooling.
+    achievements:
+      - Led the full programming implementation of Arcane Ascent, a deck-building roguelike released on Steam Early Access, covering gameplay systems and Unity engine functionality.
+      - Integrated native Steam capabilities such as achievements and persistence flows.
+    stack: [Unity, "C#", Steam]
+    related_project: ArcaneAscent
+    scope: >
+      A game development role. Never give it as an example of AI, LLM or NLP
+      experience.
+
+  - company: Devman
+    role: NLP, Chatbot and REST API Developer, Backend Development Team
+    period: Apr 2024 - Oct 2024
+    location: Havana, Cuba, remote for Madrid, Spain
+    area: Backend and Conversational AI
+    summary: >
+      Architected backend and conversational systems for e-commerce, combining
+      product retrieval, NLP, secure APIs and real-time communication.
+    achievements:
+      - Led the development of an enterprise chatbot assistant for e-commerce platforms using OpenAI-driven NLP and a Typesense-based product retrieval layer.
+      - Improved product discovery by connecting natural-language queries with structured catalogue search.
+      - Designed a FastAPI REST architecture with API key management, authorisation layers and secure request handling.
+      - Implemented WebSocket communication for real-time chat between customers and the assistant.
+    stack: [FastAPI, OpenAI, Typesense, WebSockets, Auth, E-commerce]
+    related_project: chatbot

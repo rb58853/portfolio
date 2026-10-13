@@ -4,6 +4,7 @@ import '../../styles/style.css'
 import { useDispatch } from 'react-redux'
 import setSectionFunction from '../../redux/sections/functions.jsx'
 import { education, experienceIntro, experienceStats, focusAreas, workExperience } from '../../environment/data/experience.js'
+import { AskAssistant, assistantQuestions } from '../../aiChatAssistant/askAssistant'
 
 function ExperienceItem({ job }) {
     return (
@@ -51,6 +52,9 @@ function ExperienceItem({ job }) {
                         <li key={item}>{item}</li>
                     ))}
                 </ul>
+
+                <AskAssistant className='xpAsk' label='Ask the assistant about this role'
+                    question={assistantQuestions.role(job)} />
             </div>
         </li>
     )

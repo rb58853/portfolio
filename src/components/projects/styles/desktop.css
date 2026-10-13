@@ -532,6 +532,11 @@
     border-top: 1px solid var(--pj-hairline);
 }
 
+/* The assistant link closes the row, away from the outbound links */
+.endBar>.askAssistant {
+    margin-left: auto;
+}
+
 .viewOnGithub {
     padding-bottom: 2px;
     border-bottom: 1px solid var(--pj-accent);

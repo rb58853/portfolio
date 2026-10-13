@@ -11,3 +11,4 @@ yarn-error.log*
 .git/
 .github/
 coverage/
+backend/

@@ -1,0 +1,47 @@
+# Skills grouped by level. Mirrors the bars in src/environment/data/skills.js
+# and languages.js: strongest >= 90, solid 75-89, working 35-74, basic < 35.
+
+technical_skills:
+  strongest:
+    - LLM and applied AI (prompt engineering, agents, RAG, tool orchestration, evaluation)
+    - MCP (Model Context Protocol) servers and clients
+    - Design and analysis of algorithms
+    - Unity
+  solid:
+    - Computer vision (object and keypoint detection, OCR, camera calibration, pixel-to-robot mapping)
+    - Machine learning
+    - PyTorch (detection and pose models, Optuna search, ONNX export)
+    - Artificial intelligence (search, planning, optimisation, probabilistic reasoning)
+    - Godot
+    - FastAPI
+    - Information retrieval systems
+    - Compilers
+    - ReactJS
+  working:
+    - React Native
+    - Docker
+    - Distributed systems
+    - Simulation
+    - .NET
+    - Operating systems and shell
+    - Django
+    - Telegram bots
+    - Flutter
+  basic:
+    - Networks
+
+programming_languages:
+  strongest: [Python, "C#"]
+  solid: [JavaScript, GDScript, MIPS assembly]
+  working: [CSS, HTML, Dart]
+  basic: ["C++", C, Rust, Go, Haskell, Prolog]
+
+knowledge_areas:
+  - Computer vision and deep learning (RF-DETR, PyTorch, ONNX Runtime)
+  - Scalable software systems (typed APIs, desktop apps, data pipelines)
+  - MCP servers and tool integrations
+  - Large Language Models and prompt workflows
+  - NLP and chatbot systems
+  - FastAPI, REST APIs and WebSockets
+  - Information retrieval and search-driven experiences
+  - Unity gameplay systems and game tooling

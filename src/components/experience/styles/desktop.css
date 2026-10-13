@@ -322,6 +322,11 @@
     color: var(--xp-accent);
 }
 
+.xpAsk {
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
 /* ---------- Footer ---------- */
 
 .xpFooter {

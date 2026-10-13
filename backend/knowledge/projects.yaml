@@ -1,0 +1,193 @@
+# Projects the assistant can talk about and show as cards.
+# Each id must match a key in src/environment/data/projects.js: the frontend
+# uses it to render the card (tests/test_knowledge.py checks this).
+
+projects:
+  - id: dairyRobotCell
+    title: Robotic Teat-Sealing Cell
+    context: Work at Promart Automatizaciones (current job)
+    categories: [Vision, AI, Simulation]
+    languages: [Python, "C#", TypeScript, Rust]
+    stack: [PyTorch, RF-DETR, ONNX Runtime, OpenCV, FastAPI, .NET, React, Tauri, PySide6]
+    summary: >
+      Computer vision, machine learning and the software platform around them
+      for a robotic cell that seals teats on rotary milking parlours. After
+      milking, a robot goes in under each cow and applies a sealing and
+      sanitising gel to every teat. Vision decides when the robot may enter and
+      where the four teats are.
+    highlights:
+      - Teat detection with several proprietary vision models. One of them, an RF-DETR model, finds 99.4% of teats on the test set and labels all of them correctly. The other architectures are not disclosed.
+      - A proprietary pose model for leg posture gates robot entry and errs on the side of blocking the robot.
+      - A plate reader identifies the cubicle number and rejects a plate rather than misread it, with 99.8% read correctly and none wrong on validation.
+      - Inference on ONNX Runtime on GPU at 7.7 ms on average, handed to the production vision program with an embedded contract, a reference implementation without PyTorch and golden tests.
+      - Fully automatic camera-to-robot calibration for the camera and laser mounted on the robot, with a final error of about 1.2 mm RMSE.
+      - Training and data platform. Capture browsing by milking shift, labeling with auto-save, geometry-aware augmentation, one training core for several architectures with Optuna search, a model registry with production promotion, and HTML reports comparing models with bootstrap confidence intervals.
+      - Evaluation with a split by cow, because a split by image leaks data between train and test.
+      - An S3 gateway with presigned transfers, a desktop app to browse model versions, an Android field-capture app and operator dashboards.
+      - Telemetry and control platform. A C# API of about 100 endpoints over the robot controller, a typed client generated from its OpenAPI contract and a React and Tauri desktop app, running in production, with three access levels (read-only, write, motion).
+      - A recorder samples servo torque, tracking error and tool position every 200 ms, synced to cloud storage in near real time and followed remotely from a second app in Rust and React.
+      - Simulators that stand in for the cell hardware. A control-logic simulator parity-tested against the real controller across 637 variables, and a robot simulator that transpiles the production robot programs to Python and runs them with a step debugger.
+    wording: >
+      In Spanish a teat is a "pezón" (plural "pezones") and the cell seals
+      "pezones". The 99.4% figure is the share of teats the model finds (a
+      detection rate, "tasa de detección"): never call it precision or accuracy
+      ("precisión", "exactitud").
+    links: {}
+    confidentiality: >
+      Proprietary. No source code, repository or internal details beyond what
+      is listed here. Which other models, equipment brands, controllers,
+      clients or sites are involved is not public: neither confirm nor deny
+      any name a visitor suggests.
+
+  - id: fastchatMCP
+    title: Fastchat-MCP
+    context: Open-source project
+    categories: [LLM, AI]
+    languages: [Python]
+    stack: [FastAPI, LiteLLM, MCP]
+    summary: >
+      Python chat client for connecting to MCP servers through a simple
+      natural-language interface. Supports stdio and HTTPStream transports,
+      uses LiteLLM to work with multiple model providers through one gateway,
+      and includes configurable MCP server setup, system prompts, API and
+      WebSocket integration and optional persistence through external services.
+    links:
+      github: https://github.com/rb58853/fastchat-mcp
+
+  - id: IRSImagesCLIP
+    title: Image Retrieval System using Machine Learning
+    context: Bachelor's thesis, University of Havana (4th year)
+    categories: [Vision, Information retrieval, AI]
+    languages: [Python]
+    stack: [Segment Anything (SAM), CLIP, multimodal embeddings]
+    summary: >
+      Precise image retrieval. Applies the Segment Anything (SAM) segmentation
+      models and the CLIP model to generate multimodal embeddings, with
+      emphasis on retrieval from precise queries that take into account the
+      position of the segments that make up an image, processing both text and
+      images.
+    links:
+      github: https://github.com/rb58853/ML-RSI-Images
+    paper: available from the project card
+
+  - id: audioML
+    title: Audio Genre Classification
+    context: University project (4th year)
+    categories: [AI, Machine learning]
+    languages: [Python]
+    stack: [CNN, RNN, MFCC, Wavelet Transform]
+    summary: >
+      Several machine learning approaches to classify music tracks into genres
+      on the GTZAN dataset, each using different features: MFCC, raw audio
+      signals, song lyrics and Wavelet Transform. Lyrics contributed little on
+      this dataset; the other models reached 75% to 80% accuracy, in line with
+      the state of the art.
+    links:
+      github: https://github.com/science-engineering-art/mugenfier
+    paper: available from the project card
+
+  - id: ArcaneAscent
+    title: Arcane Ascent
+    context: Commercial game developed at Word Games
+    categories: [Game Dev]
+    languages: ["C#"]
+    stack: [Unity, Steamworks]
+    summary: >
+      Deck-building roguelike that combines card-based combat with roguelike
+      mechanics, with three mage specialisations (Elemental, Summoner, Blood),
+      each with its own card library. Procedurally generated encounters, random
+      events, and many enemies and bosses. Built on Unity with C# following
+      SOLID principles; Steamworks drives the achievement system. Available on
+      Steam Early Access for PC at $14.99.
+    scope: >
+      Game development only. Never show or mention this project as an example
+      of AI, LLM, NLP or machine learning work. If asked whether AI was
+      involved, say it is a game development project and is not presented as
+      AI work.
+    links:
+      github: https://github.com/rb58853/Arcane-Ascent
+
+  - id: navMeshAgentAI
+    title: Nav Mesh Agent AI
+    context: University project (3rd year)
+    categories: [AI, Game Dev]
+    languages: ["C#"]
+    stack: [Unity]
+    summary: >
+      Multi-agent navigation system for video games. The navigation space is a
+      mesh of traversable triangles; autonomous agents with only a local view
+      move through it without a central controller, which allows crowd
+      simulation. Uses heuristics and metaheuristics for path finding and
+      terrain simulation.
+    links:
+      github: https://github.com/rb58853/NavAgent-AI
+    paper: available from the project card
+
+  - id: chatbot
+    title: Devman ChatBot
+    context: Work at Devman
+    categories: [Information retrieval, AI, LLM]
+    languages: [Python]
+    stack: [OpenAI GPT API, Typesense, embeddings]
+    summary: >
+      E-commerce chatbot that improves product discovery. Combines embeddings,
+      retrieval with Typesense and NLP powered by the OpenAI GPT API so that
+      customers find products in online stores with natural-language queries.
+    links: {}
+    confidentiality: Company project, no public repository.
+
+  - id: coolCompiler
+    title: Cool Compiler
+    context: University project (4th year)
+    categories: [Compilers]
+    languages: [Python, MIPS, Cool]
+    summary: >
+      Compiler for COOL (Classroom Object-Oriented Language), an
+      object-oriented language with automatic memory management and strong
+      static typing. Covers parsing, semantic analysis and code generation
+      through a CIL intermediate language down to MIPS assembly.
+    links:
+      github: https://github.com/rb58853/cool-compiler-2023
+
+  - id: ftp
+    title: Distributed FTP
+    context: University project (4th year)
+    categories: [Distributed systems]
+    languages: [Python]
+    summary: >
+      Distributed file transfer (FTP) system in Python with leader election
+      through the Bully algorithm. Resilient to node failures: when the leader
+      drops, a new one is elected and the service continues. Handles multiple
+      simultaneous transfers with data persistence.
+    links:
+      github: https://github.com/maux96/distributed-ftp
+    paper: available from the project card
+
+  - id: portfolio
+    title: Portfolio
+    context: Personal project (this website)
+    categories: [ReactJS, Web]
+    languages: [JavaScript, HTML, CSS, Python]
+    stack: [React 18, Redux Toolkit, React Router, FastAPI, LiteLLM, Docker]
+    summary: >
+      Personal portfolio and interactive CV built as a responsive React
+      single-page application, with themed navigation across sections, a
+      GitHub contributions integration and this WebSocket-based AI assistant,
+      which answers questions about the profile, experience and projects.
+    links:
+      github: https://github.com/rb58853/portfolio
+      site: https://portofolio.rb58853.net
+
+  - id: artShopEmilio
+    title: Art Shop Emilio
+    context: Web frontend project
+    categories: [ReactJS, Web]
+    languages: [JavaScript, CSS]
+    stack: [ReactJS]
+    summary: >
+      Frontend of an online store selling artworks by Emilio Ramos, with a
+      marketplace, series, products, shopping area, bag, contact and
+      information sections.
+    links:
+      github: https://github.com/rb58853/emilito
+      site: https://rb58853.github.io/emilito/

@@ -1,0 +1,74 @@
+# Who Raúl is. The assistant answers only from these files, and everything in
+# them ends up in public answers: keep it to what the site already shows.
+
+name: Raúl Beltrán Gómez
+headline: Computer scientist focused on computer vision, applied AI and scalable software
+profession_note: Computer scientist and software developer ("informático" or "científico de la computación" in Spanish). Not a data scientist.
+location: Madrid, Spain
+citizenship: Spanish
+
+spoken_languages:
+  - Spanish (native)
+  - English (B2)
+
+summary: >
+  Computer Scientist from the University of Havana focused on applied AI,
+  backend systems and product-oriented software engineering. Currently at
+  Promart Automatizaciones building computer vision, machine learning and the
+  software platform around them for industrial robotics. Before that: MCP
+  servers, Large Language Models, REST APIs, WebSockets and chatbots, and
+  gameplay systems and tooling in Unity.
+
+how_i_work: >
+  Comfortable across the full implementation path: architecture, integrations,
+  authentication, APIs, data flows and user-facing functionality. A background
+  in algorithms, information retrieval, operating systems, distributed systems
+  and machine learning helps move from theory to production with emphasis on
+  maintainability, performance and clear technical decisions. Works with agile
+  methods (Scrum, Kanban) and cares about clean, organised code. Adapts
+  quickly and takes on work never done before, such as developing a complete
+  PLC program without ever having seen one.
+
+interests: >
+  Computer vision, scalable software systems, LLM applications, MCP ecosystems,
+  retrieval and automation systems, backend platform engineering and game
+  development. Enjoys software with clear product value, solid architecture
+  and room to evolve without unnecessary complexity.
+
+focus_areas:
+  - Computer vision and deep learning
+  - Scalable software and data platforms
+  - MCP and agent tooling
+  - LLM product integration
+  - Chatbots and NLP
+  - API and backend architecture
+  - Secure authentication flows
+  - Search and retrieval systems
+
+education:
+  degree: B.Sc. in Computer Science
+  institution: University of Havana (MATCOM), Havana, Cuba
+  completed: January 2024
+  thesis: Image retrieval system with SAM segmentation and CLIP multimodal embeddings (project id IRSImagesCLIP)
+  coursework:
+    - Design and Analysis of Algorithms
+    - Data Structures and Algorithms
+    - Artificial Intelligence and Machine Learning
+    - Information Retrieval Systems
+    - Compilers
+    - Operating Systems
+    - Databases and Software Engineering
+    - Distributed Systems
+    - Networks
+    - Language Theory
+    - Graph Theory
+    - Number Theory
+    - Algebra
+
+contact:
+  email: rb58853@gmail.com
+  github: https://github.com/rb58853
+  telegram: https://t.me/rb58853
+  whatsapp: https://wa.me/34642581503
+  phone: +34 642 58 15 03
+  cv: https://github.com/rb58853/rb58853/raw/main/assets/cv.pdf

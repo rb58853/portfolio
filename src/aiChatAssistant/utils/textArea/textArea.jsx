@@ -1,41 +1,29 @@
 import React, { useRef, useEffect } from 'react';
 import './styles/desktop.css';
 
-const AutoResizeTextarea = ({ query, setQuery, sendMessage, setHeight }) => {
+const MAX_HEIGHT = 180
+
+const AutoResizeTextarea = ({ query, setQuery, sendMessage, disabled, placeholder }) => {
     const textareaRef = useRef(null);
 
+    // Grows with its content up to MAX_HEIGHT, then scrolls
     useEffect(() => {
-        const adjustHeight = () => {
-            if (textareaRef.current) {
-                textareaRef.current.style.height = 'inherit';
-                const scrollHeight = textareaRef.current.scrollHeight;
-                const height = Math.min(scrollHeight, 250)
-                textareaRef.current.style.height = `${height}px`;
-                setHeight(`${height}px`)
-            }
-        };
-
-        // Escucha los cambios en el contenido del textarea para ajustar su altura
-        const textarea = textareaRef.current;
-        textarea.addEventListener('input', adjustHeight);
-
-        // Ajusta la altura inicialmente
-        adjustHeight();
-
-        // Limpieza al desmontar el componente
-        return () => {
-            textarea.removeEventListener('input', adjustHeight);
-        };
+        const textarea = textareaRef.current
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(textarea.scrollHeight, MAX_HEIGHT)}px`;
     }, [query]);
 
     return (
         <textarea
-            className='inputTextArea'
-            placeholder='send message'
+            className='chatTextarea'
+            placeholder={placeholder}
+            maxLength={800}
+            rows={1}
+            disabled={disabled}
             ref={textareaRef}
             value={query}
             onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !e.shiftKey) {
                     sendMessage();
                     e.preventDefault();
                 }

@@ -1,14 +1,14 @@
+import { memo } from 'react'
 import './styles/desktop.css'
-// import './styles/mobile.css'
-function UserMessage({ text }) {
+import './styles/mobile.css'
+
+function UserMessage({ text, current }) {
     return (
-        <div className="userMessage">
-            <text>
-                {text}
-            </text>
-            {/* <div className="line" /> */}
-        </div>
+        <article className={`chatRow user ${current ? 'current' : ''}`}>
+            <span className='chatRowLabel'>You</span>
+            <p className='chatQuestion'>{text}</p>
+        </article>
     )
 }
 
-export default UserMessage
+export default memo(UserMessage)

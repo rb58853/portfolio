@@ -1,43 +1,56 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// status: 'idle' | 'connecting' | 'ready' | 'offline'
+// messages: { role: 'user', text }
+//         | { role: 'assistant', streaming, response, projects, error }
+// An assistant message is added empty with streaming: true when a question is
+// sent, grows with each delta and is closed by the final frame.
+// pendingQuestion: asked from a project, a skill or a role; the chat sends it
+// as soon as it is open and free.
 const initialState = {
-    ws: null,
+    status: 'idle',
     messages: [],
-    connected: false,
-    debug: false,
-    store: 'padel_store_gpt',
-    indexStore: 0,
+    pendingQuestion: null,
     floatButton: 'active',
 };
 
+function streamingMessage(state) {
+    const last = state.messages[state.messages.length - 1];
+    return last?.streaming ? last : null;
+}
 
 export const wsSlice = createSlice({
     name: "ws",
     initialState,
     reducers: {
-        setWs: (state, action) => {
-            state.ws = action.payload;
-        },
-        setWsConnected: (state, action) => {
-            state.connected = action.payload;
-        },
-        setWsMessages: (state, action) => {
-            state.messages = action.payload;
+        setWsStatus: (state, action) => {
+            state.status = action.payload;
         },
         addWsMessage: (state, action) => {
-            state.messages = state.messages.concat(action.payload);
+            state.messages.push(action.payload);
         },
-        popWsMessage: (state) => {
-            state.messages = state.messages.slice(0, state.messages.length - 1);
+        appendWsDelta: (state, action) => {
+            const message = streamingMessage(state);
+            if (message) message.response += action.payload;
         },
-        setDebug: (state, action) => {
-            state.debug = action.payload;
+        // The server discarded what it had streamed and starts the answer again.
+        resetWsStream: (state) => {
+            const message = streamingMessage(state);
+            if (message) message.response = '';
         },
-        setStore: (state, action) => {
-            state.store = action.payload;
+        finishWsMessage: (state, action) => {
+            const message = streamingMessage(state);
+            if (!message) return;
+            message.streaming = false;
+            message.response = action.payload.response;
+            message.projects = action.payload.projects;
+            message.error = action.payload.type === 'error';
         },
-        setIndexStore: (state, action) => {
-            state.indexStore = action.payload;
+        queueWsQuestion: (state, action) => {
+            state.pendingQuestion = action.payload;
+        },
+        clearWsQuestion: (state) => {
+            state.pendingQuestion = null;
         },
         setFloatButton: (state, action) => {
             state.floatButton = action.payload;
@@ -45,5 +58,5 @@ export const wsSlice = createSlice({
     }
 });
 
-export const { setWs, setWsConnected, setWsMessages, addWsMessage, popWsMessage, setDebug, setStore, setIndexStore, setFloatButton } = wsSlice.actions;
+export const { setWsStatus, addWsMessage, appendWsDelta, resetWsStream, finishWsMessage, queueWsQuestion, clearWsQuestion, setFloatButton } = wsSlice.actions;
 export default wsSlice.reducer;

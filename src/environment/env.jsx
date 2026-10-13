@@ -1,4 +1,11 @@
-export const cvAssistantDomain = 'ws://192.168.1.251:8000/api/v1/open_chat/'
+// Chat WebSocket of the assistant backend. In production nginx proxies /api/ to
+// the backend container on the same origin; in development it is the local
+// uvicorn started from backend/.
+const chatPath = '/api/v1/chat'
+const sameOriginChatUrl = `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}${process.env.PUBLIC_URL}${chatPath}`
+
+export const chatWsUrl = process.env.REACT_APP_CHAT_WS_URL
+    || (process.env.NODE_ENV === 'development' ? `ws://localhost:8787${chatPath}` : sameOriginChatUrl)
 
 const env = {
     boxProjectBigMinWidth: 300,

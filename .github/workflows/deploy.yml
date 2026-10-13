@@ -34,7 +34,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
-          source: Dockerfile,docker-compose.yml,nginx.conf,package.json,package-lock.json,public,src,.dockerignore
+          source: Dockerfile,docker-compose.yml,nginx.conf,package.json,package-lock.json,public,src,backend,.dockerignore
           target: ${{ env.VPS_WORKING_DIR }}
 
       - name: Deploy on VPS

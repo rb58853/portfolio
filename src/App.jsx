@@ -13,7 +13,7 @@ function App({ content }) {
   const location = useLocation();
 
   return (
-    <div className={`App ${location.pathname === '/' ? 'App--no-bottom-space' : ''}`}>
+    <div className={`App ${['/', '/chat'].includes(location.pathname) ? 'App--no-bottom-space' : ''}`}>
       <div key={location.key} className="App-transition-vignette" aria-hidden="true" />
       <Provider store={store}>
         <Bar />

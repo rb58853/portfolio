@@ -29,6 +29,22 @@
       "env": {
         "BROWSER": "none"
       }
+    },
+    {
+      // Chat assistant API on :8787. Needs backend/.venv and backend/.env (see Quickstart.MD).
+      "name": "Portfolio: backend del asistente",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": ".venv/bin/uvicorn app.main:app --port 8787 --reload --reload-dir app --reload-dir knowledge --reload-include '*.yaml'",
+      "cwd": "${workspaceFolder}/backend"
+    }
+  ],
+  "compounds": [
+    {
+      // One click: assistant backend, dev server and Chrome.
+      "name": "Portfolio: todo (app + asistente)",
+      "configurations": ["Portfolio: backend del asistente", "Portfolio: app + Chrome"],
+      "stopAll": true
     }
   ]
 }

@@ -13,6 +13,7 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { createPortal } from 'react-dom'
+import { AskAssistant, assistantQuestions } from '../../aiChatAssistant/askAssistant'
 
 const MAIN_CATEGORIES = ['Vision', 'AI', 'Game Dev']
 const OTHER_CATEGORY = 'Others'
@@ -317,10 +318,12 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
                             </Markdown>
                         </div>
 
-                        {links.length > 0 && <div className='endBar'>
+                        <div className='endBar'>
                             {links.map((link) => <a key={link.label} href={link.href}
                                 className={`viewOnGithub ${windowProject ? 'active' : ''}`}>{link.label}</a>)}
-                        </div>}
+                            <AskAssistant question={assistantQuestions.project(project)}
+                                onAsk={() => { setWindowProject(false) }} />
+                        </div>
                     </div>
                 </div>
             </div>

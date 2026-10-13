@@ -1,0 +1,35 @@
+@media(max-width:900px) {
+    .chatComposerRow {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 12px 0 10px;
+    }
+
+    .chatComposerRow>.chatRowLabel {
+        display: none;
+    }
+}
+
+@media(max-width:640px) {
+    .chatColumn {
+        width: 100%;
+        padding-inline: 16px;
+        box-sizing: border-box;
+    }
+
+    .chatBarContent {
+        width: 100%;
+        gap: 20px;
+        padding: 0 58px 0 16px;
+        box-sizing: border-box;
+    }
+
+    .chatIntro {
+        gap: 16px;
+        padding: 32px 0 20px;
+    }
+
+    .chatFootnote {
+        text-align: center;
+    }
+}

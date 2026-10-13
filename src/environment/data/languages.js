@@ -22,6 +22,7 @@ const languages =
 
     python: {
         label: 'python',
+        name: 'Python',
         info: 'Python is a high-level, interpreted programming language, known for its clear and readable syntax, similar to English. It was created by Guido van Rossum in 1991 and has become one of the most popular programming languages due to its versatility, ease of learning, and use in various areas such as web development, mobile applications, data science, machine learning, and more.',
         skill: 95,
         icon: "logos:python"
@@ -66,6 +67,7 @@ const languages =
     },
     go: {
         label: 'GO',
+        name: 'Go',
         info: 'Go, also known as Golang, is a modern systems programming language developed by Google in 2009. It was designed to be fast, secure, and easy to learn, aiming to boost developer productivity. Go features rapid compilation and execution, native concurrency support through goroutines and channels, and automatic memory management. With its simple syntax and minimalistic approach, Go has gained popularity for building scalable and efficient applications, particularly in web services, distributed systems, and infrastructure-as-code projects. ',
         skill: 15,
         icon: 'logos:go'

@@ -1,0 +1,21 @@
+/* One row to swipe through instead of a tall stack of cards */
+@media(max-width:640px) {
+    .chatCards {
+        display: flex;
+        gap: 14px;
+        margin-inline: -16px;
+        padding: 6px 16px 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .chatCards::-webkit-scrollbar {
+        display: none;
+    }
+
+    .chatCard {
+        flex: 0 0 72%;
+        scroll-snap-align: center;
+    }
+}
