@@ -12,35 +12,37 @@ function About() {
     return (
         <section onFocus={setSectionFunction(dispatch, 'about')} className='aboutBackground'>
             <div className='about'>
-                <div className='profileAbout'>
-                    <div style={{ width: '100%', display: 'flex' }}>
-                        <div className='personal'>
-                            <Text value={"## Personal information"} />
-                            <Text value={personalInformation} />
-                        </div>
-                    </div>
+                <header className='abHeader'>
+                    <span className='abEyebrow'>About</span>
+                </header>
 
-                    <div className='line' />
-                    <Text value={aboutMe} />
-                    <div className='line' />
-                    <div className='columsOrRows'>
-                        <Text value={studyFields} />
-                        <Text value={know} />
-                    </div>
-                    <div className='line' />
-                    <Text value={languages} />
-
-                </div>
-
+                <Section value={aboutMe} className='abLead' />
+                <Section value={personalInformation} title='Personal information' className='abDetails' />
+                <Section value={studyFields} className='abList' />
+                <Section value={know} className='abList' />
+                <Section value={languages} className='abList' />
             </div>
         </section>
     )
 }
 
-function Text({ value }) {
-    return <Markdown remarkPlugins={[remarkGfm]} className='aboutText'>
-        {value}
-    </Markdown>
+// The data strings open with their own "## Title": it becomes the label of the section.
+function splitHeading(value) {
+    const match = value.match(/^\s*##\s+(.+)\n([\s\S]*)$/)
+    return match ? { title: match[1].trim(), body: match[2] } : { title: '', body: value }
+}
+
+function Section({ value, title, className = '' }) {
+    const parsed = splitHeading(value)
+
+    return (
+        <section className={`abSection ${className}`}>
+            <h2 className='abLabel'>{title || parsed.title}</h2>
+            <Markdown remarkPlugins={[remarkGfm]} className='abBody'>
+                {parsed.body}
+            </Markdown>
+        </section>
+    )
 }
 
 

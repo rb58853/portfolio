@@ -1,55 +1,44 @@
-@media(max-width:1060px) {
-    .personal>* {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media(max-width:800px) {
-    .about {
-        display: flex;
-        flex-direction: column;
-        place-content: center;
-        place-items: center;
-        gap: 20px;
-        width: 96%;
-    }
-
-    .profileAbout {
-        width: 100%;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .profileImage {
-        width: 95%;
-        max-height: 100%;
-    }
-
-    .aboutText {
-        width: 100%;
-    }
-
-    .columsOrRows {
-        display: flex;
-        flex-direction: column;
-        place-content: center;
-        place-items: center;
-        /* width: 90%; */
-
-    }
-
-    .personal>*>* {
-        width: auto;
-    }
-
-    .personal>h1 {
-        margin-left: 0px;
-    }
-}
-
-@media(max-width:630px) {
-    .personal>* {
+@media(max-width:900px) {
+    .abSection {
         grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 40px 0;
+    }
+
+    .abSection:hover::before,
+    .abSection.abLead::before {
+        width: 72px;
+    }
+
+    .abLabel {
+        padding-top: 0;
+    }
+
+    .abDetails .abBody {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width:640px) {
+    .about {
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .abHeader {
+        padding: 32px 0 20px;
+    }
+
+    .abLead .abBody>p:first-of-type {
+        font-size: 1.12rem;
+    }
+
+    .abList .abBody ul {
+        grid-template-columns: 1fr;
+    }
+
+    .abList .abBody li:nth-child(2) {
+        border-top: none;
     }
 }
 
@@ -57,6 +46,11 @@
     .aboutBackground {
         margin-top: 14px;
         margin-bottom: 80px;
+        padding-bottom: 32px;
     }
 
+    .abDetails .abBody {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }

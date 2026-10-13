@@ -1,12 +1,56 @@
-export const experienceIntro = 'Experience building applied AI products, MCP-enabled workflows, backend services, and gameplay systems across enterprise and game development environments.'
+export const experienceIntro = 'From computer vision that guides industrial robots on the plant floor to LLM assistants connected to business systems. I build AI, backend and tooling that has to work reliably outside the lab.'
 
 export const experienceStats = [
-    { label: 'Roles', value: '3+', icon: 'mdi:briefcase-outline' },
-    { label: 'Core Focus', value: 'AI + Backend', icon: 'mdi:brain' },
-    { label: 'Delivery Style', value: 'Remote', icon: 'mdi:home-city-outline' },
+    { label: 'Roles', value: '4' },
+    { label: 'Core focus', value: 'AI + Vision' },
+    { label: 'Based in', value: 'Spain' },
 ]
 
 export const workExperience = [
+    {
+        company: 'Promart Automatizaciones',
+        role: 'Computer Vision, Machine Learning and Software Developer',
+        location: 'Spain · On-site and plant commissioning',
+        period: 'Jun 2026 - Present',
+        type: 'Industrial AI',
+        current: true,
+        summary: 'Build the computer vision, machine learning and software platform behind a robotic cell for the dairy industry, from model training and camera calibration to APIs, desktop tooling, simulators and on-site validation.',
+        achievements: [
+            'Built the detection models for a robotic teat-sealing cell on rotary milking parlours: RF-DETR teat detection finding 99.4% of teats on the test set, and a proprietary pose model for leg posture that gates robot entry.',
+            'Cut inference latency to 7.7 ms average with 3x lower jitter by moving models to ONNX Runtime on GPU, and packaged them with embedded contracts and golden tests for the production vision program.',
+            'Created the data and tooling platform around the models: an S3 gateway with presigned transfers, Tauri and Rust desktop apps, an Android field-capture app and operator dashboards.',
+            'Built the monitoring and control platform for the robot of the cell: a C# API of about 100 endpoints with a typed client generated from its OpenAPI contract, a React and Tauri desktop app with separate read-only and controller zones and continuous servo-effort telemetry with remote monitoring.',
+            'Developed simulators that run the cell end to end without hardware: a control-logic simulator validated against the real controller across 637 variables, and a robot simulator that transpiles the production robot programs to Python.',
+        ],
+        projects: [
+            {
+                name: 'Teat detection platform',
+                description: 'End-to-end pipeline for udder and teat detection: capture, labeling, augmentation, multi-architecture training, Optuna search, model registry and statistical reports.',
+                stack: ['RF-DETR', 'PyTorch', 'FastAPI', 'Tauri'],
+            },
+            {
+                name: 'Leg posture model',
+                description: 'Keypoint and box model that classifies hind-leg posture with anatomical checks and temporal smoothing, erring on the side of blocking the robot.',
+                stack: ['PyTorch', 'ONNX Runtime', 'CUDA'],
+            },
+            {
+                name: 'Camera-to-robot calibration',
+                description: 'Pixel-to-millimetre calibration with depth-aware homography, automated calibration runs and reusable profiles.',
+                stack: ['OpenCV', 'NumPy', 'PyQt6'],
+            },
+            {
+                name: 'Robot telemetry and control',
+                description: 'API and desktop app over the robot controller: status, jobs, motion and files behind three access levels, servo-effort telemetry by tool position, cloud sync and a remote client app.',
+                stack: ['C#', '.NET', 'React', 'Tauri', 'Rust'],
+            },
+            {
+                name: 'Cell simulators',
+                description: 'Simulators that stand in for the physical hardware: a control-logic editor with a cyclic runtime, and a transpiler that runs the production robot programs in Python with a step debugger.',
+                stack: ['Python', 'PySide6', 'PyQt6'],
+            },
+        ],
+        stack: ['Python', 'PyTorch', 'RF-DETR', 'ONNX Runtime', 'OpenCV', 'FastAPI', 'C#', '.NET', 'React', 'Tauri', 'Rust', 'S3'],
+    },
     {
         company: 'Cogitia',
         role: 'MCP Protocol, Large Language Models, Chatbots and REST API Developer',
@@ -80,11 +124,12 @@ export const education = {
 }
 
 export const focusAreas = [
+    'Computer vision and deep learning',
+    'Scalable software and data platforms',
     'MCP and agent tooling',
     'LLM product integration',
     'Chatbots and NLP',
     'API and backend architecture',
     'Secure authentication flows',
     'Search and retrieval systems',
-    'Unity gameplay programming',
 ]

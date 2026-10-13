@@ -1,305 +1,384 @@
 .experienceBackground {
+    --xp-muted: color-mix(in srgb, var(--text-color) 76%, transparent);
+    --xp-faint: color-mix(in srgb, var(--text-color) 56%, transparent);
+    --xp-hairline: color-mix(in srgb, var(--text-color) 12%, transparent);
+    --xp-accent: var(--default-highlight-color);
+
     max-width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     place-items: center;
     margin-top: 70px;
-    width: 100%;
-    transition-property: background-color;
-    transition-duration: 500ms;
-    transition-timing-function: ease-in-out;
+    padding-bottom: 96px;
+    color: var(--text-color);
+    transition: color 350ms ease;
 }
 
-.experience {
+.xp {
+    width: min(90%, 1040px);
     display: flex;
     flex-direction: column;
-    gap: 26px;
-    width: min(94%, 1220px);
 }
 
-.experienceHero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
-    gap: 24px;
-    padding: clamp(22px, 3vw, 34px);
-    border-radius: 28px;
-    border: 1px solid var(--surface-border);
-    background:
-        radial-gradient(circle at top right, color-mix(in srgb, var(--default-highlight-color) 20%, transparent), transparent 34%),
-        linear-gradient(150deg, var(--surface-2), var(--surface-1));
-    box-shadow: var(--soft-shadow);
-    backdrop-filter: blur(16px);
-}
+/* ---------- Header ---------- */
 
-.experienceHeroText {
+.xpHeader {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 22px;
+    padding: 56px 0 52px;
 }
 
-.experienceBadge {
-    width: fit-content;
-    padding: 7px 12px;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 32%, var(--surface-border));
-    background-color: color-mix(in srgb, var(--default-highlight-color) 12%, transparent);
-    color: var(--text-color);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-
-.experienceTitle {
-    margin: 0;
-    color: var(--text-color);
-    font-size: clamp(2rem, 3.6vw, 3.5rem);
-    line-height: 1.04;
-    text-wrap: balance;
-}
-
-.experienceIntro,
-.experienceSummary {
-    margin: 0;
-    color: var(--text-color);
-    opacity: 0.9;
-    line-height: 1.7;
-}
-
-.experienceMetricGrid {
-    display: grid;
-    gap: 14px;
-    align-self: stretch;
-}
-
-.experienceMetric {
+.xpEyebrow,
+.xpLabel {
     display: flex;
-    gap: 14px;
     align-items: center;
-    padding: 18px;
-    border-radius: 20px;
-    border: 1px solid var(--surface-border);
-    background-color: color-mix(in srgb, var(--surface-1) 82%, transparent);
+    gap: 14px;
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--xp-muted);
 }
 
-.experienceMetricIcon {
-    font-size: 1.6rem;
-    color: var(--default-highlight-color);
-    flex-shrink: 0;
-}
-
-.experienceMetric strong,
-.experienceMetric span {
-    display: block;
-    color: var(--text-color);
-}
-
-.experienceMetric strong {
-    font-size: 1.1rem;
-}
-
-.experienceMetric span {
-    opacity: 0.72;
-}
-
-.experienceLayout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
-    gap: 26px;
-    align-items: start;
-}
-
-.experienceTimeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-left: 28px;
-}
-
-.experienceTimeline::before {
+.xpEyebrow::before {
     content: '';
-    position: absolute;
-    top: 8px;
-    bottom: 8px;
-    left: 8px;
-    width: 2px;
-    background: linear-gradient(180deg, var(--default-highlight-color), color-mix(in srgb, var(--default-highlight-color) 8%, transparent));
-    opacity: 0.5;
+    width: 28px;
+    height: 1px;
+    background-color: var(--xp-accent);
 }
 
-.experienceCard {
-    position: relative;
+.xpTitle {
+    max-width: 24ch;
+    margin: 0;
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+}
+
+.xpIntro {
+    max-width: 60ch;
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: var(--xp-muted);
+}
+
+.xpStats {
     display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 24px;
-    border-radius: 24px;
-    border: 1px solid var(--surface-border);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 92%, transparent), var(--surface-1));
-    box-shadow: var(--soft-shadow);
+    flex-wrap: wrap;
+    margin: 18px 0 0;
+    padding: 0;
 }
 
-.experienceCard::before {
-    content: '';
-    position: absolute;
-    top: 30px;
-    left: -26px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--default-highlight-color);
-    border: 4px solid color-mix(in srgb, var(--surface-1) 92%, white);
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--default-highlight-color) 18%, transparent);
-}
-
-.experienceCardHeader {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 16px;
-    align-items: start;
-}
-
-.experienceCompanyMark {
-    width: 52px;
-    height: 52px;
-    display: grid;
-    place-items: center;
-    border-radius: 16px;
-    background: linear-gradient(145deg, color-mix(in srgb, var(--default-highlight-color) 16%, transparent), color-mix(in srgb, var(--secundary-highlight-color) 12%, transparent));
-    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 26%, var(--surface-border));
-    color: var(--default-highlight-color);
-    font-size: 1.5rem;
-}
-
-.experienceHeading {
+.xpStat {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding: 0 36px;
+    border-left: 1px solid var(--xp-hairline);
 }
 
-.experienceRole {
-    color: var(--text-color);
-    font-size: 1.08rem;
-    font-weight: 700;
-    line-height: 1.4;
+.xpStat:first-child {
+    padding-left: 0;
+    border-left: none;
 }
 
-.experienceCompany {
-    margin: 0;
-    color: var(--text-color);
-    opacity: 0.82;
-    font-size: 0.98rem;
-    font-weight: 600;
-}
-
-.experienceType {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 32px;
-    padding: 0 12px;
-    border-radius: 999px;
-    background-color: color-mix(in srgb, var(--default-highlight-color) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 22%, var(--surface-border));
-    color: var(--text-color);
-    font-size: 0.82rem;
-    font-weight: 700;
+.xpStat dt {
     white-space: nowrap;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    line-height: 1.1;
 }
 
-.experienceMeta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 18px;
-}
-
-.experienceMeta span {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-color);
-    opacity: 0.76;
-    font-size: 0.92rem;
-}
-
-.experienceList {
-    display: grid;
-    gap: 10px;
+.xpStat dd {
     margin: 0;
-    padding-left: 20px;
-    color: var(--text-color);
-    line-height: 1.65;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--xp-faint);
 }
 
-.experienceStack,
-.experienceTags {
+/* ---------- Timeline ---------- */
+
+.xpList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--xp-hairline);
+}
+
+.xpItem {
+    position: relative;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 48px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--xp-hairline);
+}
+
+.xpItem::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--xp-accent);
+    transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.xpItem:hover::before,
+.xpItem.current::before {
+    width: 220px;
+}
+
+.xpAside {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
 }
 
-.experienceChip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 34px;
-    padding: 0 12px;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--default-highlight-color) 24%, var(--surface-border));
-    background-color: color-mix(in srgb, var(--default-highlight-color) 11%, transparent);
-    color: var(--text-color);
-    font-size: 0.86rem;
+.xpPeriod {
+    font-size: 0.9rem;
     font-weight: 600;
+    font-variant-numeric: tabular-nums;
 }
 
-.experienceChip.secondary {
-    background-color: color-mix(in srgb, var(--surface-2) 80%, transparent);
-    border-color: var(--surface-border);
-    font-weight: 500;
+.xpLocation,
+.xpType {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--xp-faint);
 }
 
-.experienceSidebar {
+.xpType {
+    margin-top: 6px;
+    color: var(--xp-muted);
+}
+
+.xpBody {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 0;
 }
 
-.experiencePanel {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 24px;
-    border-radius: 24px;
-    border: 1px solid var(--surface-border);
-    background: linear-gradient(180deg, var(--surface-2), var(--surface-1));
-    box-shadow: var(--soft-shadow);
-}
-
-.experiencePanelHeader {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    color: var(--text-color);
-}
-
-.experiencePanelHeader h3 {
-    margin: 0;
-    font-size: 1.05rem;
-}
-
-.experiencePanelHeader svg {
-    font-size: 1.2rem;
-    color: var(--default-highlight-color);
-}
-
-.experienceEducation {
+.xpHead {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    color: var(--text-color);
-    line-height: 1.55;
 }
 
-.experienceEducation span {
-    opacity: 0.8;
+.xpCompany {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    margin: 0;
+    font-size: clamp(1.7rem, 2.6vw, 2.1rem);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.xpNow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--xp-accent);
+    transform: translateY(-3px);
+}
+
+.xpNow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--xp-accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--xp-accent) 18%, transparent);
+}
+
+.xpRole {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--xp-muted);
+}
+
+.xpSummary {
+    max-width: 68ch;
+    margin: 0;
+    font-size: 1.06rem;
+    line-height: 1.7;
+}
+
+.xpAchievements {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 68ch;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.xpAchievements li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--text-color) 84%, transparent);
+}
+
+.xpAchievements li::before {
+    content: '';
+    position: absolute;
+    top: 0.85em;
+    left: 0;
+    width: 10px;
+    height: 1px;
+    background-color: var(--xp-accent);
+}
+
+/* ---------- Selected work ---------- */
+
+.xpProjects {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-top: 12px;
+    padding-top: 28px;
+    border-top: 1px solid var(--xp-hairline);
+}
+
+.xpProjectGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 48px;
+}
+
+.xpProject {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.xpProject h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.xpProject p {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.65;
+    color: var(--xp-muted);
+}
+
+.xpProjectStack {
+    margin-top: auto;
+    padding-top: 2px;
+    font-size: 0.8rem;
+    color: var(--xp-faint);
+}
+
+/* ---------- Stack ---------- */
+
+.xpStack {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    margin: 12px 0 0;
+    padding: 20px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--xp-hairline);
+}
+
+.xpStack li {
+    font-size: 0.84rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--xp-muted);
+}
+
+.xpStack li:not(:last-child)::after {
+    content: '\00b7';
+    margin: 0 10px;
+    color: var(--xp-accent);
+}
+
+/* ---------- Footer ---------- */
+
+.xpFooter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 64px;
+    padding-top: 56px;
+}
+
+.xpFooterBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.xpFooterBlock .xpLabel {
+    margin-bottom: 10px;
+}
+
+.xpFooterBlock p {
+    margin: 0;
+}
+
+.xpDegree {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    line-height: 1.3;
+}
+
+.xpMuted {
+    font-size: 0.94rem;
+    color: var(--xp-muted);
+}
+
+.xpInline {
+    margin-top: 12px !important;
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: var(--xp-faint);
+}
+
+.xpFocus {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--xp-hairline);
+}
+
+.xpFocus li {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--xp-hairline);
+    font-size: 0.96rem;
+    color: var(--xp-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .xpItem::before {
+        transition: none;
+    }
 }

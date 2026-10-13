@@ -42,6 +42,20 @@ const skills =
         svg: process.env.PUBLIC_URL + "/images/icons/skills/openAI.png",
     },
 
+    computerVision: {
+        label: 'Vision',
+        info: 'Computer vision for production systems: object and keypoint detection, point-cloud processing, OCR, camera calibration and pixel-to-robot coordinate mapping. Applied to industrial robot guidance, with models trained, benchmarked and deployed on GPU through ONNX Runtime.',
+        skill: 88,
+        icon: 'mdi:eye-outline'
+    },
+
+    pytorch: {
+        label: 'PyTorch',
+        info: 'PyTorch is an open-source deep learning framework used to build, train and export neural networks. Used here for detection and pose models, hyperparameter search with Optuna and export to ONNX for low-latency inference.',
+        skill: 82,
+        icon: 'logos:pytorch-icon'
+    },
+
     net: {
         label: '.Net',
         info: '.NET is a software development framework created by Microsoft that provides a runtime environment and a set of libraries and tools for building and running applications on Windows operating systems. This framework includes a variety of programming languages, such as C#, F#, and Visual Basic, and supports a range of application types, including desktop, web, mobile, and gaming applications',

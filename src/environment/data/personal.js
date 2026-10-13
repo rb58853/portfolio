@@ -38,39 +38,39 @@
 
 export const personalInformation = `
 
-**Name:** Raúl Beltrán Gómez  
+**Name** Raúl Beltrán Gómez  
 
-**University:** University of Havana  
+**University** University of Havana  
 
-**Bachelor's Degree:** Computer Science  
+**Bachelor's Degree** Computer Science  
 
-**Education:** B.Sc. in Computer Science  
+**Education** B.Sc. in Computer Science  
 
-**GitHub:** [rb58853](https://github.com/rb58853)  
+**GitHub** [rb58853](https://github.com/rb58853)  
 
-**Gmail:** rb58853@gmail.com  
+**Gmail** rb58853@gmail.com  
 
-**Telegram:** [@rb58853](https://t.me/rb58853)  
+**Telegram** [@rb58853](https://t.me/rb58853)  
 
-**WhatsApp:** [Write me directly](https://wa.me/34642581503)  
+**WhatsApp** [Write me directly](https://wa.me/34642581503)  
 
-**Citizenship:** Spanish 🇪🇸 
+**Citizenship** Spanish 🇪🇸 
 
-**Location:** Madrid, Spain  
+**Location** Madrid, Spain  
 
-**Phone:** +34 642 58 15 03  
+**Phone** +34 642 58 15 03  
 
 `
 
 export const aboutMe = `## About Me
 
-I am a Computer Scientist from the University of Havana focused on applied AI, backend systems, and product-oriented software engineering. My recent experience combines MCP servers, Large Language Models, REST APIs, WebSockets, and chatbot development, together with previous work building gameplay systems and tooling in Unity.
+I am a Computer Scientist from the University of Havana focused on applied AI, backend systems, and product-oriented software engineering. I currently work at Promart Automatizaciones building computer vision, machine learning and the software platform around them for industrial robotics. Before that I worked on MCP servers, Large Language Models, REST APIs, WebSockets and chatbots, and on gameplay systems and tooling in Unity.
 
-I work comfortably across the full implementation path: architecture, integrations, authentication, APIs, data flows, and user-facing functionality. My background in algorithms, information retrieval, operating systems, distributed systems, and machine learning helps me move from theory to production with a strong emphasis on maintainability, performance, and clear technical decisions.
+I work comfortably across the full implementation path: architecture, integrations, authentication, APIs, data flows, and user-facing functionality. My background in algorithms, information retrieval, operating systems, distributed systems, and machine learning helps me move from theory to production with a strong emphasis on maintainability, performance, and clear technical decisions. I adapt quickly and take on work I have never done before, such as developing a complete PLC program without ever having seen one.
 
 ### Professional Interests
 
-I am especially interested in LLM applications, MCP ecosystems, retrieval and automation systems, backend platform engineering, and game development. I enjoy building software that has clear product value, solid architecture, and room to evolve without accumulating unnecessary complexity.
+I am especially interested in computer vision, scalable software systems, LLM applications, MCP ecosystems, retrieval and automation systems, backend platform engineering, and game development. I enjoy building software that has clear product value, solid architecture, and room to evolve without accumulating unnecessary complexity.
 
 `
 
@@ -93,6 +93,8 @@ export const studyFields = `## Study Fields
 
 export const know = `## Knowledge Areas
 
+- Computer vision and deep learning (RF-DETR, PyTorch, ONNX Runtime)
+- Scalable software systems (typed APIs, desktop apps, data pipelines)
 - MCP servers and tool integrations
 - Large Language Models and prompt workflows
 - NLP and chatbot systems
@@ -105,6 +107,6 @@ export const know = `## Knowledge Areas
 
 export const languages = `## Languages
 
-- English (B1)
+- English (B2)
 - Spanish (Native)
 `

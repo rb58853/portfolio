@@ -12,8 +12,16 @@ import setSectionFunction from '../../redux/sections/functions'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import { usePreferences } from '../../preferences/preferencesContext'
 import { createPortal } from 'react-dom'
+
+const MAIN_CATEGORIES = ['Vision', 'AI', 'Game Dev']
+const OTHER_CATEGORY = 'Others'
+
+function inCategory(project, category) {
+    if (category === 'All') return true
+    if (category === OTHER_CATEGORY) return !project.skills.some((skill) => MAIN_CATEGORIES.includes(skill))
+    return project.skills.includes(category)
+}
 
 function isVideoAsset(path = '') {
     return path.toLowerCase().endsWith('.webm')
@@ -44,10 +52,17 @@ function Projects() {
     const [project, setProject] = useState(Object.values(projects)[0])
     const [windowProject, setWindowProject] = useState(false)
     const dispatch = useDispatch()
+    const count = Object.values(projects).filter((item) => inCategory(item, skill)).length
     return (
         <section onFocus={setSectionFunction(dispatch, 'projects')} className="projects">
             <div className="projectsContent">
-                <SkillsBar setSkill={setSkill} skillState={skill} />
+                <header className='pjHeader'>
+                    <span className='pjEyebrow'>Projects</span>
+                </header>
+                <div className='pjToolbar'>
+                    <SkillsBar setSkill={setSkill} skillState={skill} />
+                    <span className='pjCount'>{count} {count === 1 ? 'project' : 'projects'}</span>
+                </div>
                 <Container setProject={setProject} setWindowProject={setWindowProject} skill={skill} />
 
                 {
@@ -60,19 +75,14 @@ function Projects() {
 
 function SkillsBar({ setSkill, skillState }) {
     const buttons = []
-    const skillsList = ['All']
-    Object.values(projects).forEach(project => {
-        project.skills.forEach(skill => {
-            if (!skillsList.includes(skill))
-                skillsList.push(skill)
-        })
-    })
+    const skillsList = ['All', ...MAIN_CATEGORIES, OTHER_CATEGORY]
+        .filter((category) => Object.values(projects).some((project) => inCategory(project, category)))
     skillsList.forEach(skill => {
         buttons.push(
-            <button className={`buttonSkill ${skill === skillState ? 'active' : ''}`}
+            <button key={skill} className={`buttonSkill ${skill === skillState ? 'active' : ''}`}
                 onClick={() => setSkill(skill)}
             >
-                {skill === 'All' ? 'All' : skill}
+                {skill}
             </button>)
     })
 
@@ -108,7 +118,7 @@ function Container({ setProject, setWindowProject, skill }) {
         let length = 0;
 
         Object.values(projects).forEach((project) => {
-            if (skill === 'All' || project.skills.includes(skill)) {
+            if (inCategory(project, skill)) {
                 length += 1
             }
         })
@@ -116,7 +126,7 @@ function Container({ setProject, setWindowProject, skill }) {
 
         Object.values(projects).forEach((project) => {
             fullIndex += 1
-            if (skill === 'All' || project.skills.includes(skill)) {
+            if (inCategory(project, skill)) {
                 index += 1
                 let rest = columns - (length % columns);
 
@@ -125,6 +135,7 @@ function Container({ setProject, setWindowProject, skill }) {
                     translateX += rest * 50;
 
                 temp.push(<ProjectBox
+                    key={project.title}
                     project={project}
                     setProject={setProject}
                     setWindowProject={setWindowProject}
@@ -136,6 +147,7 @@ function Container({ setProject, setWindowProject, skill }) {
             else {
 
                 temp.push(<ProjectBox
+                    key={project.title}
                     project={project}
                     setProject={setProject}
                     setWindowProject={setWindowProject}
@@ -159,14 +171,17 @@ function Container({ setProject, setWindowProject, skill }) {
 
 export function ProjectBox({ project, setProject, setWindowProject, active, translate, columns }) {
     const [stateTranslate, setStateTranslate] = useState(translate)
-    const [activeInfo, setActiveInfo] = useState('')
-    const [activeButton, setActiveButton] = useState('')
     const widthFromColumns = 100 / columns;
     const previewAsset = project.image || project.images[0]
     useLayoutEffect(() => {
         if (translate)
             setStateTranslate(translate)
     }, [translate])
+
+    const open = () => {
+        setProject(project)
+        setWindowProject(true)
+    }
 
     return (
         <div className={`projectBoxAbsolute ${active ? 'active' : ''}`}
@@ -178,36 +193,24 @@ export function ProjectBox({ project, setProject, setWindowProject, active, tran
             }>
 
             <div className={`projectBox ${active ? 'active' : ''}`}
-                onMouseOver={() => { setActiveInfo('active') }}
-                onMouseOut={() => { setActiveInfo('') }}
+                role='button'
+                tabIndex={active ? 0 : -1}
+                aria-label={project.title}
+                onClick={open}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        open()
+                    }
+                }}
             >
-                <div className={`projectBoxInfoBackground ${activeInfo}`} />
+                {previewAsset
+                    ? <ProjectAsset path={previewAsset} className={`projectBoxImage`} preview={true} />
+                    : <div className='noImageProject' />}
 
-                {previewAsset &&
-                    <ProjectAsset path={previewAsset} className={`projectBoxImage`} preview={true} />}
-
-                {!project.images[0] && !project.image &&
-                    <div className='noImageProject'>
-                        <h1> {project.title}</h1>
-                    </div>}
-
-                <div className={`projectBoxInfo top ${activeInfo}`}>
-                    <h1>{project.title}</h1>
-                    <text>{project.languages.join(' / ')}</text>
-                </div>
-
-                <div className={`projectBoxInfo bottom ${activeInfo}`}>
-                    <button className={`viewProjectButton ${activeButton}`}
-                        onMouseOver={() => setActiveButton('active')}
-                        onMouseOut={() => setActiveButton('')}
-                        onClick={() => {
-                            setProject(project)
-                            setWindowProject(true)
-                        }}
-                    >
-                        LEARN MORE
-                    </button>
-
+                <div className={`projectBoxCaption ${previewAsset ? '' : 'static'}`}>
+                    <h2>{project.title}</h2>
+                    <span>{project.languages.join(' / ')}</span>
                 </div>
             </div>
         </div>
@@ -215,7 +218,6 @@ export function ProjectBox({ project, setProject, setWindowProject, active, tran
 }
 
 export function ProjectWindow({ project, setWindowProject, windowProject }) {
-    const { theme } = usePreferences()
     const textRef = React.useRef();
     const [boxInfoActive, setBoxInfoActive] = useState(false)
     const info = studentInfo(project.asStudent)
@@ -252,59 +254,73 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
 
 
 
+    useEffect(() => {
+        if (!windowProject) return undefined
+
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') setWindowProject(false)
+        }
+        window.addEventListener('keydown', onKeyDown)
+        return () => window.removeEventListener('keydown', onKeyDown)
+    }, [windowProject, setWindowProject])
+
     const details = Object.keys(project.features).map((key) => {
-        return <text><b>{key}: </b> {project.features[key]}</text>
+        return <React.Fragment key={key}>
+            <dt>{key}</dt>
+            <dd>{project.features[key]}</dd>
+        </React.Fragment>
     })
+    const links = [
+        project.github && { href: project.github, label: 'View on GitHub' },
+        project.paper && { href: process.env.PUBLIC_URL + project.paper, label: 'Read paper' },
+        project.sitie && { href: project.sitie, label: 'Visit site' },
+        project.app && { href: project.app, label: 'App' },
+    ].filter(Boolean)
     const modal = (
-        <div className={`projectWindowBack ${windowProject ? 'active' : ''}`}>
+        <div className={`projectWindowBack ${windowProject ? 'active' : ''}`}
+            onClick={(event) => {
+                if (event.target === event.currentTarget) setWindowProject(false)
+            }}
+        >
             <InfoBox info={info} active={boxInfoActive} />
 
             <div className={`projectWindow ${windowProject ? 'active' : ''}`}>
+                <button className='buttonClose' aria-label='Close'
+                    onClick={() => { setWindowProject(false) }}
+                >
+                    <Icon icon='mdi:close' />
+                </button>
 
                 <ProjectWindowImage key={project.title} project={project} hide={hide} setHide={setHide} />
 
                 <div className='proyectWindowTextSpace'>
-                    {project.asStudent && <div className='asStudentFlag'
-                        style={{ backgroundColor: env.flagColors[project.asStudent - 1] }}
-
-                        onClick={() => { setBoxInfoActive(!boxInfoActive) }}
-                        onMouseOut={() => { setBoxInfoActive(false) }}
-                    >
-                        <img src={process.env.PUBLIC_URL + "/images/icons/info.svg"} alt="" />
-                    </div>}
                     <div className='proyectWindowText'>
                         <h1>{project.title}</h1>
-                        <text>{"" + project.skills.join(' / ') + " | " + project.languages.join(' / ')}</text>
-                        {/* <div className='line' /> */}
+                        <div className='pwMeta'>
+                            <span className='pwTags'>{project.skills.filter(Boolean).join(' · ')}</span>
+                            <span className='pwLanguages'>{project.languages.join(' / ')}</span>
+                            {project.asStudent && <button className='asStudentFlag'
+                                onClick={() => { setBoxInfoActive(!boxInfoActive) }}
+                                onMouseOut={() => { setBoxInfoActive(false) }}
+                            >
+                                <Icon icon='mdi:information-outline' />
+                                Student project · year {project.asStudent}
+                            </button>}
+                        </div>
 
                         <div className='description' ref={textRef}>
-                            <div className='features'>
+                            {details.length > 0 && <dl className='features'>
                                 {details}
-                            </div>
+                            </dl>}
                             <Markdown remarkPlugins={[remarkGfm]}>
                                 {project.description}
                             </Markdown>
                         </div>
 
-                        <div className='endBar'>
-                            {project.github && <a href={project.github}
-                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> View on github </a>}
-
-                            {project.paper && <a href={process.env.PUBLIC_URL + project.paper}
-                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> Read paper </a>}
-
-                            {project.sitie && <a href={project.sitie}
-                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> Visit site </a>}
-
-                            {project.app && <a href={project.app}
-                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}> App </a>}
-
-                            <button className='buttonClose'
-                                onClick={() => { setWindowProject(false) }}
-                            >
-                                <img className='closeImage' src={process.env.PUBLIC_URL + `/images/icons/${theme}/close.png`} alt="" />
-                            </button>
-                        </div>
+                        {links.length > 0 && <div className='endBar'>
+                            {links.map((link) => <a key={link.label} href={link.href}
+                                className={`viewOnGithub ${windowProject ? 'active' : ''}`}>{link.label}</a>)}
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -332,6 +348,7 @@ function ProjectWindowImage({ project, hide, setHide }) {
     const images = [];
     assets.forEach(path => {
         images.push(<ProjectAsset
+            key={path}
             path={path}
             className={`carruselImage ${hide ? 'hide' : ''}`}
             width={width}
@@ -339,7 +356,7 @@ function ProjectWindowImage({ project, hide, setHide }) {
     })
 
     return <div className={`carruselContainer ${hide ? 'hide' : ''}`} ref={carruselRef}
-        style={{ maxHeight: !hide ? size.width * 9 / 16 : 33 }}
+        style={{ maxHeight: !hide ? Math.min(size.width * 9 / 16, window.innerHeight * 0.46) : 33 }}
     >
         {
             images.length - 1 > indexImage &&

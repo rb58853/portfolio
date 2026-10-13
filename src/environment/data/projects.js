@@ -1,4 +1,42 @@
 const projects = {
+    dairyRobotCell: {
+        skills: ['Vision', 'AI', 'Simulation'],
+        title: 'Robotic Teat-Sealing Cell',
+        description: 'Computer vision, machine learning and the software platform around them for a robotic cell that seals teats on rotary milking parlours, built at Promart Automatizaciones. After milking, a robot goes in under each cow and applies a sealing and sanitising gel to every teat. Vision decides when the robot may enter and where the four teats are.\n\n\
+## Vision and models\n\n\
+* Teat detection with proprietary vision models. The RF-DETR model finds 99.4% of teats on the test set and labels all of them correctly.\n\
+* A proprietary pose model for leg posture gates robot entry and errs on the side of blocking the robot.\n\
+* A plate reader identifies the cubicle number and rejects a plate rather than misread it: 99.8% read correctly and none wrong on validation.\n\
+* Inference on ONNX Runtime on GPU at 7.7 ms on average, handed to the production vision program with an embedded contract, a reference implementation without PyTorch and golden tests.\n\
+* Fully automatic camera-to-robot calibration for the camera and laser mounted on the robot, with a final error of about 1.2 mm RMSE.\n\n\
+## Training and data platform\n\n\
+* Capture browsing by milking shift, labeling with auto-save and geometry-aware data augmentation.\n\
+* One training core for several model architectures, with Optuna hyperparameter search.\n\
+* A model registry with production promotion, and HTML reports comparing models with bootstrap confidence intervals.\n\
+* Evaluation with a split by cow, because a split by image leaks data between train and test.\n\
+* An S3 gateway with presigned transfers, a desktop app to browse model versions, an Android field-capture app and operator dashboards.\n\n\
+## Telemetry and control platform\n\n\
+* C# API of about 100 endpoints over the robot controller, with a typed client generated from its OpenAPI contract and a React and Tauri desktop app. It runs in production.\n\
+* Three access levels: read-only, write and motion. The API starts read-only, and every write lives in a separate Controller zone that drops back to read-only on exit.\n\
+* A recorder samples servo torque, tracking error and tool position every 200 ms. Effort is analysed per job line and per tool position, because teat positions change from cow to cow.\n\
+* Telemetry syncs to cloud storage in near real time, and a second app in Rust and React follows it remotely with no connection to the robot.\n\n\
+## Simulators\n\n\
+* Simulators that stand in for the cell hardware, so the whole cell runs end to end without it.\n\
+* A control-logic simulator with a visual editor and a cyclic runtime. It imports and exports the real controller projects and speaks the same protocols as the hardware. Parity-tested against the real controller across 637 variables, and the robot completes its full cycle against it.\n\
+* A robot simulator that poses as the real robot controller over a protocol adapter written from scratch. It transpiles the production robot programs to Python, including conveyor tracking, and runs them with a step debugger.\n\n\
+Source code is proprietary.',
+        languages: ['Python', 'C#', 'TypeScript', 'Rust'],
+        features: {
+            framework: 'PyTorch, RF-DETR, ONNX Runtime, OpenCV, FastAPI, .NET, React, Tauri, PySide6',
+            keywords: 'Object detection, pose estimation, OCR, model training platform, typed APIs, desktop apps, telemetry, simulation.'
+        },
+        image: '/projects/dairyRobotCell/teat-detection.png',
+        images: [
+            '/projects/dairyRobotCell/teat-detection.png',
+            '/projects/dairyRobotCell/leg-posture.png',
+            '/projects/dairyRobotCell/robot-simulator.png',
+        ],
+    },
     
 
     fastchatMCP: {
@@ -40,7 +78,7 @@ const projects = {
 
 
     IRSImagesCLIP: {
-        skills: ["IRS", 'AI'],
+        skills: ['Vision', "IRS", 'AI'],
         title: 'Image Retrieval System using Machine Learning',
         description: 'In this project, the problem of precise image retrieval is addressed. The work employs a new approach: the application of the Segment Anything (SAM) segmentation models and the Constractive Language-Image Pretraining (CLIP) model for the generation of multimodal embeddings. Special emphasis is placed on image retrieval via precise queries, taking into account the position of image segments that compose the same, processing both text and images.',
         languages: ["Python"],
@@ -161,45 +199,6 @@ const projects = {
         image: '/projects/chatBot/image.jpg',
         images: ['/projects/chatBot/image.jpg'],
     },
-    cvAssistant: {
-        skills: [, 'AI', 'LLM'],
-        title: 'Portfolio Assistant Bot',
-        description: "This project represents an innovative integration of advanced technologies in artificial intelligence and machine learning to create a personal assistant capable of efficiently processing and analyzing information. This project was developed using Python.\
-        \n### Overview\
-        \nThe project combines several key elements:\
-        \n- A personal assistant based on NLP and machine learning\
-        \n- Interacts with the GitHub API to access repository information\
-        \n- Uses the OpenAI API and GPT-4 mini for advanced language processing\
-        \n- Designed as open-source software to promote collaboration and continuous development\
-        \n### Project Objective\
-        \nThe main objective of this project is to develop an advanced virtual assistant that acts as the user's digital representative in job interviews and professional conversations. This assistant is designed to:\
-        \n- Use the user's personal and professional information to personalize its performance\
-        \n- Evaluate compatibility between job positions and the user's skills\
-        \n- Learn and continuously improve based on user feedback",
-
-        languages: ["Python"],
-        features: {
-            keywords: "NLP (Natural Language process), Open source code, fastapi, cifrated data."
-        },
-        images: ['/projects/cvAssistant/images/1.jpg'],
-        // images: ['/projects/cvAssistant/images/1.jpg',
-        //     '/projects/cvAssistant/images/2.jpg',
-        //     '/projects/cvAssistant/images/3.jpg'],
-        github: 'https://github.com/samura99/cv-assitant',
-    },
-    colorProblem: {
-        skills: ['DAA'],
-        title: '8 Colors Problem',
-        description: 'Given an array A that contains only elements of 8 different types, the problem consists in finding the maximum subsequence T, which satisfies the constraints: For every pair of sets Ci, Cj of elements of specific types, it holds that |Ci| - |Cj| ≤ 1. Elements of the same set have to be consecutive in T.',
-
-        languages: ["Python"],
-        features: {
-            keywords: "Dynamic programation (DP), algorithms analysis, best computational complex."
-        },
-        images: ['/projects/8colorsProblem/1.jpg'],
-        github: 'https://github.com/maux96/DAA-problema-1',
-        asStudent: 4,
-    },
 
     coolCompiler: {
         skills: ["Compilers"],
@@ -218,38 +217,8 @@ const projects = {
         asStudent: 4,
     },
 
-    irs: {
-        skills: ["IRS"],
-        title: 'Information Retieval System for text documents',
-        description: 'This project focuses on the development of a sophisticated information retrieval system that integrates multiple advanced techniques to enhance precision and efficiency in document retrieval. The strategies employed include the use of vector models, latent semantic analysis (LSA), Vaswani attention, and the implementation of Trie structures for indexing and grouping documents.\n\
-        Vector Models and Latent Semantic Analysis (LSA): A vector-based approach is adopted to represent documents and queries in a multidimensional space, allowing similarities to be calculated through distance or cosine measures. LSA is applied to extract semantic features, improving contextual understanding and overcoming challenges such as synonymy and polysemy.\n\
-        Vaswani Attention: By incorporating Vaswani attention, complex relationships between words are captured, enhancing accuracy by considering the broader context in information retrieval.\n\
-        Trie Structure: A Trie structure is implemented to index and group documents, facilitating quick and effective searches. This enables near-instantaneous retrieval of relevant documents based on specific search patterns.\n\
-        This system not only demonstrates the ability to combine various techniques and algorithms to address complex challenges in processing and analyzing large volumes of data but also results in a robust and scalable system.',
-        languages: ["Python"],
-        features: {
-            keywords: "Documents retrieval, Data structure Trie, vector model, vaswani model, latent semantic model."
-        },
-        images: ['/projects/irs/2.jpg'],
-        asStudent: 3,
-        github: "https://github.com/lido98/RIUL",
-    },
-    tito: {
-        skills: ['DAA'],
-        title: 'Building roads',
-        description: "Let G(v, e) be a weighted graph on vertices and edges. The goal is to find the subgraph that maximizes the sum of edge weights minus the sum of vertex weights. Subject to the constraint that if an edge belongs to the solution subgraph then both vertices connected by it also belong to the subgraph.",
-
-        languages: ["Python"],
-        features: {
-            keywords: "Algorithms analysis, best computational complex, graphs theory, greedy, graph flow."
-        },
-        images: ['/projects/tito/image.jpg'],
-        github: 'https://github.com/rb58853/Tito-el-corrupto',
-        asStudent: 4,
-    },
-
     navMeshAgentAI: {
-        skills: ['AI'],
+        skills: ['AI', 'Game Dev'],
         languages: ["C#"],
         title: 'Nav Mesh Agent AI',
         description: 'An agent is understood as an entity capable of perceiving its environment, processing such perceptions, and responding to them with an action in its environment. A navigation agent, in turn, is an entity that can also navigate (move) within a given space. The simplest example of a navigation space would be a matrix of positions where an entity moves under certain rules or valid movements; the agent must be able to move from one position to another in this space. In this project, we define the navigation space as a mesh of traversable polygons that connect through edges, specifically a mesh of triangles. A multi-agent system is a system composed of multiple agents that interact with each other and have the capacity to communicate with each other. Among the main characteristics of an agent, it is important to highlight its autonomous behavior, its local vision of the system, and its decentralization, meaning that there is no entity that controls the global behavior of all agents. These multi-agent systems have been used in computing for years for crowd simulation, some of their utilities include simulating people in certain circumstances such as in an evacuation, a bus terminal, etc. In recent years, multi-agent systems have been used in the simulation of cinematic crowds, as is the case with The Lord of the Rings. Specifically, in our project, we will deal with this multi-agent system and the navigation system of the same, oriented towards the world of video games.',
@@ -286,38 +255,6 @@ const projects = {
         sitie: 'https://rb58853.github.io/emilito/',
     },
 
-    yugiOhBackend: {
-        skills: ["Django"],
-        title: 'Yugi Oh Backend APP',
-        description: 'A database project to store and manipulate information about players, cards, matches, and tournaments of Yu-Gi-Oh. It follows good programming practices, both in terms of architecture and the correct use of the API and CRUD (Create, Read, Update, Delete).',
-        languages: ["python"],
-        features: {
-            framework: 'Django',
-            keywords: "Backend, Database, CRUD, API Rest."
-        },
-        images: ['/projects/yugiOh/1.jpg'],
-        github: 'https://github.com/rb58853/yugioh-backend',
-        asStudent: 3,
-    },
-
-
-    azul: {
-        skills: ['Declarative'],
-        languages: ["Prolog"],
-        title: 'Azul',
-        description: "This project involves implementing a simulation of the popular board game Blue using the declarative programming language Prolog. Blue is known for its tile placement mechanics and scoring based on patterns and sequences. In this simulation, the fundamental rules of the game are modeled, including the arrangement of tiles, color selection, and point calculation according to player configurations. Declarative programming in Prolog allows for clear and concise definition of the game rules and victory conditions, leveraging automatic inference and Prolog's capability to find solutions from predefined facts and rules. The project includes:Rule Definition: The rules of the Blue game are established in terms of facts and logical rules in Prolog, enabling a direct interpretation of the game mechanics. Turn Simulation: Logic is implemented to simulate game turns, where each player can select tiles from virtual factories and place them on their personal boards following the game's restrictions. Point Calculation: A module is developed to automatically calculate each player's points at the end of each round and at the end of the game, based on the positions of the tiles on their boards. User Interface: Although Prolog is not known for its graphical capabilities, a simple text interface is created that allows users to interact with the simulation, select actions, and view the current state of the game.",
-        features: {
-            keywords: "azul game, declarative programation, prolog.",
-        },
-
-        image: '/projects/azul/1.jpg',
-        images: ['/projects/azul/1.jpg'],
-
-        github: 'https://github.com/rb58853/Azul_Prolog',
-        paper: '/projects/azul/paper.pdf',
-        asStudent: 3,
-    },
-
     ftp: {
         skills: ['Dist Systems'],
         languages: ["python"],
@@ -336,24 +273,6 @@ const projects = {
         paper: '/projects/distributedFTP/paper.pdf',
         asStudent: 4,
     },
-
-    littleArchemy: {
-        skills: ['Django'],
-        title: 'Little Archemy',
-        description: 'This project combines the power of Django, a high-performance web development framework, with the interactivity of Telegram bots to create a unique platform dedicated to generating mathematical elements through virtual alchemical processes. The core idea is to allow users to interact with the system via text messages, where each mathematical element can be "rented" or combined with others to produce new concepts or mathematical solutions.',
-
-        languages: ["Python"],
-        features: {
-            keywords: "Telegram bot, Django backend, applied mathematics. "
-        },
-        images: ['/projects/littleArchemy/image.jpg'],
-        paper: '/projects/littleArchemy/paper.pdf',
-        github: 'https://github.com/rb58853/Little-Archemy',
-        asStudent: 3,
-    },
-
-
-    
 
 }
 export default projects

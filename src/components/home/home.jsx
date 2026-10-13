@@ -3,7 +3,7 @@ import './styles/mobile.css'
 import Presentation from "../Presentation/presentation"
 import React from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import { Link } from 'react-router-dom'
+import { SectionLink } from '../../routes/navigation'
 import ContributionsBox from '../contributions/contributions'
 import socials from '../../environment/data/socials'
 import { useDispatch } from 'react-redux'
@@ -82,9 +82,9 @@ function Profile() {
 
 
 
-                <Link className='aboutText' to="/about">
+                <SectionLink className='aboutText' to="/about">
                     More about me
-                </Link>
+                </SectionLink>
             </div>
         </div>
         <ContributionsBox />

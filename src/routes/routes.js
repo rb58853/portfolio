@@ -35,4 +35,12 @@ const routes = [
     },
 ]
 
+// A page opened directly on a section gets a Home entry below it, so Back lands on Home
+// before leaving the site. `usr` is where React Router keeps location.state.
+const { pathname, search, hash } = window.location
+if (pathname !== '/' && window.history.state == null) {
+    window.history.replaceState(null, '', '/')
+    window.history.pushState({ usr: { overHome: true } }, '', pathname + search + hash)
+}
+
 export const router = createBrowserRouter(routes)

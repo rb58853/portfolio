@@ -17,7 +17,7 @@ function ServerMessage({ data }) {
     let projectsView = []
     if (Object.keys(data['projects']).length > 0) {
         const projectsData = data['projects']
-        projectsView = Object.keys(projectsData).map((key) => {
+        projectsView = Object.keys(projectsData).filter((key) => projects[key]).map((key) => {
             return <ProjectMessage key={key} project={projects[key]} comment={projectsData[key]} windowProject={windowProject} setWindowProject={setWindowProject} setProject={setProject} />
         })
     }

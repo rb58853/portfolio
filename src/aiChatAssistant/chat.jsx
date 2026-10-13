@@ -13,6 +13,8 @@ import { cvAssistantDomain } from '../environment/env';
 import { setSection } from '../redux/sections/sectionSlice';
 import setSectionFunction from '../redux/sections/functions';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useLocation } from 'react-router-dom';
+import { useSectionNavigate } from '../routes/navigation';
 
 // const url = 'wss://dev.chat.flowychat.com/api/ws/chat';
 const url = cvAssistantDomain;
@@ -152,8 +154,11 @@ function SendMessageToChat({ sendMessage, query, setQuery }) {
 }
 
 function BackButton() {
+    const go = useSectionNavigate()
+    const location = useLocation()
+
     return <Icon className='backButton' icon={'mdi:arrow-left-thick'}
-        onClick={() => { window.history.back() }}
+        onClick={() => { go(location.state?.from || '/') }}
     />
 }
 

@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "start-dev-server",
+      "type": "npm",
+      "script": "start",
+      "isBackground": true,
+      "options": {
+        "env": {
+          "BROWSER": "none"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "dev"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting the development server|Compiling\\.\\.\\.",
+          "endsPattern": "Compiled successfully|Compiled with warnings|Failed to compile|webpack compiled"
+        }
+      }
+    },
+    {
+      "label": "stop-dev-server",
+      "type": "process",
+      "command": "${input:terminateDevServer}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminateDevServer",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "start-dev-server"
+    }
+  ]
+}

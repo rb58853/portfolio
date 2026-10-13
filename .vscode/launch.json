@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // F5: starts the dev server and opens Chrome with the debugger once it compiles.
+      // The URL must match PORT in .env.
+      "name": "Portfolio: app + Chrome",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm start",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "BROWSER": "none"
+      },
+      "serverReadyAction": {
+        "pattern": "Compiled successfully|Compiled with warnings",
+        "uriFormat": "http://localhost:3000",
+        "action": "debugWithChrome",
+        "webRoot": "${workspaceFolder}",
+        "killOnServerStop": true
+      }
+    },
+    {
+      "name": "Portfolio: solo servidor",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm start",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "BROWSER": "none"
+      }
+    }
+  ]
+}

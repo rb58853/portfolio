@@ -1,99 +1,56 @@
 @media(max-width:1000px) {
     .projectsContent {
-        /* flex-direction: column; */
-        width: 95%;
-    }
-    .projectBoxInfo>h1 {
-        font-size: 16px;
-    }
-
-    .projectBoxInfo>text {
-        font-size: 14px;
-    }
-}
-
-@media(max-width:800px) {
-    .projectBoxInfo>h1 {
-        font-size: 14px;
-    }
-
-    .projectBoxInfo>text {
-        font-size: 12px;
+        width: 92%;
     }
 }
 
 @media(max-width:600px) {
-    .projectsContent {
-        flex-direction: column;
-        width: 95%;
+    .pjHeader {
+        padding: 32px 0 12px;
     }
 
-    .projectWindow {
-        width: 90%;
-        height: 90%;
+    .pjToolbar {
+        margin-bottom: 18px;
     }
 
-    .switchImageButton {
-        /* display: none; */
-    }
-
-    .viewOnGithub {
-        padding: 0px;
-        padding-inline: 5px;
-        font-size: 12px;
-        font-weight: 600;
-        width: fit-content;
-    }
-
-    .endBar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-top: auto;
-        margin-bottom: 20px;
-
-        place-content: flex-start;
-    }
-
-    .projectBoxInfo>h1 {
-        font-size: 14px;
-    }
-
-    .projectBoxInfo>text {
-        font-size: 12px;
-    }
-
-    .buttonSkill {
-        font-size: 18px;
+    .pjCount {
+        display: none;
     }
 
     .skillsBar {
-        scrollbar-width: none;
+        gap: 22px;
     }
 
-    .viewProjectButton {
-        font-size: 13px;
-        margin-top: 10%;
+    .projectsContainer {
+        --tile-gap: 12px;
     }
 
-    .noImageProject>h1 {
-        font-size: 16px;
+    .projectWindowBack {
+        padding: 12px;
     }
 
-    .asStudentFlag:hover {
-        scale: 1;
+    .proyectWindowText {
+        padding: 22px 20px 0;
     }
 
-    .buttonSkill:hover {
-        background-color: rgba(0, 0, 0, 0);
-        transition-duration: 100ms;
+    .proyectWindowText>h1 {
+        font-size: 1.4rem;
+    }
+
+    .features {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2px;
+    }
+
+    .features>dd {
+        margin-bottom: 8px;
     }
 }
 
 @media(max-width:500px) {
     .projects {
         margin-top: 14px;
-        margin-bottom: 80px;
+        padding-bottom: 0;
+        margin-bottom: 96px;
     }
-
 }

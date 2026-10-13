@@ -4,6 +4,25 @@
   box-sizing: border-box;
 }
 
+/* App-like feel: nothing on the site can be selected or dragged, only clicked. */
+html {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+video,
+a {
+  -webkit-user-drag: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 body {
   margin: 0;
   font-family: 'Manrope', sans-serif;

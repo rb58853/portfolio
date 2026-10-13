@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { name } from '../../environment/data/about'
 import './styles/desktop.css'
 import './styles/mobile.css'
-import { Link } from 'react-router-dom'
+import { SectionLink } from '../../routes/navigation'
 
 function Presentation({ app }) {
     const [indexActive, setIndexActive] = useState(-1)
@@ -16,7 +16,7 @@ function Presentation({ app }) {
             </div>
 
             <div className='selectSpace'>
-                <Link to="/projects" className='viewMyWork'
+                <SectionLink to="/projects" className='viewMyWork'
                     onMouseOver={() => { setIndexActive(0) }}
                     onMouseOut={() => { setIndexActive(-1) }}
                 >
@@ -32,7 +32,7 @@ function Presentation({ app }) {
                             Designed space to offer you an integrated vision of my practical experience and technical skills, evidenced in real projects executed both during my studies and in work environments.
                         </p>
                     </div>
-                </Link>
+                </SectionLink>
 
                 <ChatWithMe setIndexActive={setIndexActive} indexActive={indexActive} />
             </div>
@@ -42,7 +42,7 @@ function Presentation({ app }) {
 
 function ChatWithMe({ setIndexActive, indexActive }) {
     return (
-        <Link to='/chat' className='viewMyWork'
+        <SectionLink to='/chat' className='viewMyWork'
             onMouseOver={() => { setIndexActive(1) }}
             onMouseOut={() => { setIndexActive(-1) }}>
 
@@ -62,7 +62,7 @@ function ChatWithMe({ setIndexActive, indexActive }) {
 
                 </p>
             </div>
-        </Link>
+        </SectionLink>
     );
 }
 

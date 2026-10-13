@@ -1,12 +1,15 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { SectionLink } from "../../routes/navigation";
 import './styles/desktop.css'
 import { usePreferences } from "../../preferences/preferencesContext";
 
 export function ChatButton() {
-    return <Link to='/chat'>
+    const { pathname } = useLocation()
+
+    return <SectionLink state={{ from: pathname }} to='/chat'>
         <Icon className={`chatButton desktop active`} icon={'ci:chat'}/>
-    </Link>
+    </SectionLink>
 }
 
 export function ThemeButton() {

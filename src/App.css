@@ -32,7 +32,7 @@
   height: min(45vw, 520px);
   left: -10%;
   top: -12%;
-  background: color-mix(in srgb, var(--default-highlight-color) 24%, transparent);
+  background: color-mix(in srgb, var(--secundary-highlight-color) 26%, transparent);
 }
 
 .App::after {
@@ -40,7 +40,11 @@
   height: min(32vw, 420px);
   right: -8%;
   bottom: -15%;
-  background: color-mix(in srgb, var(--secundary-highlight-color) 22%, transparent);
+  background: color-mix(in srgb, var(--text-color) 5%, transparent);
+}
+
+:root[data-theme='light'] .App::before {
+  background: color-mix(in srgb, var(--secundary-highlight-color) 12%, transparent);
 }
 
 .App > * {

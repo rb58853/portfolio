@@ -1,95 +1,123 @@
+.projects,
+.projectWindowBack {
+    --pj-muted: color-mix(in srgb, var(--text-color) 68%, transparent);
+    --pj-faint: color-mix(in srgb, var(--text-color) 50%, transparent);
+    --pj-hairline: color-mix(in srgb, var(--text-color) 12%, transparent);
+    --pj-accent: var(--default-highlight-color);
+}
+
 .projects {
-    background-color: transparent;
     width: 100%;
     display: flex;
-    place-items: center;
     flex-direction: column;
-    transition-property: background-color;
-    transition-duration: 500ms;
-    transition-timing-function: ease-in-out;
-    margin-top: 85px;
-    overflow-y: hidden;
-    height: fit-content;
+    place-items: center;
+    margin-top: 70px;
+    padding-bottom: 96px;
+    color: var(--text-color);
+    transition: color 350ms ease;
 }
 
 .projectsContent {
+    width: min(90%, 1220px);
     display: flex;
     flex-direction: column;
-    place-content: center;
-    place-items: center;
+}
+
+/* ---------- Header ---------- */
+
+.pjHeader {
+    display: flex;
+    flex-direction: column;
+    padding: 56px 0 20px;
+}
+
+.pjEyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pj-muted);
+}
+
+.pjEyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background-color: var(--pj-accent);
+}
+
+/* ---------- Filters ---------- */
+
+.pjToolbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
     gap: 24px;
-    width: min(94%, 1220px);
-    padding: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    backdrop-filter: none;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--pj-hairline);
 }
 
 .skillsBar {
-    overflow-x: auto;
     display: flex;
-    max-width: 95%;
-    gap: 6px;
-    padding: 0;
+    gap: 28px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.skillsBar::-webkit-scrollbar {
+    display: none;
 }
 
 .buttonSkill {
+    flex: none;
+    margin-bottom: -1px;
+    padding: 14px 0;
     background-color: transparent;
-    color: var(--skill-label-color);
-    padding: 8px 12px;
-    border-radius: 0;
-    border: 1px solid transparent;
     border: none;
-    font-size: 20px;
-    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--pj-muted);
     cursor: pointer;
-    transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
-}
-
-.buttonSkill.active {
-    background-color: var(--default-highlight-color);
-    color: white;
+    transition: color 220ms ease, border-color 220ms ease;
 }
 
 .buttonSkill:hover {
-    background-color: var(--default-hover-color);
-    border-color: var(--surface-border);
+    color: var(--text-color);
 }
 
-.buttonSkill.active:hover {
-    background-color: var(--default-highlight-color);
-    transition-duration: 500ms;
-    color: white;
+.buttonSkill.active {
+    color: var(--text-color);
+    border-bottom-color: var(--pj-accent);
 }
 
-.rowProjects {
-    display: flex;
-    width: 100%;
-    place-items: center;
-    place-content: center;
+.pjCount {
+    flex: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pj-faint);
 }
+
+/* ---------- Grid ---------- */
 
 .projectsContainer {
-    width: 100%;
-    /* max-width: 100vw; */
+    --tile-gap: 20px;
+    width: calc(100% + var(--tile-gap));
+    margin-inline: calc(var(--tile-gap) / -2);
     position: relative;
-    transition-property: height;
-    transition-duration: 400ms;
-    transition-timing-function: ease-in-out;
-    /* background-color: blueviolet; */
+    transition: height 400ms ease-in-out;
 }
 
 .projectBoxAbsolute {
     aspect-ratio: 4/3;
     position: absolute;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    place-items: center;
+    padding: calc(var(--tile-gap) / 2);
     opacity: 0;
     pointer-events: none;
-
     transition-property: opacity, transform, width;
     transition-duration: 400ms;
     transition-timing-function: ease-in-out;
@@ -101,446 +129,430 @@
 }
 
 .projectBox {
-    aspect-ratio: 4/3;
     position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    place-items: center;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--pj-hairline);
+    cursor: pointer;
     scale: 0;
-
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    transition-property: scale;
-    transition-duration: 400ms;
-    transition-timing-function: ease-in-out;
+    transition: scale 400ms ease-in-out;
 }
-
-.noImageProject {
-    background-color: rgba(0, 0, 0, 0.03);
-    aspect-ratio: 4/3;
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    place-content: center;
-    width: calc(100% - 2px);
-    border: solid 1px rgba(0, 0, 0, 0.178);
-}
-
-.noImageProject>h1 {
-    width: 80%;
-    text-align: center;
-    color: var(--text-color);
-    font-weight: 500;
-}
-
 
 .projectBox.active {
     scale: 1;
 }
 
-.projectBoxInfoBackground {
-    background-color: var(--projects-background-color);
-    position: absolute;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-
-
-
-    transition-property: opacity;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
-}
-
-.projectBoxInfoBackground.active {
-    opacity: 1;
-}
-
-
-.projectBoxInfo {
-    position: absolute;
-    z-index: 4;
-    width: 100%;
-    height: 50%;
-    opacity: 0;
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    place-content: center;
-    color: var(--text-color);
-
-
-    transition-property: transform, opacity;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
-}
-
-.projectBoxInfo.top {
-    transform: translateY(-50%);
-    max-width: 80%;
-}
-
-.projectBoxInfo.bottom {
-    transform: translateY(50%);
-    bottom: 0px;
-    place-content: flex-start;
-}
-
-.projectBoxInfo.active {
-    transform: translateY(0%);
-    opacity: 1;
-}
-
-.projectBoxInfo>h1 {
-    font-size: 22px;
-    text-align: center;
-    margin-bottom: 0px;
-}
-
-.projectBoxInfo>text {
-    text-align: center;
-    color: var(--default-highlight-color);
-}
-
-.viewProjectButton {
-    background-color: transparent;
-    border: solid 2px var(--default-highlight-color);
-    padding: 10px;
-    padding-inline: 30px;
-    border-radius: 0;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 0;
-    margin-top: 10%;
-    cursor: pointer;
-    color: var(--text-color);
-
-
-    transition-property: color, background-color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
-    z-index: 3;
-}
-
-.viewProjectButton.active {
-    background-color: var(--default-highlight-color);
-    color: white;
+.projectBox:focus-visible {
+    outline: 2px solid var(--pj-accent);
+    outline-offset: 3px;
 }
 
 .projectBoxImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.projectBox:hover .projectBoxImage,
+.projectBox:focus-visible .projectBoxImage {
+    transform: scale(1.03);
+}
+
+.noImageProject {
     width: 100%;
     height: 100%;
 }
 
+.projectBoxCaption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 18px;
+    background-color: rgba(8, 10, 10, 0.84);
+    color: rgb(244, 246, 245);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 280ms ease, transform 280ms ease;
+    pointer-events: none;
+}
+
+.projectBox:hover .projectBoxCaption,
+.projectBox:focus-visible .projectBoxCaption,
+.projectBoxCaption.static {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.projectBoxCaption.static {
+    background: none;
+    color: var(--text-color);
+}
+
+.projectBoxCaption>h2 {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.projectBoxCaption>span {
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    opacity: 0.72;
+}
+
+/* ---------- Project window ---------- */
+
 .projectWindowBack {
     position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.467);
-    backdrop-filter: blur(10px);
-    /* top: 0px; */
+    inset: 0;
     z-index: 1200;
+    display: flex;
     place-content: center;
     place-items: center;
-    display: flex;
+    padding: 24px;
+    background-color: rgba(4, 6, 6, 0.62);
+    backdrop-filter: blur(8px);
     pointer-events: none;
     opacity: 0;
-    /* scale: 0.5; */
-    transition-property: opacity, scale;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
+    transition: opacity 300ms ease-in-out;
 }
 
 .projectWindowBack.active {
     pointer-events: auto;
     opacity: 1;
-    /* scale: 1; */
-
 }
 
 .projectWindow {
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-    width: min(80vh, 100%);
-    height: min(min(85vh, 110vw), 100%);
+    position: relative;
+    z-index: 1201;
+    width: min(860px, 100%);
+    height: min(90vh, 100%);
     display: flex;
     flex-direction: column;
-    place-items: center;
+    overflow: hidden;
     background-color: var(--project-window-color);
-    border-radius: 0;
-    border: none;
-    scale: 0.5;
-    transition-property: scale;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
+    border: 1px solid var(--pj-hairline);
+    border-radius: 12px;
+    box-shadow: var(--soft-shadow);
+    color: var(--text-color);
+    scale: 0.97;
     pointer-events: none;
-    z-index: 1201;
+    transition: scale 300ms ease-in-out;
 }
-
 
 .projectWindow.active {
     scale: 1;
     pointer-events: auto;
 }
 
+.buttonClose,
+.switchImageButton {
+    position: absolute;
+    z-index: 20;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(8, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    color: rgb(244, 246, 245);
+    cursor: pointer;
+    transition: background-color 180ms ease, opacity 400ms ease;
+}
+
+.buttonClose:hover,
+.switchImageButton:hover {
+    background-color: rgba(8, 10, 10, 0.8);
+}
+
+.buttonClose {
+    top: 14px;
+    right: 14px;
+    display: flex;
+    place-content: center;
+    place-items: center;
+    font-size: 20px;
+}
+
+/* ---------- Carousel ---------- */
+
 .carruselContainer {
-    width: 100%;
     position: relative;
-    overflow-y: hidden;
-    /* max-height: calc(9*100vw/16); */
-    flex-grow: 1;
+    flex: none;
+    width: 100%;
     aspect-ratio: 16/9;
-    height: 1000%;
-
-    transition-property: max-height;
-    transition-duration: 600ms;
-    transition-timing-function: ease-in-out;
+    overflow: hidden;
+    background-color: color-mix(in srgb, black 28%, var(--project-window-color));
+    transition: max-height 500ms ease-in-out;
 }
-
-.carruselContainer.hide {
-    max-height: 33px;
-}
-
 
 .carrusel {
-    background-color: rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: row;
     overflow-x: auto;
     width: 100%;
     height: 100%;
     scrollbar-width: none;
-
 }
 
-
-.switchImageButton {
-    width: 50px;
-    background-color: var(--project-window-color);
-    bottom: 10px;
-    border: none;
-    position: absolute;
-    font-size: 45px;
-    font-weight: 700;
-    color: var(--text-color);
-    cursor: pointer;
-    border-radius: 50px;
-    opacity: 1;
-
-    transition-property: color, scale;
-    transition-timing-function: ease-in-out;
-    transition-duration: 150ms;
-
-}
-
-.switchImageButton:hover {
-    color: white;
-    scale: 1.05;
-}
-
-.switchImageButton.next {
-    opacity: 1;
-    right: 10px;
-}
-
-.switchImageButton.back {
-    opacity: 1;
-    left: 10px;
-}
-
-.switchImageButton.hide {
-    opacity: 0;
-    transition-property: opacity;
-    transition-duration: 600ms;
-    background-color: var(--project-window-color);
+.carrusel::-webkit-scrollbar {
+    display: none;
 }
 
 .carruselImage {
-    object-fit: cover;
-    min-width: 100%;
+    flex: none;
+    height: 100%;
+    object-fit: contain;
     user-select: none;
-
-
-    transition-property: opacity;
-    transition-duration: 600ms;
-    transition-timing-function: ease-in-out;
     pointer-events: none;
+    transition: opacity 500ms ease-in-out;
 }
 
 .carruselImage.hide {
     opacity: 0;
 }
 
+.switchImageButton {
+    top: 50%;
+    translate: 0 -50%;
+}
 
+.switchImageButton.next {
+    right: 14px;
+}
+
+.switchImageButton.back {
+    left: 14px;
+}
+
+.switchImageButton.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.buttonImageHide {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    width: 48px;
+    height: 22px;
+    background-color: var(--project-window-color);
+    color: var(--pj-muted);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: color 180ms ease;
+}
+
+.buttonImageHide:hover {
+    color: var(--text-color);
+}
+
+.buttonImageHide.hide {
+    top: 6px;
+    bottom: auto;
+    background-color: transparent;
+}
+
+/* ---------- Project text ---------- */
 
 .proyectWindowTextSpace {
-    width: 100%;
-    flex-grow: 1;
+    flex: 1 1 0;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    place-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.asStudentFlag {
-    background-color: var(--default-highlight-color);
-    height: 30px;
-    width: 200px;
-    position: absolute;
-    top: 6px;
-    right: -81px;
-    transform: rotate(45deg);
-    display: flex;
-    place-content: center;
-    place-items: center;
-    scale: 1;
-    cursor: pointer;
-
-    transition-property: scale;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
-}
-
-.asStudentFlag:hover {
-    scale: 1.1;
-}
-
-.asStudentFlag>img {
-    height: 80%;
-    pointer-events: none;
 }
 
 .proyectWindowText {
-    width: 90%;
-    color: var(--text-color);
+    flex: 1 1 0;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
-}
-
-.description {
-    overflow-y: auto;
-    max-height: 100%;
-    margin-block: 20px;
-    /* width: 100px; */
+    padding: 28px 36px 0;
 }
 
 .proyectWindowText>h1 {
-    font-size: 22px;
-    line-height: normal;
-    margin-bottom: 0px;
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 400;
+    line-height: 1.15;
 }
 
-.proyectWindowText>text {
-    color: var(--default-highlight-color);
+.pwMeta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-top: 10px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
+.pwTags {
+    color: var(--pj-accent);
+    font-weight: 600;
+}
+
+.pwLanguages {
+    color: var(--pj-faint);
+}
+
+.asStudentFlag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background-color: transparent;
+    border: 1px solid var(--pj-hairline);
+    border-radius: 999px;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--pj-muted);
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease;
+}
+
+.asStudentFlag:hover {
+    color: var(--text-color);
+    border-color: var(--pj-faint);
+}
+
+.asStudentFlag>svg {
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.description {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 0 12px 28px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--text-color) 88%, transparent);
+    scrollbar-width: thin;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 8px 24px;
+    margin: 0 0 22px;
+    padding: 16px 0;
+    border-block: 1px solid var(--pj-hairline);
+}
+
+.features>dt {
+    padding-top: 3px;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pj-faint);
+}
+
+.features>dd {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--pj-muted);
+}
+
+.description p {
+    margin: 0 0 14px;
+}
+
+.description h2,
+.description h3 {
+    margin: 30px 0 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text-color);
+}
+
+.description h2 {
+    font-size: 1.22rem;
+}
+
+.description h3 {
+    font-size: 1.05rem;
+}
+
+.description ul,
+.description ol {
+    margin: 0 0 14px;
+    padding-left: 1.15em;
+}
+
+.description li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+}
+
+.description li::marker {
+    color: var(--pj-accent);
+}
+
+.description a {
+    color: var(--pj-accent);
+}
+
+.description table {
+    width: 100%;
+    margin: 0 0 14px;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+}
+
+.description th,
+.description td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--pj-hairline);
+    text-align: left;
+}
+
+.endBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    padding: 16px 0 20px;
+    border-top: 1px solid var(--pj-hairline);
+}
 
 .viewOnGithub {
-    display: flex;
-    place-items: center;
-    place-content: center;
-    pointer-events: none;
-    background-color: rgba(0, 0, 0, 0);
-    border: solid 2px var(--default-highlight-color);
-    padding: 10px;
-    padding-inline: 30px;
-    border-radius: 0;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    width: fit-content;
-    color: var(--default-highlight-color);
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--pj-accent);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-color);
     text-decoration: none;
+    pointer-events: none;
+    transition: color 180ms ease;
+}
 
-    transition-property: color, background-color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
+.viewOnGithub::after {
+    content: ' \2197';
+    color: var(--pj-accent);
 }
 
 .viewOnGithub.active {
     pointer-events: auto;
 }
 
-.viewOnGithub:Hover {
-    background-color: var(--default-highlight-color);
-    color: white;
-}
-
-.endBar {
-    display: flex;
-    gap: 5px;
-    margin-top: auto;
-    margin-bottom: 20px;
-
-    place-content: flex-start;
-}
-
-.features {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.buttonClose {
-    margin-left: auto;
-    height: 100%;
-    aspect-ratio: 1/1;
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    opacity: 0.7;
-    cursor: pointer;
-    scale: 1;
-
-    transition-property: opacity, scale;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
-}
-
-.buttonClose:hover {
-    opacity: 1;
-    scale: 1.2;
-}
-
-.closeImage {
-    height: 30px;
-}
-
-.buttonImageHide {
-    z-index: 10;
-    position: absolute;
-    bottom: 0px;
-    width: 10%;
-    left: 45%;
-    height: 30px;
-    background-color: var(--project-window-color);
-    color: var(--text-color);
-    border: none;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor: pointer;
-
-    transition-property: scale;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
-
-}
-
-.buttonImageHide.hide {
-    background-color: rgba(0, 0, 0, 0);
-    transition-property: background-color;
-    transition-duration: 0ms;
-    transition-timing-function: ease-in-out;
-
-}
-
-.buttonImageHide:hover {
-    scale: 1.05;
-    color: white;
+.viewOnGithub:hover {
+    color: var(--pj-accent);
 }
