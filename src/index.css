@@ -9,6 +9,11 @@ html {
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  /* Paint the canvas with the theme and disable the elastic bounce, so scrolling
+     past the edges never reveals the browser's default white background. */
+  background-color: var(--background-color);
+  overscroll-behavior-y: none;
+  transition: background-color 350ms ease;
 }
 
 img,
