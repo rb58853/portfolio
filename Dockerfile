@@ -21,6 +21,7 @@ RUN npm ci --legacy-peer-deps
 # Copy source and build
 COPY public/ ./public/
 COPY src/ ./src/
+COPY scripts/ ./scripts/
 
 RUN npm run build
 

@@ -61,6 +61,8 @@ npm run build
 npx serve -s build
 ```
 
+After `react-scripts build`, [scripts/prerender.mjs](scripts/prerender.mjs) writes one HTML file per route (`projects.html`, `about.html`…) with its own title, description, canonical URL and page text, plus `sitemap.xml`, so search engines and link previews get real content without running JavaScript. Site-wide meta tags, Open Graph and the JSON-LD profile live in [public/index.html](public/index.html); a new route needs an entry in the script.
+
 ---
 
 ## Environment variables

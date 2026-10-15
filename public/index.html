@@ -5,40 +5,69 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="48x48" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="theme-color" content="#0b0c0c" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
+    <!--
+      Search and link previews. scripts/prerender.mjs copies this head into one
+      HTML file per route and swaps the title, description and URLs; the site
+      origin it uses is the one in the canonical link below.
     -->
-    <title>rb58853</title>
+    <title>Raúl Beltrán Gómez · Computer Vision &amp; Software Engineer</title>
+    <meta name="description" content="Computer scientist based in Madrid. I build computer vision, machine learning and scalable software, from detection models to APIs, desktop apps and LLM tools." />
+    <meta name="author" content="Raúl Beltrán Gómez" />
+    <link rel="canonical" href="https://portfolio.rb58853.net/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Raúl Beltrán Gómez" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://portfolio.rb58853.net/" />
+    <meta property="og:title" content="Raúl Beltrán Gómez · Computer Vision &amp; Software Engineer" />
+    <meta property="og:description" content="Computer scientist based in Madrid. I build computer vision, machine learning and scalable software, from detection models to APIs, desktop apps and LLM tools." />
+    <meta property="og:image" content="https://portfolio.rb58853.net/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Raúl Beltrán Gómez, Computer Vision and Software Engineer" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Raúl Beltrán Gómez",
+        "alternateName": ["Raul Beltran Gomez", "rb58853"],
+        "url": "https://portfolio.rb58853.net/",
+        "jobTitle": "Computer Vision and Software Engineer",
+        "worksFor": { "@type": "Organization", "name": "Promart Automatizaciones" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Havana" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES" },
+        "knowsLanguage": ["es", "en"],
+        "knowsAbout": [
+          "Computer vision",
+          "Machine learning",
+          "Deep learning",
+          "PyTorch",
+          "Large language models",
+          "Model Context Protocol",
+          "FastAPI",
+          "Software architecture"
+        ],
+        "sameAs": ["https://github.com/rb58853", "https://t.me/rb58853"]
+      }
+    </script>
+
+    <!-- The prerendered text inside #root is for crawlers and visitors without JavaScript; React replaces it on load. -->
+    <script>document.documentElement.classList.add('js')</script>
+    <style>
+      .js .prerendered { display: none; }
+      .prerendered { max-width: 760px; margin: 0 auto; padding: 48px 16px 96px; line-height: 1.65; }
+      .prerendered a { color: inherit; }
+      .prerendered nav a { margin-right: 16px; }
+    </style>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
