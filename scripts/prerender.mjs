@@ -48,8 +48,8 @@ const nav = `<nav>${[
 ].map(([href, text]) => link(href, text)).join('')}</nav>`
 
 const home = `
-    <h1>${NAME}</h1>
-    <p>Computer Vision &amp; Software Engineer · Madrid, Spain</p>
+    <h1>Hello, I'm ${NAME}. I'm a Computer Scientist.</h1>
+    <p>Computer Vision &amp; Software Engineer in Madrid, Spain · rb58853</p>
     <p>${escape(experience.experienceIntro)}</p>
     <h2>Explore</h2>
     <p>${link('/projects', 'View my work')}: real projects from my studies and from work, with the technical detail behind each one.</p>
@@ -57,7 +57,9 @@ const home = `
     <h2>Contact</h2>
     ${list([
         link(socials.cv, 'Curriculum vitae'),
+        `LinkedIn: ${link(socials.linkedIn, 'rb58853')}`,
         `GitHub: ${link(socials.github, 'rb58853')}`,
+        `PyPI: ${link(socials.pypi, 'rb58853')}`,
         `Telegram: ${link(socials.telegram, '@rb58853')}`,
         'Madrid, Spain',
     ])}`
