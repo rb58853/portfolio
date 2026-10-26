@@ -109,7 +109,11 @@ const skillsPage = `
 // Phone and email stay out of the static HTML, away from address harvesters that skip JavaScript.
 const aboutPage = `
     <h1>About ${NAME}</h1>
-    ${[personal.aboutMe, personal.studyFields, personal.know, personal.languages].map((text) => markdown(text)).join('')}`
+    ${[personal.aboutMe, personal.studyFields, personal.know, personal.languages].map((text) => markdown(text)).join('')}
+    ${list([
+        `LinkedIn: ${link(socials.linkedIn, 'rb58853')}`,
+        `GitHub: ${link(socials.github, 'rb58853')}`,
+    ])}`
 
 const chatPage = `
     <h1>Ask me about my experience, projects or skills.</h1>

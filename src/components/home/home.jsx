@@ -12,6 +12,7 @@ import setSectionFunction from '../../redux/sections/functions'
 
 const contactRows = [
     { icon: 'mdi:document', text: 'Curriculum vitae', href: socials['cv'] },
+    { icon: 'mdi:linkedin', text: 'in/rb58853', href: socials['linkedIn'] },
     { icon: 'bi:github', text: 'rb58853', href: socials['github'] },
     { icon: 'mdi:telegram', text: '@rb58853', href: socials['telegram'] },
     { icon: 'mdi:gmail', text: 'rb58853@gmail.com', href: socials['gmail'] },

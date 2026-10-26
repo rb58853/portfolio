@@ -46,6 +46,8 @@ export const personalInformation = `
 
 **Education** B.Sc. in Computer Science  
 
+**LinkedIn** [rb58853](https://www.linkedin.com/in/rb58853/)  
+
 **GitHub** [rb58853](https://github.com/rb58853)  
 
 **Gmail** rb58853@gmail.com  
