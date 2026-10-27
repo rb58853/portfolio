@@ -173,20 +173,6 @@ Source code is proprietary.',
         ],
         github: 'https://github.com/rb58853/Arcane-Ascent',
     },
-    portfolio: {
-        skills: ['ReactJS'],
-        title: 'Portfolio',
-        description: 'Personal portfolio and interactive CV built as a responsive React single-page application. It includes themed navigation across professional sections, a GitHub contributions integration, and a WebSocket-based AI assistant that answers questions about the profile, experience, and projects. The assistant runs on a FastAPI and LiteLLM backend in the same repository and answers from a YAML knowledge base.',
-        languages: ['JavaScript', 'HTML', 'CSS', 'Python'],
-        features: {
-            framework: 'React 18, Redux Toolkit, React Router, FastAPI, LiteLLM',
-            keywords: 'ReactJS app, Docker Deploy, responsive SPA, AI chat assistant integration'
-        },
-        image: '/projects/portfolio/image.png',
-        images: ['/projects/portfolio/portfolio.png'],
-        github: 'https://github.com/rb58853/portfolio',
-        sitie: 'https://portfolio.rb58853.net',
-    },
     chatbot: {
         skills: [, "IRS", 'AI', 'LLM'],
         title: 'Devman ChatBot',
@@ -237,22 +223,6 @@ Source code is proprietary.',
         paper: '/projects/navMeshAgentAI/NavAgentPaper.pdf',
         app: 'https://t.me/+Eh4DRMgqdtYzMDlh/c/1870877745/3',
         asStudent: 3,
-    },
-
-    artShopEmilio: {
-        skills: ["ReactJS"],
-        title: 'Art Shop Emilio',
-        description: 'An online store for selling artworks created by Emilio Ramos. The store consists of a marketplace, series, products, shopping area, bag, contact, and information. This project represents the frontend of the store.',
-        languages: ["Javascript", "CSS"],
-        features: {
-            framework: 'ReactJS',
-            keywords: "Web development, frontend, digital-shop."
-        },
-        image: '/projects/shop/1.jpg',
-        images: ['/projects/shop/2.jpg', '/projects/shop/3.jpg', '/projects/shop/4.jpg'],
-
-        github: 'https://github.com/rb58853/emilito',
-        sitie: 'https://rb58853.github.io/emilito/',
     },
 
     ftp: {

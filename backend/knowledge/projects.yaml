@@ -162,32 +162,3 @@ projects:
     links:
       github: https://github.com/maux96/distributed-ftp
     paper: available from the project card
-
-  - id: portfolio
-    title: Portfolio
-    context: Personal project (this website)
-    categories: [ReactJS, Web]
-    languages: [JavaScript, HTML, CSS, Python]
-    stack: [React 18, Redux Toolkit, React Router, FastAPI, LiteLLM, Docker]
-    summary: >
-      Personal portfolio and interactive CV built as a responsive React
-      single-page application, with themed navigation across sections, a
-      GitHub contributions integration and this WebSocket-based AI assistant,
-      which answers questions about the profile, experience and projects.
-    links:
-      github: https://github.com/rb58853/portfolio
-      site: https://portfolio.rb58853.net
-
-  - id: artShopEmilio
-    title: Art Shop Emilio
-    context: Web frontend project
-    categories: [ReactJS, Web]
-    languages: [JavaScript, CSS]
-    stack: [ReactJS]
-    summary: >
-      Frontend of an online store selling artworks by Emilio Ramos, with a
-      marketplace, series, products, shopping area, bag, contact and
-      information sections.
-    links:
-      github: https://github.com/rb58853/emilito
-      site: https://rb58853.github.io/emilito/
