@@ -43,7 +43,7 @@ function View() {
         </InfoBox>
         <div className='pageColumn'>
             <header className='pageHeader'>
-                <span className='pageEyebrow'>Skills & languages</span>
+                <h1 className='pageEyebrow'>Skills & languages</h1>
             </header>
 
             <Languages setBoxInfoActive={setBoxInfoActive} setInfo={setInfo} boxInfoActive={boxInfoActive} {...pin} />

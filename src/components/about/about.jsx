@@ -13,7 +13,7 @@ function About() {
         <section onFocus={setSectionFunction(dispatch, 'about')} className='aboutBackground'>
             <div className='about'>
                 <header className='abHeader'>
-                    <span className='abEyebrow'>About</span>
+                    <h1 className='abEyebrow'>About</h1>
                 </header>
 
                 <Section value={aboutMe} className='abLead' />

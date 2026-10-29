@@ -22,8 +22,8 @@ async function loadData(file) {
     return import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`)
 }
 
-const [{ default: projects }, experience, personal, { default: skills }, { default: languages }, { default: socials }] =
-    await Promise.all(['projects.js', 'experience.js', 'personal.js', 'skills.js', 'languages.js', 'socials.js'].map(loadData))
+const [{ default: projects }, experience, personal, { default: skills }, { default: languages }, { default: socials }, { default: seo }] =
+    await Promise.all(['projects.js', 'experience.js', 'personal.js', 'skills.js', 'languages.js', 'socials.js', 'seo.js'].map(loadData))
 
 const escape = (value) => String(value).replace(/[&<>"']/g, (char) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
@@ -49,11 +49,11 @@ const nav = `<nav>${[
 
 const home = `
     <h1>Hello, I'm ${NAME}. I'm a Computer Scientist.</h1>
-    <p>Computer Vision &amp; Software Engineer in Madrid, Spain · rb58853</p>
+    <p>AI &amp; Computer Vision Developer in Madrid, Spain · rb58853</p>
     <p>${escape(experience.experienceIntro)}</p>
     <h2>Explore</h2>
-    <p>${link('/projects', 'View my work')}: real projects from my studies and from work, with the technical detail behind each one.</p>
-    <p>${link('/chat', 'Chat with me')}: an AI assistant that answers questions about my experience, projects and skills.</p>
+    <p>${link('/projects', 'View my work')}: computer vision, AI and software projects from my studies and from industry, with the technical detail behind each one.</p>
+    <p>${link('/chat', 'Chat with me')}: ask my AI assistant about my experience, projects or skills. It answers on my behalf, using what is published on this site.</p>
     <h2>Contact</h2>
     ${list([
         link(socials.cv, 'Curriculum vitae'),
@@ -119,30 +119,16 @@ const chatPage = `
     <h1>Ask me about my experience, projects or skills.</h1>
     <p>This is an AI assistant that answers on my behalf, using what is published on this site. It needs JavaScript.</p>`
 
-// The home page keeps the title and description written in public/index.html.
+// Titles and descriptions come from src/environment/data/seo.js. Profile pages are about the
+// person as a whole; the rest are plain pages about them.
 const pages = [
-    { route: '/', body: home },
-    {
-        route: '/projects', title: 'Projects', body: projectsPage,
-        description: 'Selected work by Raúl Beltrán: computer vision for a robotic dairy cell, the Fastchat-MCP client, image retrieval with SAM and CLIP, a Steam game and more.',
-    },
-    {
-        route: '/experience', title: 'Experience', body: experiencePage,
-        description: 'Work history of Raúl Beltrán: computer vision and software for industrial robotics, MCP servers and LLM assistants, conversational AI backends and Unity games.',
-    },
-    {
-        route: '/skills', title: 'Skills & languages', body: skillsPage,
-        description: 'Languages, frameworks and fields Raúl Beltrán works with, from Python, PyTorch and computer vision to LLMs, MCP, FastAPI, React, C# and Rust.',
-    },
-    {
-        route: '/about', title: 'About', body: aboutPage,
-        description: 'Computer scientist from the University of Havana, based in Madrid: background, professional interests, study fields, knowledge areas and languages.',
-    },
-    {
-        route: '/chat', title: 'Chat', body: chatPage,
-        description: 'Ask an AI assistant about the experience, projects and skills of Raúl Beltrán. It answers from what is published on this portfolio.',
-    },
-]
+    { route: '/', body: home, profile: true },
+    { route: '/projects', body: projectsPage },
+    { route: '/experience', body: experiencePage },
+    { route: '/skills', body: skillsPage },
+    { route: '/about', body: aboutPage, profile: true },
+    { route: '/chat', body: chatPage },
+].map((page) => ({ ...page, ...seo[page.route] }))
 
 // Replaces the attribute value that follows `prefix`, failing the build if index.html no longer has it.
 function setValue(html, prefix, value) {
@@ -160,18 +146,28 @@ const origin = new URL(canonical[1]).origin
 const EMPTY_ROOT = '<div id="root"></div>'
 if (!template.includes(EMPTY_ROOT)) throw new Error('prerender: build/index.html has no empty #root, run react-scripts build first')
 
+// Ties each page to the WebSite and Person that public/index.html declares on every route.
+const pageData = (page, url) => JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': page.profile ? 'ProfilePage' : 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: page.title,
+    description: page.description,
+    inLanguage: 'en',
+    isPartOf: { '@id': `${origin}/#website` },
+    [page.profile ? 'mainEntity' : 'about']: { '@id': `${origin}/#person` },
+}).replace(/</g, '\\u003c')
+
 for (const page of pages) {
-    let html = template
-    if (page.title) {
-        const title = `${page.title} · ${NAME}`
-        const url = origin + page.route
-        html = html.replace(/<title>[^<]*<\/title>/, () => `<title>${escape(title)}</title>`)
-        html = setValue(html, '<link rel="canonical" href="', url)
-        html = setValue(html, '<meta property="og:url" content="', url)
-        html = setValue(html, '<meta property="og:title" content="', title)
-        html = setValue(html, '<meta name="description" content="', page.description)
-        html = setValue(html, '<meta property="og:description" content="', page.description)
-    }
+    const url = origin + page.route
+    let html = template.replace(/<title>[^<]*<\/title>/, () => `<title>${escape(page.title)}</title>`)
+    html = setValue(html, '<link rel="canonical" href="', url)
+    html = setValue(html, '<meta property="og:url" content="', url)
+    html = setValue(html, '<meta property="og:title" content="', page.title)
+    html = setValue(html, '<meta name="description" content="', page.description)
+    html = setValue(html, '<meta property="og:description" content="', page.description)
+    html = html.replace('</head>', () => `<script type="application/ld+json">${pageData(page, url)}</script></head>`)
     html = html.replace(EMPTY_ROOT, () => `<div id="root"><main class="prerendered">${nav}${page.body}</main></div>`)
 
     const file = page.route === '/' ? 'index.html' : `${page.route.slice(1)}.html`

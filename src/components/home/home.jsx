@@ -28,7 +28,7 @@ function Home() {
     return <section onFocus={setSectionFunction(dispatch, 'home')} className="pageShell">
         <div className='pageColumn'>
             <header className='pageHeader hmHeader'>
-                <span className='pageEyebrow'>Portfolio</span>
+                <span className='pageEyebrow'>AI & Computer Vision Developer</span>
                 <h1 className='hmTitle'>
                     Hello, I'm <span className='hmName'>{name}</span>.
                     <span className='hmRole'>I'm a Computer Scientist.</span>

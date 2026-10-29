@@ -58,7 +58,7 @@ function Projects() {
         <section onFocus={setSectionFunction(dispatch, 'projects')} className="projects">
             <div className="projectsContent">
                 <header className='pjHeader'>
-                    <span className='pjEyebrow'>Projects</span>
+                    <h1 className='pjEyebrow'>Projects</h1>
                 </header>
                 <div className='pjToolbar'>
                     <SkillsBar setSkill={setSkill} skillState={skill} />

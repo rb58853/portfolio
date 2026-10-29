@@ -14,13 +14,13 @@ function Presentation() {
                 <Entry to='/projects' label='View my work'
                     active={indexActive === 0}
                     onEnter={() => setIndexActive(0)} onLeave={() => setIndexActive(-1)}>
-                    Designed space to offer you an integrated vision of my practical experience and technical skills, evidenced in real projects executed both during my studies and in work environments.
+                    Computer vision, AI and software projects from my studies and from industry, with the technical detail behind each one.
                 </Entry>
 
                 <Entry to='/chat' label='Chat with me'
                     active={indexActive === 1}
                     onEnter={() => setIndexActive(1)} onLeave={() => setIndexActive(-1)}>
-                    Space to interact with my Natural Language Processing AI, designed to provide you with answers about my information, projects, or skills based on your messages. This chat facilitates smooth and direct communication with the AI, allowing you to establish an interactive and effective conversation "with me".
+                    Ask my AI assistant about my experience, projects or skills. It answers on my behalf, using what is published on this site.
                 </Entry>
             </div>
         </section>
