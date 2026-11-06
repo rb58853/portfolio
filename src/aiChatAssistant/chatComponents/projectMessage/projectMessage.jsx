@@ -1,5 +1,6 @@
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import { ASSISTANT_MARKDOWN } from "../../utils/markdown"
 import './styles/desktop.css'
 import './styles/mobile.css'
 
@@ -24,7 +25,7 @@ function ProjectMessage({ project, comment, index, onOpen }) {
 
             <div className="chatCardText">
                 <h4 className="chatCardTitle">{project.title}</h4>
-                <Markdown remarkPlugins={[remarkGfm]} className="chatCardComment">
+                <Markdown remarkPlugins={[remarkGfm]} className="chatCardComment" {...ASSISTANT_MARKDOWN}>
                     {comment}
                 </Markdown>
                 <span className="chatCardMore">View project</span>

@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { ASSISTANT_MARKDOWN } from '../../utils/markdown';
 import './styles/desktop.css'
 import './styles/mobile.css'
 import ProjectMessage from '../projectMessage/projectMessage';
@@ -98,7 +99,7 @@ function ServerMessage({ message }) {
             <div className='chatRowBody'>
                 {text.trim() === '' && !written
                     ? <div className='chatDots' aria-label='Writing'><span /><span /><span /></div>
-                    : <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}
+                    : <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents} {...ASSISTANT_MARKDOWN}
                         className={`chatAnswer ${written ? '' : 'typing'}`}>
                         {text}
                     </Markdown>}

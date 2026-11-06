@@ -1,4 +1,4 @@
-"""Thin wrapper around LiteLLM streaming calls with model fallback and usage logging."""
+"""Thin wrapper around LiteLLM calls with model fallback and usage logging."""
 
 from __future__ import annotations
 
@@ -15,44 +15,51 @@ logger = logging.getLogger(__name__)
 litellm.suppress_debug_info = True
 logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 
+Message = dict[str, str]
+
 
 class LLMError(RuntimeError):
     """Raised when no configured model could answer."""
 
 
 class LLM:
-    """Provide streamed LLM calls over LiteLLM, trying fallback models in order."""
+    """Provide streamed and one-shot LLM calls over LiteLLM, trying fallback models in order."""
 
     def __init__(
         self,
         model: str,
         fallback_models: list[str] | None = None,
-        max_tokens: int = 1500,
+        max_tokens: int = 1000,
         timeout: int = 40,
+        reasoning_effort: str | None = None,
     ) -> None:
         """Store the model chain and the limits applied to every call.
 
         Args:
             model: LiteLLM model id, for example ``groq/openai/gpt-oss-120b``.
             fallback_models: Models tried in order when the previous one fails.
-            max_tokens: Completion token limit per call.
+            max_tokens: Completion token limit per call, reasoning included.
             timeout: Seconds to wait for a provider before failing over.
+            reasoning_effort: ``low``, ``medium`` or ``high`` for reasoning
+                models; ``None`` leaves the provider default.
         """
         self.models: list[str] = [model, *(fallback_models or [])]
         self.max_tokens = max_tokens
         self.timeout = timeout
+        self.reasoning_effort = reasoning_effort
 
-    @staticmethod
-    def _build_messages(
-        user_query: str,
-        system_prompts: list[str],
-        history: list[dict[str, str]] | None = None,
-    ) -> list[dict[str, str]]:
-        """Build a chat-completion message list from prompts, history and query."""
-        messages = [{"role": "system", "content": prompt} for prompt in system_prompts]
-        messages += history or []
-        messages.append({"role": "user", "content": user_query})
-        return messages
+    def _params(self, temperature: float) -> dict[str, Any]:
+        params: dict[str, Any] = {
+            "temperature": temperature,
+            "max_tokens": self.max_tokens,
+            "timeout": self.timeout,
+            # The reasoning channel is not held to the same standards as the
+            # answer and tends to paraphrase the instructions: never fetch it.
+            "include_reasoning": False,
+        }
+        if self.reasoning_effort:
+            params["reasoning_effort"] = self.reasoning_effort
+        return params
 
     @staticmethod
     def _log_usage(model: str, usage: Any) -> None:
@@ -66,11 +73,7 @@ class LLM:
         )
 
     async def stream_call(
-        self,
-        user_query: str,
-        system_prompts: list[str],
-        history: list[dict[str, str]] | None = None,
-        temperature: float = 0.3,
+        self, messages: list[Message], temperature: float = 0.3
     ) -> AsyncGenerator[str, None]:
         """Yield text deltas from the first model that starts answering.
 
@@ -78,9 +81,7 @@ class LLM:
         yielded yet; once text is out, a failure ends the stream with an error.
 
         Args:
-            user_query: User query text.
-            system_prompts: Ordered list of system prompts.
-            history: Optional prior messages.
+            messages: Chat-completion messages, in order.
             temperature: Sampling temperature.
 
         Yields:
@@ -89,19 +90,15 @@ class LLM:
         Raises:
             LLMError: If every model fails, or a stream breaks after it started.
         """
-        messages = self._build_messages(user_query, system_prompts, history)
-
         for model in self.models:
             started = False
             try:
                 response = await acompletion(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
-                    max_tokens=self.max_tokens,
-                    timeout=self.timeout,
                     stream=True,
                     stream_options={"include_usage": True},
+                    **self._params(temperature),
                 )
                 async for chunk in response:
                     self._log_usage(model, getattr(chunk, "usage", None))
@@ -124,6 +121,38 @@ class LLM:
             logger.warning("llm returned empty content model=%s", model)
 
         raise LLMError("No model answered")
+
+    async def json_call(self, messages: list[Message]) -> dict[str, Any]:
+        """Return the JSON object answer of the first model that produces one.
+
+        Args:
+            messages: Chat-completion messages, in order.
+
+        Returns:
+            dict[str, Any]: The parsed object.
+
+        Raises:
+            LLMError: If no model returned a JSON object.
+        """
+        for model in self.models:
+            try:
+                response = await acompletion(
+                    model=model,
+                    messages=messages,
+                    response_format={"type": "json_object"},
+                    **self._params(temperature=0),
+                )
+                self._log_usage(model, getattr(response, "usage", None))
+                parsed = parse_json_object(response.choices[0].message.content or "")
+            except Exception as error:
+                logger.warning("llm call failed model=%s error=%s", model, error)
+                continue
+
+            if parsed is not None:
+                return parsed
+            logger.warning("llm returned no JSON object model=%s", model)
+
+        raise LLMError("No model returned a JSON object")
 
 
 def parse_json_object(text: str) -> dict[str, Any] | None:

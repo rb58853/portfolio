@@ -31,6 +31,8 @@ Open `.env` and fill in your secrets:
 | `REACT_APP_GITHUB_TOKEN` | GitHub token for contribution graph | No |
 | `GROQ_API_KEY` | Provider key for the AI chat assistant | No |
 | `LLM_MODEL`, `LLM_FALLBACK_MODELS` | LiteLLM model ids for the assistant | No |
+| `GUARD_MODEL`, `GUARD_FALLBACK_MODELS` | LiteLLM model ids for the classifier every message passes first | No |
+| `TRUSTED_PROXY_HOPS` | Proxies that append to `X-Forwarded-For` in front of the backend (default `2`: host TLS proxy + container nginx) | No |
 | `CHAT_BLOCKED_TERMS` | Names the assistant must never write (comma separated) | No |
 | `ALLOWED_ORIGINS` | Browser origins allowed to open the chat (empty = any) | No |
 | `PORT` | Host port (default `3000`) | No |
@@ -115,3 +117,22 @@ cp .env.example .env        # set GROQ_API_KEY
 ```
 
 `npm start` connects to `ws://localhost:8787` in development. Tests: `.venv/bin/pip install pytest && .venv/bin/python -m pytest`.
+
+### Guardrails
+
+The assistant has one purpose, and the code enforces it rather than trusting the model to:
+
+1. The message is normalised (`app/guard/normalize.py`); base64 or hex that decodes to text is refused (`app/guard/encoding.py`).
+2. A classifier labels it against `app/guard/policy.yaml` (`app/guard/gate.py`). `route()` in `app/chat/chat.py` decides: answer it, answer the plain question on the same topic instead of a request for code, verse or a character, or send a fixed refusal. If no classifier answers, the message is not answered.
+3. The model answers under the output contract in `app/chat/prompts.yaml`.
+4. `app/guard/output.py` checks every line before it is sent: code and data formats, quoted instructions, raw knowledge, blocked names in any disguise, links that are not in the knowledge. A violation discards the text, the model retries once, then a fixed reply is sent.
+5. Only delivered answers enter the history; repeated refusals close the conversation and, per IP, block new ones for an hour.
+
+Any change to the prompts, the policy, the knowledge, a model or the provider must pass the live red-team evaluation, which calls the real models (a few cents per run):
+
+```bash
+.venv/bin/python -m evals.redteam --repeat 3 --out report.json   # attack success and false refusals
+.venv/bin/python -m evals.provider                                # models still answer; run daily
+```
+
+Compare `attack_success_rate` and `false_refusal_rate` with the previous report: the rule is no regression in either. Attacks seen in the logs go into `evals/cases.yaml`; tune the policy on the `dev` cases only.
