@@ -99,13 +99,14 @@ const FOLLOW_MARGIN = 64
 const GLIDE_SECONDS = 0.32
 // A late frame (background tab) may not make the view leap
 const MAX_FRAME_SECONDS = 0.05
-// How close to its resting position the view must be to follow the answer again
-const REATTACH_DISTANCE = 48
 
 function ChatHistory({ messages, status, retry, awaitingQuestion, canAsk, suggest }) {
     const scrollRef = useRef(null)
     const columnRef = useRef(null)
-    // The view follows the conversation until the visitor scrolls away to read
+    // The view follows the conversation until the visitor scrolls, and then
+    // stays wherever the visitor leaves it until the next question is sent.
+    // It never takes the view back on its own: re-attaching near the resting
+    // position fought small trackpad and touch scrolls, and the view jumped.
     const following = useRef(true)
     // A conversation restored from an earlier visit appears in place, without the glide
     const glide = useRef({ frame: 0, running: false, position: 0, velocity: 0, instant: messages.length > 0 })
@@ -197,21 +198,13 @@ function ChatHistory({ messages, status, retry, awaitingQuestion, canAsk, sugges
         settle()
     }, [messages.length, settle]);
 
-    // Wheel, touch or the scrollbar: the visitor takes over, unless that left
-    // the view where it would rest anyway.
+    // Wheel, touch, keys or the scrollbar: the visitor takes over.
     const onUserScroll = () => {
         following.current = false
-        requestAnimationFrame(() => {
-            const target = scrollRef.current ? restingPosition() : null
-            if (target === null || Math.abs(target - scrollRef.current.scrollTop) > REATTACH_DISTANCE) return
-            following.current = true
-            settle()
-        })
     }
 
     return <div className='chatScroll' ref={scrollRef}
         onWheel={onUserScroll} onTouchMove={onUserScroll} onKeyDown={onUserScroll}
-        onScroll={() => { if (!following.current) onUserScroll() }}
         onPointerDown={(e) => { if (e.target === scrollRef.current) onUserScroll() }}>
         <div className='chatColumn chatHistory' ref={columnRef}>
             <ChatIntro offline={status === 'offline'} retry={retry} canAsk={canAsk} suggest={suggest}
