@@ -275,7 +275,7 @@ def test_known_addresses_pass_without_scheme_or_with_www(guard: OutputGuard) -> 
     assert guard.check(reply, complete=True) is None
 
 
-@pytest.mark.parametrize("disguise", ["Ac me", "Ac-me", "Ac\nme", "Асме", "ΑCΜΕ"])
+@pytest.mark.parametrize("disguise", ["A c m e", "Ac-me", "A-C-M-E", "Асме", "ΑCΜΕ", "Acmes", "AcmeV8", "4cm3", "ᴀᴄᴍᴇ"])
 def test_blocked_term_split_or_in_look_alike_letters_is_stopped(guard: OutputGuard, disguise: str) -> None:
     violation = guard.check(f"It is {disguise}.")
 
@@ -326,14 +326,121 @@ def test_repeating_an_example_answer_is_not_a_leak() -> None:
     guard = OutputGuard(
         blocked_terms=[], protected_prompts=instruction_texts(), knowledge_context="", canary="x" * 12
     )
-    example_answer = next(
-        line.removeprefix("Assistant: ")
+    example_answers = [
+        line.strip().removeprefix("Assistant: ")
         for line in _PROMPTS["examples"].splitlines()
-        if line.startswith("Assistant: I only answer")
-    )
+        if line.strip().startswith("Assistant: ")
+    ]
 
-    assert guard.check(example_answer, complete=True) is None
+    assert len(example_answers) >= 5
+    for example_answer in example_answers:
+        assert guard.check(example_answer, complete=True) is None, example_answer
 
 
 def test_tabs_separate_words() -> None:
     assert normalize("python\tcode") == "python code"
+
+
+# --- links as the browser renders them --------------------------------------
+
+
+@pytest.mark.parametrize(
+    "reply",
+    [
+        "Book a slot at https\\://book.evil.example",  # markdown escape
+        "Book a slot at https&#58;//evil.example",  # HTML entity
+        "Book a slot at &#104;ttps://evil.example",
+        "See www\\.evil.example",
+        "Write to jobs\\@evil.example",
+        "Write to jobs&#64;evil.example",
+        "Schedule at <http:calendly.example/me>",  # autolink without //
+        "Chat at <irc://evil.example>",
+        "<xmpp:me@evil.example>",
+        "My site: [https://github.com/example][gh]\n\n[gh]: //evil.example",  # reference link
+        "Open javascript:alert(1)",
+        "| Role | Years |\n|---|---|\n| CV | 2 |",  # a table is a data format
+    ],
+)
+def test_links_hidden_from_the_markdown_source_are_caught(guard: OutputGuard, reply: str) -> None:
+    assert guard.check(reply, complete=True) is not None
+
+
+@pytest.mark.parametrize(
+    "reply",
+    [
+        "Find me on **https://www.linkedin.com/in/example/**, or by email.",
+        "Write to *someone@example.com*.",
+        "Code: _https://github.com/example_",
+        "I use Python 3.11; the ratio was 3:1 at 10:30.",
+        "Data: images and labels.",
+        "<https://github.com/example>",
+    ],
+)
+def test_known_links_in_emphasis_and_ordinary_colons_pass(guard: OutputGuard, reply: str) -> None:
+    assert guard.check(reply, complete=True) is None
+
+
+def test_known_link_with_spaces_for_its_encoded_spaces_passes() -> None:
+    guard = OutputGuard(
+        blocked_terms=[],
+        protected_prompts=[],
+        knowledge_context="cv: https://example.com/files/My%20CV.pdf",
+        canary=CANARY,
+    )
+
+    assert guard.check("My CV: https://example.com/files/My CV.pdf", complete=True) is None
+
+
+@pytest.mark.parametrize("text", ["Ac me", "Si ac me contratas", "lo que ac me dijo"])
+def test_a_short_term_spelled_across_ordinary_words_is_not_the_term(guard: OutputGuard, text: str) -> None:
+    assert guard.blocked_terms_in(text) == []
+
+
+def test_blocked_terms_are_masked_with_their_suffix(guard: OutputGuard) -> None:
+    masked = guard.mask_blocked_terms("Do you use AcmeV8 or A-C-M-E? And Globex?", "[name]")
+
+    assert masked == "Do you use [name] or [name]? And Globex?"
+
+
+def test_canary_spaced_or_reversed_is_a_leak(guard: OutputGuard) -> None:
+    spaced = " ".join(CANARY)
+
+    assert guard.check(spaced, complete=True).kind is ViolationKind.LEAK
+    assert guard.check(CANARY[::-1], complete=True).kind is ViolationKind.LEAK
+
+
+def test_knowledge_lines_dumped_with_bold_keys_are_caught(guard: OutputGuard) -> None:
+    reply = "- **company**: Example Corp\n- **role**: Computer Vision Developer\n- **period**: Jun 2026 - Present"
+
+    assert guard.check(reply, complete=True).kind is ViolationKind.KNOWLEDGE_DUMP
+
+
+@pytest.mark.parametrize(
+    ("reply", "kind"),
+    [
+        ("Call 600 123 456 to book.", ViolationKind.UNKNOWN_PHONE),
+        ("WhatsApp me at +44\u202f7700\u202f900123.", ViolationKind.UNKNOWN_PHONE),
+        ("Call +44\u20117700\u2011900123.", ViolationKind.UNKNOWN_PHONE),
+        ("My rate is 30 EUR per hour.", ViolationKind.UNKNOWN_AMOUNT),
+        ("Salary expectations: €40.000.", ViolationKind.UNKNOWN_AMOUNT),
+    ],
+)
+def test_phone_numbers_and_amounts_must_come_from_the_knowledge(reply: str, kind: ViolationKind) -> None:
+    guard = OutputGuard(
+        blocked_terms=[],
+        protected_prompts=[],
+        knowledge_context="phone: +34 612 34 56 78\nprice: Sold on Steam at $14.99.",
+        canary=CANARY,
+    )
+
+    assert guard.check(reply, complete=True).kind is kind
+    assert guard.check("Call me at 612 34 56 78; the game costs $14.99; I studied 2019-2024.", complete=True) is None
+
+
+def test_internal_ids_never_reach_the_answer_text() -> None:
+    guard = OutputGuard(
+        blocked_terms=[], protected_prompts=[], knowledge_context="", canary=CANARY, internal_ids=["dairyRobotCell"]
+    )
+
+    assert guard.check("See dairyRobotCell for details.", complete=True).kind is ViolationKind.INTERNAL_ID
+    assert guard.check("See the Robotic Teat-Sealing Cell.", complete=True) is None

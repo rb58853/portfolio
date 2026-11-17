@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, Callable
 
 import litellm
 from litellm import acompletion
@@ -122,11 +122,15 @@ class LLM:
 
         raise LLMError("No model answered")
 
-    async def json_call(self, messages: list[Message]) -> dict[str, Any]:
-        """Return the JSON object answer of the first model that produces one.
+    async def json_call(
+        self, messages: list[Message], accept: Callable[[dict[str, Any]], bool] | None = None
+    ) -> dict[str, Any]:
+        """Return the JSON object answer of the first model that produces an acceptable one.
 
         Args:
             messages: Chat-completion messages, in order.
+            accept: Optional check on the parsed object; a model whose object
+                fails it is skipped like one that failed.
 
         Returns:
             dict[str, Any]: The parsed object.
@@ -148,9 +152,9 @@ class LLM:
                 logger.warning("llm call failed model=%s error=%s", model, error)
                 continue
 
-            if parsed is not None:
+            if parsed is not None and (accept is None or accept(parsed)):
                 return parsed
-            logger.warning("llm returned no JSON object model=%s", model)
+            logger.warning("llm returned no acceptable JSON object model=%s", model)
 
         raise LLMError("No model returned a JSON object")
 

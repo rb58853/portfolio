@@ -10,10 +10,12 @@ names that must stay private.
 
 from __future__ import annotations
 
+import html
 import re
 import unicodedata
 from dataclasses import dataclass
 from enum import StrEnum
+from urllib.parse import unquote
 
 
 class ViolationKind(StrEnum):
@@ -24,6 +26,13 @@ class ViolationKind(StrEnum):
     LEAK = "leak"
     KNOWLEDGE_DUMP = "knowledge_dump"
     UNKNOWN_LINK = "unknown_link"
+    UNKNOWN_PHONE = "unknown_phone"
+    UNKNOWN_AMOUNT = "unknown_amount"
+    INTERNAL_ID = "internal_id"
+    # Set by the chat session: a decline repeats the message it declines.
+    ECHO = "echo"
+    # Set by the chat session, not by this guard: a decline grew into an answer.
+    TOO_LONG = "too_long"
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,6 +69,8 @@ _CODE_PATTERNS = [
         r"^\s*(?:graph|flowchart|sequenceDiagram|classDiagram|erDiagram)\b",
         r"<(?!projects\b)[a-zA-Z][\w-]*(?:\s[^<>\n]*)?>",
         r"`[^`\n]*(?:[=;{}]|\w\()[^`\n]*`",
+        # The delimiter row of a markdown table: a data format, not prose.
+        r"^\s*\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)+\|?\s*$",
     )
 ]
 
@@ -78,13 +89,40 @@ _WORD = re.compile(r"\w+")
 _URL = re.compile(r"(?:https?://|mailto:|www\.)[^\s<>()\[\]\"'`]+", re.IGNORECASE)
 _LINK_TARGET = re.compile(r"\]\(\s*<?([^)\s>]+)")
 _EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+# Schemes a markdown renderer or a browser turns into a link, written without
+# "//" too ("http:host/path" is a valid autolink target).
+_SCHEME = re.compile(
+    r"(?<![\w.+-])(?:https?|ircs?|xmpp|mailto|ftps?|sftp|tel|sms|data|javascript|vbscript|file|wss?):"
+    r"(?!\s)[^\s<>()\[\]\"'`]+",
+    re.IGNORECASE,
+)
+# CommonMark autolinks take any scheme: <scheme:anything>.
+_AUTOLINK = re.compile(r"<\s*([a-zA-Z][a-zA-Z0-9+.-]{1,31}:[^\s<>]*)\s*>")
+# Reference-style link definitions: "[label]: target" on a line of its own.
+_REFERENCE = re.compile(r"^[ \t]{0,3}\[[^\]\n]+\]:[ \t]*<?([^\s>]+)", re.MULTILINE)
+# A phone number: 9 to 15 digits with at most one separator between them, not
+# inside an address. Year ranges and metrics have fewer digits.
+# Any Unicode space counts: models often write numbers with narrow no-break spaces.
+_PHONE = re.compile(r"(?<![\w/+.])\+?\d(?:[\s().\-\u2010-\u2015]?\d){8,14}(?![\w])")
+# An amount of money: a currency sign or word next to a number.
+_AMOUNT = re.compile(
+    r"[€$£]\s?\d[\d.,]*|\d[\d.,]*\s?(?:€|\$|£|k€|(?:eur|euros?|usd|dollars?|d[oó]lares|pounds?|libras)\b)",
+    re.IGNORECASE,
+)
+# A backslash escape of ASCII punctuation, which markdown renders as the bare character.
+_MARKDOWN_ESCAPE = re.compile(r"\\([!-/:-@\[-`{-~])")
 _SEPARATOR = r"[\W_]*"
 
 # Latin look-alikes from other scripts that NFKC does not fold.
 _CONFUSABLES = str.maketrans(
-    "аеорсухіјѕԁӏвкмнтАЕОРСУХІЈЅВКМНТαεοτυικνρχΑΕΟΤΥΙΚΝΡΧΜΒΗΖ",
-    "aeopcyxijsdlbkmhtaeopcyxijsbkmhtaeotuikvpxaeotyiknpxmbhz",
+    "аеорсухіјѕԁӏвкмнтԝһԛАЕОРСУХІЈЅВКМНТαεοτυικνρχΑΕΟΤΥΙΚΝΡΧΜΒΗΖօսոհյ"
+    "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘʀꜱᴛᴜᴠᴡʏᴢ",
+    "aeopcyxijsdlbkmhtwhqaeopcyxijsbkmhtaeotuikvpxaeotyiknpxmbhzounhj"
+    "abcdefghijklmnoprstuvwyz",
 )
+# Digits and signs written for letters ("4cm3"). Names that contain digits
+# are matched on the text as written too, so this fold never hides them.
+_LEET = (str.maketrans("4@3105$7|", "aaeiosstl"), str.maketrans("4@3105$7|", "aaelosstl"))
 
 
 def _visible(text: str) -> str:
@@ -94,16 +132,47 @@ def _visible(text: str) -> str:
 
 
 def _plain(text: str) -> str:
-    """Folded form for name matching: NFKC, case-folded, look-alikes mapped to Latin."""
-    return unicodedata.normalize("NFKC", _visible(text)).translate(_CONFUSABLES).casefold()
+    """Folded form for name matching: NFKC, accents dropped, look-alikes mapped to Latin, case-folded.
+
+    Accents are dropped one character at a time, so the folded text keeps
+    the length of the (normalised) original and spans map back onto it.
+    """
+    text = unicodedata.normalize("NFKC", _visible(text))
+    text = "".join(unicodedata.normalize("NFD", char)[0] for char in text)
+    return text.translate(_CONFUSABLES).casefold()
 
 
 def _term_pattern(term: str) -> re.Pattern[str]:
     # Letters of the term in order with any separators between them ("Pro
-    # mart", "a.c.m.e", "A - C - M - E"), but whole words only, so a term never
-    # matches across ordinary words ("if more" is not "ifm").
+    # mart", "a.c.m.e", "A - C - M - E"), starting a word. A term of four or
+    # more letters may carry a suffix ("Acmes", "AcmeV8"); a shorter one must
+    # end the word, so it never matches inside ordinary words.
     letters = [re.escape(char) for char in _plain(term) if not char.isspace()]
+    if len(letters) >= 4:
+        # Long enough to be distinctive inside a word too ("PPAcmeE", "AcmeV8").
+        return re.compile(_SEPARATOR.join(letters))
     return re.compile(r"(?<!\w)" + _SEPARATOR.join(letters) + r"(?!\w)")
+
+
+def _real_match(term: str, match: re.Match[str]) -> bool:
+    """Whether a pattern match is the term and not ordinary words that happen to spell it.
+
+    A short term spelled across words ("ac me" for a four-letter "acme") is
+    ordinary text unless every piece is a single letter ("a c m e").
+    """
+    pieces = [re.sub(r"\W", "", piece) for piece in match.group(0).split()]
+    return len(pieces) <= 1 or len(term) > 5 or all(len(piece) <= 1 for piece in pieces)
+
+
+def _readings(text: str) -> list[str]:
+    """``text`` folded for name matching: as written, with digits read as letters,
+    and with HTML entities resolved (the renderer shows "AC&#77;E" as a name)."""
+    plain = _plain(text)
+    readings = [plain, *(plain.translate(table) for table in _LEET)]
+    unescaped = html.unescape(text)
+    if unescaped != text:
+        readings.append(_plain(unescaped))
+    return readings
 
 
 def _shingles(text: str) -> set[tuple[str, ...]]:
@@ -112,16 +181,38 @@ def _shingles(text: str) -> set[tuple[str, ...]]:
 
 
 def _record_lines(text: str) -> set[str]:
-    """Key/value lines of a YAML document, without indentation or list dashes."""
-    lines = (line.strip().removeprefix("- ").strip() for line in text.splitlines())
+    """Key/value lines of a YAML document, without indentation, list markers or emphasis.
+
+    "- **title**: Cell" in a reply is the knowledge line "title: Cell".
+    """
+    lines = (re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", line).replace("*", "").replace("`", "").strip() for line in text.splitlines())
     return {line for line in lines if re.match(r"^[\w-]+:\s+\S", line)}
 
 
 def _address_key(address: str) -> str:
-    """Comparable form of a link: no scheme, no "www.", no trailing slash or punctuation."""
-    key = address.lower().rstrip(".,;:!?/")
-    key = re.sub(r"^(?:https?:)?//", "", key)
+    """Comparable form of a link: no scheme, no "www.", no emphasis marks, trailing slash or punctuation."""
+    key = unquote(address).lower().strip("*_~<>").rstrip(".,;:!?/*_~)")
+    key = re.sub(r"^(?:https?:)?/*", "", key)
     return key.removeprefix("www.")
+
+
+def _digits(text: str) -> str:
+    return re.sub(r"\D", "", text)
+
+
+def _amount_key(text: str) -> str:
+    """The number of an amount, with one decimal separator: "1.500,00 €" and "1500.00" agree."""
+    number = re.sub(r"[^\d.,]", "", text).strip(".,")
+    return number.replace(",", ".")
+
+
+def _rendered(text: str) -> str:
+    """``text`` as the browser will show it: HTML entities and markdown escapes resolved.
+
+    A link check that reads the markdown source misses "https\\://evil" or
+    "https&#58;//evil", which the renderer turns into working links.
+    """
+    return html.unescape(_MARKDOWN_ESCAPE.sub(r"\1", text))
 
 
 class OutputGuard:
@@ -134,6 +225,7 @@ class OutputGuard:
         protected_prompts: list[str],
         knowledge_context: str,
         canary: str,
+        internal_ids: tuple[str, ...] | list[str] = (),
     ) -> None:
         """Prepare the checks.
 
@@ -143,14 +235,25 @@ class OutputGuard:
             knowledge_context: Knowledge base exactly as the prompt renders it.
             canary: Random marker planted in the instructions; seeing it in a
                 reply proves the instructions are being copied out.
+            internal_ids: Identifiers that belong in the cards block only,
+                never in the text a visitor reads.
         """
         self._blocked_terms = [_plain(term) for term in blocked_terms if term.strip()]
         self._blocked_patterns = [_term_pattern(term) for term in self._blocked_terms]
         self._protected = set().union(*(_shingles(prompt) for prompt in protected_prompts))
         self._knowledge_lines = _record_lines(knowledge_context)
-        self._knowledge_links = {_address_key(url) for url in _URL.findall(knowledge_context)}
+        known = _URL.findall(knowledge_context)
+        self._knowledge_links = {_address_key(url) for url in known}
+        # A known link written with its encoded spaces as real spaces is still that link.
+        self._spelled_links = {unquote(url): url for url in known if unquote(url) != url}
         self._knowledge_emails = {email.lower() for email in _EMAIL.findall(knowledge_context)}
+        # Phone numbers and amounts are facts like links: only the knowledge's own may appear.
+        # Digits inside the knowledge's links count too (a WhatsApp link holds the number).
+        self._knowledge_phones = {_digits(match) for match in _PHONE.findall(knowledge_context)}
+        self._knowledge_phones |= {run for run in re.findall(r"\d{9,15}", knowledge_context)}
+        self._knowledge_amounts = {_amount_key(match) for match in _AMOUNT.findall(knowledge_context)}
         self._canary = canary.lower()
+        self._internal_ids = re.compile(r"\b(?:" + "|".join(map(re.escape, internal_ids)) + r")\b") if internal_ids else None
 
     @property
     def canary(self) -> str:
@@ -170,24 +273,68 @@ class OutputGuard:
     def blocked_terms_in(self, text: str) -> list[str]:
         """Blocked terms present in ``text``, also when case, width, invisible
         characters, look-alike letters or separators disguise them."""
-        plain = _plain(text)
+        readings = _readings(text)
         return [
             term
             for term, pattern in zip(self._blocked_terms, self._blocked_patterns, strict=True)
-            if pattern.search(plain)
+            if any(_real_match(term, match) for reading in readings for match in pattern.finditer(reading))
         ]
 
+    def mask_blocked_terms(self, text: str, placeholder: str) -> str:
+        """``text`` with every blocked term replaced by ``placeholder``.
+
+        The visitor's own words are kept where the folding keeps their length
+        (the usual case, since the text is already normalised); otherwise the
+        folded text is returned.
+        """
+        # Entities resolved first, as the visitor's browser would show them.
+        text = html.unescape(text)
+        readings = _readings(text)
+        spans = sorted(
+            {
+                (
+                    match.start() - len(re.search(r"\w*$", reading[: match.start()]).group(0)),
+                    match.end() + len(re.match(r"\w*", reading[match.end() :]).group(0)),
+                )
+                for term, pattern in zip(self._blocked_terms, self._blocked_patterns, strict=True)
+                for reading in readings
+                for match in pattern.finditer(reading)
+                if _real_match(term, match)
+            }
+        )
+        if not spans:
+            return text
+        base = text if len(readings[0]) == len(text) else readings[0]
+        masked, last = [], 0
+        for start, end in spans:
+            if start < last:
+                continue  # Overlaps a span already replaced.
+            masked.append(base[last:start] + placeholder)
+            last = end
+        return "".join(masked) + base[last:]
+
     def _unknown_link(self, text: str, complete: bool) -> str | None:
-        """First address in ``text`` the knowledge base does not contain."""
+        """First address in ``text`` the knowledge base does not contain.
+
+        Reads the text as the browser renders it, and every form the renderer
+        turns into a link: bare URLs and "www.", e-mail addresses, any scheme
+        (also without "//"), inline and reference links, and autolinks.
+        """
+        text = _rendered(text)
+        for spelled, canonical in self._spelled_links.items():
+            text = text.replace(spelled, canonical)
         found = [(match.end(), match.group(0), False) for match in _URL.finditer(text)]
+        found += [(match.end(), match.group(0), False) for match in _SCHEME.finditer(text)]
         found += [(match.end(1), match.group(1), False) for match in _LINK_TARGET.finditer(text)]
+        found += [(match.end(1), match.group(1), False) for match in _AUTOLINK.finditer(text)]
+        found += [(match.end(1), match.group(1), False) for match in _REFERENCE.finditer(text)]
         found += [(match.end(), match.group(0), True) for match in _EMAIL.finditer(text)]
 
         for end, address, is_email in found:
             if not complete and end == len(text):
                 continue  # Still being written.
             if is_email or address.lower().startswith("mailto:"):
-                email = address.lower().removeprefix("mailto:").rstrip(".,;:!?")
+                email = address.lower().removeprefix("mailto:").strip("*_~<>").rstrip(".,;:!?*_~")
                 known = email in self._knowledge_emails
             else:
                 known = _address_key(address) in self._knowledge_links
@@ -217,10 +364,15 @@ class OutputGuard:
             if match := pattern.search(text):
                 return Violation(ViolationKind.CODE, match.group(0).strip()[:40])
 
-        if self._canary and self._canary in text.lower():
+        # The canary spelled out, spaced or reversed is still the canary.
+        squashed = re.sub(r"[\W_]+", "", text.lower())
+        if self._canary and (self._canary in squashed or self._canary[::-1] in squashed):
             return Violation(ViolationKind.LEAK, "canary")
         if quoted := self._protected & _shingles(text):
             return Violation(ViolationKind.LEAK, " ".join(next(iter(quoted))))
+
+        if self._internal_ids and (found := self._internal_ids.search(text)):
+            return Violation(ViolationKind.INTERNAL_ID, found.group(0))
 
         copied = _record_lines(text) & self._knowledge_lines
         if len(copied) >= _DUMP_LINES:
@@ -230,4 +382,33 @@ class OutputGuard:
         # he never made, and possibly a phishing page under his name.
         if link := self._unknown_link(text, complete):
             return Violation(ViolationKind.UNKNOWN_LINK, link[:60])
+        if phone := self._unknown_phone(text, complete):
+            return Violation(ViolationKind.UNKNOWN_PHONE, phone[:40])
+        if amount := self._unknown_amount(text, complete):
+            return Violation(ViolationKind.UNKNOWN_AMOUNT, amount[:40])
+        return None
+
+    def _unknown_phone(self, text: str, complete: bool) -> str | None:
+        """First phone number in ``text`` that is not one of the knowledge's own."""
+        text = _rendered(text)
+        for match in _PHONE.finditer(text):
+            if not complete and match.end() == len(text):
+                continue  # Still being written.
+            digits = _digits(match.group(0))
+            if not any(known.endswith(digits) or digits.endswith(known) for known in self._knowledge_phones):
+                return match.group(0)
+        return None
+
+    def _unknown_amount(self, text: str, complete: bool) -> str | None:
+        """First amount of money in ``text`` that the knowledge does not state.
+
+        A rate, salary or price in the engineer's voice is a commitment he
+        never made; a visitor message cannot supply one either.
+        """
+        text = _rendered(text)
+        for match in _AMOUNT.finditer(text):
+            if not complete and match.end() == len(text):
+                continue
+            if _amount_key(match.group(0)) not in self._knowledge_amounts:
+                return match.group(0)
         return None

@@ -48,9 +48,10 @@ class Settings:
 
     knowledge_dir: Path = Path(os.getenv("KNOWLEDGE_DIR") or BACKEND_ROOT / "knowledge")
 
-    # Reverse proxies in front of the service that append to X-Forwarded-For:
-    # the TLS proxy on the host, then nginx in the portfolio container.
-    trusted_proxy_hops: int = _int("TRUSTED_PROXY_HOPS", 2)
+    # Entries at the right end of X-Forwarded-For written by trusted proxies.
+    # nginx in the portfolio container resolves the visitor's address itself
+    # (realip, trusting only private ranges) and sends that one entry.
+    trusted_proxy_hops: int = _int("TRUSTED_PROXY_HOPS", 1)
 
     # Browser origins allowed to open the chat. Empty means any origin.
     allowed_origins: list[str] = field(default_factory=lambda: _csv("ALLOWED_ORIGINS"))
@@ -64,9 +65,16 @@ class Settings:
     history_turns: int = _int("CHAT_HISTORY_TURNS", 8)
     max_messages_per_session: int = _int("CHAT_MAX_MESSAGES_PER_SESSION", 40)
     max_messages_per_ip_hour: int = _int("CHAT_MAX_MESSAGES_PER_IP_HOUR", 60)
+    # One client may not use up the whole site's daily budget.
+    max_messages_per_ip_day: int = _int("CHAT_MAX_MESSAGES_PER_IP_DAY", 200)
     max_messages_per_day: int = _int("CHAT_MAX_MESSAGES_PER_DAY", 1500)
     max_connections_per_ip: int = _int("CHAT_MAX_CONNECTIONS_PER_IP", 4)
     idle_timeout_seconds: int = _int("CHAT_IDLE_TIMEOUT_SECONDS", 900)
+    # However active, a conversation ends after this long.
+    max_session_seconds: int = _int("CHAT_MAX_SESSION_SECONDS", 7200)
+    # Symbols (emoji, pictographs, musical notation...) one message may carry:
+    # some cost many tokens each, and a question needs few.
+    max_message_symbols: int = _int("CHAT_MAX_MESSAGE_SYMBOLS", 40)
     # Refused messages and rejected drafts a conversation may collect before
     # it is closed. A visitor asking about the portfolio never gets near it;
     # someone iterating on an attack does.

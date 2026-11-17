@@ -30,6 +30,7 @@ class Category(StrEnum):
 
     SAFE = "SAFE"
     FORMAT_HIJACK = "FORMAT_HIJACK"
+    SIDE_TASK = "SIDE_TASK"
     ROLEPLAY = "ROLEPLAY"
     OFF_TOPIC = "OFF_TOPIC"
     PROMPT_EXTRACTION = "PROMPT_EXTRACTION"
@@ -64,6 +65,8 @@ class Verdict:
     topic: Topic
     language: Language
     rationale: str = ""
+    # Product, brand, company or tool names the message mentions, as written.
+    names: tuple[str, ...] = ()
 
 
 class GateUnavailable(LLMError):
@@ -82,15 +85,28 @@ def _data(text: str) -> str:
 
 
 def _parse(raw: dict[str, Any]) -> Verdict | None:
+    """Read a verdict: strict on the category, which decides the route, lenient on the rest.
+
+    A language or topic outside the closed sets ("fr", "skill") is not a
+    reason to fail: it reads as "other" and "none".
+    """
     try:
-        return Verdict(
-            category=Category(str(raw.get("category", "")).upper()),
-            topic=Topic(str(raw.get("topic", "none")).lower()),
-            language=Language(str(raw.get("language", "other")).lower()),
-            rationale=str(raw.get("rationale", ""))[:200],
-        )
+        category = Category(str(raw.get("category", "")).upper())
     except ValueError:
         return None
+    try:
+        topic = Topic(str(raw.get("topic", "none")).lower())
+    except ValueError:
+        topic = Topic.NONE
+    try:
+        language = Language(str(raw.get("language", "other")).lower())
+    except ValueError:
+        language = Language.OTHER
+    names = raw.get("names")
+    names = tuple(str(name)[:60] for name in names[:12] if str(name).strip()) if isinstance(names, list) else ()
+    return Verdict(
+        category=category, topic=topic, language=language, rationale=str(raw.get("rationale", ""))[:200], names=names
+    )
 
 
 class InputGate:
@@ -134,18 +150,21 @@ class InputGate:
         parts.append(f"<message>{_data(message)}</message>")
 
         try:
+            # A model whose verdict is invalid is skipped like one that failed.
             raw = await self._llm.json_call(
                 [
                     {"role": "system", "content": self._policy},
                     {"role": "user", "content": "\n".join(parts)},
-                ]
+                ],
+                accept=lambda candidate: _parse(candidate) is not None,
             )
         except LLMError as error:
-            raise GateUnavailable("No classifier answered") from error
+            raise GateUnavailable("No classifier returned a valid verdict") from error
 
         verdict = _parse(raw)
         if verdict is None:
-            raise GateUnavailable(f"Classifier returned an invalid verdict: {raw!r}")
+            # Only the keys: the values may quote the visitor, including blocked names.
+            raise GateUnavailable(f"Classifier returned an invalid verdict with keys {sorted(raw)}")
         logger.info(
             "gate category=%s topic=%s language=%s",
             verdict.category,

@@ -3,16 +3,20 @@
 from __future__ import annotations
 
 import asyncio
+import ipaddress
 import logging
 import os
+import re
 import secrets
+import time
+import unicodedata
 from contextlib import aclosing
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 from app.chat import ChatSession, RateLimiter, instruction_texts
 from app.config import settings
-from app.guard import InputGate, OutputGuard, load_policy
+from app.guard import InputGate, OutputGuard, load_policy, normalize
 from app.knowledge import load_knowledge
 from app.llm import LLM, LLMError
 
@@ -21,13 +25,20 @@ logger = logging.getLogger(__name__)
 
 _PROVIDER_KEYS = ("GROQ_API_KEY", "OPENAI_API_KEY", "GEMINI_API_KEY")
 _POLICY_VIOLATION = 1008
+_UNSUPPORTED_DATA = 1003
 
-_TOO_LONG = "That message is too long. Please keep it under {limit} characters."
-_SESSION_LIMIT = "This conversation has reached its message limit. Reload the page to start a new one."
-_RATE_LIMIT = "The assistant has received too many messages. Please try again later."
+_TOO_LONG = "That message is a little too long for me. Could you keep it under {limit} characters?"
+_TOO_MANY_SYMBOLS = "That message has more symbols than I can read. Could you write it in plain words?"
+_SESSION_LIMIT = (
+    "We have reached the message limit for this conversation. Reload the page whenever "
+    "you want to start a new one."
+)
+_RATE_LIMIT = "The assistant is receiving a lot of messages right now. Please try again in a while."
 _STRIKES = (
-    "This conversation has ended. The assistant only answers questions about my profile. "
-    "Esta conversación ha terminado: el asistente solo responde sobre mi perfil."
+    "I will close this conversation here: this assistant is only meant for questions about my "
+    "professional profile. For anything else, the contact details on the home page reach me directly.\n\n"
+    "Cierro aquí esta conversación: este asistente solo está pensado para preguntas sobre mi "
+    "perfil profesional. Para cualquier otra cosa, puedes escribirme con los datos de contacto de la portada."
 )
 _UNAVAILABLE = (
     "The assistant is not available right now. Please try again in a moment, "
@@ -55,15 +66,19 @@ gate = InputGate(
 # provider caches only while it stays byte-identical.
 guard = OutputGuard(
     blocked_terms=settings.blocked_terms,
-    protected_prompts=instruction_texts(),
+    # The knowledge's own directive notes are instructions too: never quoted.
+    protected_prompts=[*instruction_texts(), *knowledge.directives],
     knowledge_context=knowledge.context,
     canary=secrets.token_hex(8),
+    # Project ids that are not ordinary words ("dairyRobotCell") only belong in the cards block.
+    internal_ids=[project_id for project_id in knowledge.project_ids if re.search(r"[a-z][A-Z]", project_id)],
 )
 limiter = RateLimiter(
     max_connections_per_ip=settings.max_connections_per_ip,
     max_messages_per_ip_hour=settings.max_messages_per_ip_hour,
     max_messages_per_day=settings.max_messages_per_day,
     max_strikes_per_ip_hour=settings.max_strikes_per_ip_hour,
+    max_messages_per_ip_day=settings.max_messages_per_ip_day,
 )
 
 if not any(os.getenv(key) for key in _PROVIDER_KEYS):
@@ -93,10 +108,32 @@ def _client_id(websocket: WebSocket) -> str:
     """
     hops = [hop.strip() for hop in websocket.headers.get("x-forwarded-for", "").split(",") if hop.strip()]
     if len(hops) >= settings.trusted_proxy_hops:
-        return hops[-settings.trusted_proxy_hops]
-    if hops:
-        return hops[0]
-    return websocket.client.host if websocket.client else "unknown"
+        address = hops[-settings.trusted_proxy_hops]
+    elif hops:
+        address = hops[0]
+    else:
+        address = websocket.client.host if websocket.client else "unknown"
+    return _subscriber(address)
+
+
+def _subscriber(address: str) -> str:
+    """The unit the limits count: an IPv4 address, or the /64 network of an IPv6 one.
+
+    One IPv6 subscriber holds a whole /64; counting single addresses would
+    give it billions of fresh identities.
+    """
+    try:
+        ip = ipaddress.ip_address(address)
+    except ValueError:
+        return address
+    if ip.version == 6:
+        return str(ipaddress.ip_network(f"{ip}/64", strict=False))
+    return str(ip)
+
+
+def _symbols(text: str) -> int:
+    """Characters that are neither letters, digits, punctuation nor spaces."""
+    return sum(1 for char in text if unicodedata.category(char)[0] in "SC" and char != "\n")
 
 
 def _origin_allowed(websocket: WebSocket) -> bool:
@@ -130,17 +167,37 @@ async def chat(websocket: WebSocket) -> None:
 
         session = new_session()
         answered = 0
+        opened = last_message = time.monotonic()
 
         while True:
-            query = await asyncio.wait_for(
-                websocket.receive_text(), timeout=settings.idle_timeout_seconds
+            # Only accepted messages keep a conversation alive, and none lives forever.
+            now = time.monotonic()
+            remaining = min(
+                settings.idle_timeout_seconds - (now - last_message),
+                settings.max_session_seconds - (now - opened),
             )
-            query = query.strip()
+            if remaining <= 0:
+                await websocket.close()
+                return
+            frame = await asyncio.wait_for(websocket.receive(), timeout=remaining)
+            if frame["type"] == "websocket.disconnect":
+                raise WebSocketDisconnect(frame.get("code", 1000))
+            if frame.get("text") is None:
+                # The chat speaks text only.
+                await websocket.close(code=_UNSUPPORTED_DATA)
+                return
+
+            # Limits apply to the text the models will read: normalisation can
+            # turn a few characters into many, and invisible ones into nothing.
+            query = normalize(frame["text"])
             if not query:
                 continue
+            last_message = time.monotonic()
 
             if len(query) > settings.max_message_chars:
                 await _send(websocket, "error", _TOO_LONG.format(limit=settings.max_message_chars))
+            elif _symbols(query) > settings.max_message_symbols:
+                await _send(websocket, "error", _TOO_MANY_SYMBOLS)
             elif answered >= settings.max_messages_per_session:
                 await _send(websocket, "error", _SESSION_LIMIT)
             elif not limiter.allow_message(client):
@@ -150,8 +207,8 @@ async def chat(websocket: WebSocket) -> None:
                 strikes = session.strikes
                 try:
                     async with aclosing(session.stream_reply(query)) as frames:
-                        async for frame in frames:
-                            await websocket.send_json(frame)
+                        async for reply_frame in frames:
+                            await websocket.send_json(reply_frame)
                 except LLMError as error:
                     logger.error("chat reply failed: %s", error)
                     await _send(websocket, "error", _UNAVAILABLE)
@@ -162,7 +219,10 @@ async def chat(websocket: WebSocket) -> None:
                     # half-open socket or a partial answer left on screen.
                     logger.exception("chat reply crashed")
                     await _send(websocket, "error", _UNAVAILABLE)
-                limiter.record_strikes(client, session.strikes - strikes)
+                finally:
+                    # Also when the visitor leaves mid-answer: closing the
+                    # socket must not erase the strikes the message earned.
+                    limiter.record_strikes(client, session.strikes - strikes)
                 if session.strikes >= settings.max_strikes:
                     logger.warning("chat closed after %s strikes client=%s", session.strikes, client)
                     await _send(websocket, "error", _STRIKES)

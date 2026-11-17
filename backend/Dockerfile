@@ -24,5 +24,8 @@ EXPOSE 8787
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8787/api/v1/health')" || exit 1
 
-# One worker: the usage limits are kept in process memory.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8787"]
+# One worker: the usage limits are kept in process memory. The largest
+# legitimate frame is a few kilobytes; compressed frames are refused, since
+# they are inflated in memory before any limit can look at them.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8787", \
+     "--ws-max-size", "16384", "--ws-per-message-deflate", "false"]

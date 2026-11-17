@@ -9,8 +9,16 @@ services:
     image: portfolio:latest
     container_name: portfolio
     restart: unless-stopped
+    # Loopback only: the TLS proxy on the host (nginx, proxying to
+    # 127.0.0.1:3000) is the only way in. Published on all interfaces, the
+    # port would be a plain-HTTP side door, and Docker bypasses host firewalls.
     ports:
-      - "${PORT:-3000}:80"
+      - "127.0.0.1:${PORT:-3000}:80"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       - TZ=UTC
     depends_on:
@@ -48,10 +56,18 @@ services:
       - LLM_FALLBACK_MODELS=${LLM_FALLBACK_MODELS:-}
       - GUARD_MODEL=${GUARD_MODEL:-}
       - GUARD_FALLBACK_MODELS=${GUARD_FALLBACK_MODELS:-}
-      - TRUSTED_PROXY_HOPS=${TRUSTED_PROXY_HOPS:-2}
+      - TRUSTED_PROXY_HOPS=${TRUSTED_PROXY_HOPS:-1}
       - CHAT_BLOCKED_TERMS=${CHAT_BLOCKED_TERMS:-}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-}
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    # The usage limits live in this process: a memory cap keeps one abusive
+    # client from taking the host down, and rotated logs keep the disk safe.
+    mem_limit: 768m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

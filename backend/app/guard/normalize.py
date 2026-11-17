@@ -6,6 +6,12 @@ import re
 import unicodedata
 
 _WHITESPACE = re.compile(r"[^\S\n]+")
+# Characters that render as nothing or as a blank but are letters or marks to
+# Unicode: variation selectors (also used to smuggle bytes after an emoji),
+# Hangul fillers and the blank Braille pattern.
+_INVISIBLE = frozenset(
+    [*map(chr, range(0xFE00, 0xFE10)), *map(chr, range(0xE0100, 0xE01F0)), "\u115f", "\u1160", "\u3164", "\uffa0", "\u2800"]
+)
 _BLANK_LINES = re.compile(r"\n{3,}")
 
 
@@ -14,6 +20,8 @@ def _visible(char: str) -> bool:
     # BOM, tag characters) render as nothing and only serve to split words a
     # filter looks for. Other control characters (Cc) are noise, except the
     # newline the visitor typed.
+    if char in _INVISIBLE:
+        return False
     category = unicodedata.category(char)
     return char == "\n" or category not in ("Cf", "Cc")
 

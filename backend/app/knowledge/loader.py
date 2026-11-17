@@ -9,14 +9,28 @@ from typing import Any
 import yaml
 
 _PROJECTS_FILE = "projects.yaml"
+# Keys whose values tell the assistant how to speak, not what to say: they may
+# guide an answer but are never quoted in one.
+_DIRECTIVE_KEYS = frozenset({"wording", "confidentiality", "scope"})
 
 
 @dataclass(frozen=True, slots=True)
 class Knowledge:
-    """Knowledge base rendered for the prompt, plus the project ids it defines."""
+    """Knowledge base rendered for the prompt, the project ids it defines and its directive notes."""
 
     context: str
     project_ids: frozenset[str]
+    directives: tuple[str, ...] = ()
+
+
+def _directives(node: Any) -> list[str]:
+    """Values of the directive keys anywhere in a YAML document."""
+    if isinstance(node, dict):
+        found = [str(value) for key, value in node.items() if key in _DIRECTIVE_KEYS and value]
+        return found + [text for value in node.values() for text in _directives(value)]
+    if isinstance(node, list):
+        return [text for item in node for text in _directives(item)]
+    return []
 
 
 def load_knowledge(directory: Path) -> Knowledge:
@@ -46,4 +60,4 @@ def load_knowledge(directory: Path) -> Knowledge:
         raise ValueError(f"Duplicate project ids in {_PROJECTS_FILE}")
 
     context = yaml.safe_dump(documents, allow_unicode=True, sort_keys=False, width=1000)
-    return Knowledge(context=context, project_ids=frozenset(project_ids))
+    return Knowledge(context=context, project_ids=frozenset(project_ids), directives=tuple(_directives(documents)))

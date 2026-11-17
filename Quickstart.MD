@@ -123,10 +123,10 @@ cp .env.example .env        # set GROQ_API_KEY
 The assistant has one purpose, and the code enforces it rather than trusting the model to:
 
 1. The message is normalised (`app/guard/normalize.py`); base64 or hex that decodes to text is refused (`app/guard/encoding.py`).
-2. A classifier labels it against `app/guard/policy.yaml` (`app/guard/gate.py`). `route()` in `app/chat/chat.py` decides: answer it, answer the plain question on the same topic instead of a request for code, verse or a character, or send a fixed refusal. If no classifier answers, the message is not answered.
+2. A classifier labels it against `app/guard/policy.yaml` (`app/guard/gate.py`). `route()` in `app/chat/chat.py` decides: answer it, answer the plain question on the same topic instead of a request for code, verse or a character, write a short decline for a message outside the chat's purpose (two sentences that take up what was asked and offer a related part of the profile, no project cards), or send a fixed refusal to attempts on the rules or the instructions (variants taken in turn, so two in a row never repeat). If no classifier answers, the message is not answered.
 3. The model answers under the output contract in `app/chat/prompts.yaml`.
 4. `app/guard/output.py` checks every line before it is sent: code and data formats, quoted instructions, raw knowledge, blocked names in any disguise, links that are not in the knowledge. A violation discards the text, the model retries once, then a fixed reply is sent.
-5. Only delivered answers enter the history; repeated refusals close the conversation and, per IP, block new ones for an hour.
+5. Only delivered answers enter the history. The last decline or refusal is kept for one turn, so "yes, tell me" after its offer is understood; the declined message itself is never kept. Declines and refusals count as strikes: repeated ones close the conversation (`CHAT_MAX_STRIKES`) and, per IP, block new ones for an hour.
 
 Any change to the prompts, the policy, the knowledge, a model or the provider must pass the live red-team evaluation, which calls the real models (a few cents per run):
 
@@ -135,4 +135,4 @@ Any change to the prompts, the policy, the knowledge, a model or the provider mu
 .venv/bin/python -m evals.provider                                # models still answer; run daily
 ```
 
-Compare `attack_success_rate` and `false_refusal_rate` with the previous report: the rule is no regression in either. Attacks seen in the logs go into `evals/cases.yaml`; tune the policy on the `dev` cases only.
+Compare `attack_success_rate` and `false_refusal_rate` with the previous report: the rule is no regression in either. The full architecture, the invariants every change must keep and the release gate are in [ASSISTANT_SECURITY.md](ASSISTANT_SECURITY.md). Attacks seen in the logs go into `evals/cases.yaml`; tune the policy on the `dev` cases only.

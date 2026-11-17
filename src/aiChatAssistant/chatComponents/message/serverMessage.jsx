@@ -1,16 +1,12 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ASSISTANT_MARKDOWN } from '../../utils/markdown';
+import { ASSISTANT_COMPONENTS, ASSISTANT_MARKDOWN } from '../../utils/markdown';
 import './styles/desktop.css'
 import './styles/mobile.css'
 import ProjectMessage from '../projectMessage/projectMessage';
 import projects from '../../../environment/data/projects';
 import { ProjectWindow } from '../../../components/projects/projects';
-
-const markdownComponents = {
-    a: ({ node, children, ...props }) => <a {...props} target='_blank' rel='noreferrer'>{children}</a>,
-}
 
 // Pace at which an answer is written on screen. The model delivers it much
 // faster and in bursts; text that outruns the eye is uncomfortable to follow.
@@ -117,7 +113,7 @@ function ServerMessage({ message }) {
             <div className='chatRowBody'>
                 {text.trim() === '' && !written
                     ? <Spinner />
-                    : <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents} {...ASSISTANT_MARKDOWN}
+                    : <Markdown remarkPlugins={[remarkGfm]} components={ASSISTANT_COMPONENTS} {...ASSISTANT_MARKDOWN}
                         className={`chatAnswer ${written ? '' : 'typing'}`}>
                         {text}
                     </Markdown>}

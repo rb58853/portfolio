@@ -36,7 +36,13 @@ def _base64(token: str) -> bytes | None:
     if not (re.search(r"[a-z]", token) and re.search(r"[A-Z]", token) and re.search(r"\d", token)):
         return None
     padded = token + "=" * (-len(token) % 4)
-    for decode in (base64.b64decode, base64.urlsafe_b64decode):
+    # Strict decoding: a lenient one drops the "-" and "_" of the URL-safe
+    # alphabet, returns noise and never lets the URL-safe attempt run.
+    decoders = (
+        lambda data: base64.b64decode(data, validate=True),
+        lambda data: base64.b64decode(data.replace("-", "+").replace("_", "/"), validate=True),
+    )
+    for decode in decoders:
         try:
             return decode(padded)
         except (binascii.Error, ValueError):

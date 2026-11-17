@@ -21,6 +21,7 @@ class RateLimiter:
         max_messages_per_ip_hour: int,
         max_messages_per_day: int,
         max_strikes_per_ip_hour: int = 10,
+        max_messages_per_ip_day: int | None = None,
     ) -> None:
         """Store the limits.
 
@@ -32,17 +33,21 @@ class RateLimiter:
                 client may collect per hour, across conversations, before it
                 is turned away. A conversation closes at its own, lower limit;
                 this one stops reconnecting to start over.
+            max_messages_per_ip_day: Messages one client may send per day, so
+                that no single client can use up the daily budget of all.
         """
         self.max_connections_per_ip = max_connections_per_ip
         self.max_messages_per_ip_hour = max_messages_per_ip_hour
         self.max_messages_per_day = max_messages_per_day
         self.max_strikes_per_ip_hour = max_strikes_per_ip_hour
+        self.max_messages_per_ip_day = max_messages_per_ip_day or max_messages_per_day
 
         self._connections: defaultdict[str, int] = defaultdict(int)
         self._messages: defaultdict[str, deque[float]] = defaultdict(deque)
         self._strikes: defaultdict[str, deque[float]] = defaultdict(deque)
         self._day = date.today()
         self._day_count = 0
+        self._day_by_client: defaultdict[str, int] = defaultdict(int)
 
     @staticmethod
     def _recent(events: deque[float], now: float) -> deque[float]:
@@ -51,12 +56,19 @@ class RateLimiter:
         return events
 
     def _struck_out(self, client: str) -> bool:
-        return len(self._recent(self._strikes[client], time.monotonic())) >= self.max_strikes_per_ip_hour
+        if client not in self._strikes:
+            return False
+        recent = len(self._recent(self._strikes[client], time.monotonic()))
+        if not recent:
+            del self._strikes[client]  # Forget clients with nothing left to remember.
+        return recent >= self.max_strikes_per_ip_hour
 
     def record_strikes(self, client: str, count: int) -> None:
         """Add ``count`` strikes to ``client``."""
+        if count <= 0:
+            return
         now = time.monotonic()
-        self._strikes[client].extend([now] * max(0, count))
+        self._strikes[client].extend([now] * count)
 
     def open_connection(self, client: str) -> bool:
         """Reserve a connection slot for ``client``; ``False`` when it has none left."""
@@ -77,7 +89,10 @@ class RateLimiter:
         if today != self._day:
             self._day, self._day_count = today, 0
             self._messages.clear()
+            self._day_by_client.clear()
         if self._day_count >= self.max_messages_per_day or self._struck_out(client):
+            return False
+        if self._day_by_client[client] >= self.max_messages_per_ip_day:
             return False
 
         now = time.monotonic()
@@ -87,4 +102,5 @@ class RateLimiter:
 
         sent.append(now)
         self._day_count += 1
+        self._day_by_client[client] += 1
         return True
