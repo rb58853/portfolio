@@ -5,37 +5,50 @@ import { useLocation } from 'react-router-dom'
 import { SectionLink } from '../../routes/navigation'
 import { Icon } from '@iconify/react/dist/iconify.js'
 
+// Each section is a file open in an editor. The file name is decoration; the
+// accessible name of every tab is the section's own name.
+export const sectionFiles = {
+    home: { to: '/', label: 'Home', file: 'README.md', icon: 'codicon:markdown', tone: 'md', mobileIcon: 'codicon:home', language: 'Markdown' },
+    projects: { to: '/projects', label: 'Projects', file: 'projects.py', icon: 'codicon:python', tone: 'py', mobileIcon: 'codicon:code', language: 'Python' },
+    experience: { to: '/experience', label: 'Experience', file: 'experience.yaml', icon: 'codicon:list-tree', tone: 'yaml', mobileIcon: 'codicon:briefcase', language: 'YAML' },
+    skills: { to: '/skills', label: 'Skills & languages', file: 'skills.yaml', icon: 'codicon:list-tree', tone: 'yaml', mobileIcon: 'codicon:graph', language: 'YAML' },
+    about: { to: '/about', label: 'About', file: 'about.md', icon: 'codicon:markdown', tone: 'md', mobileIcon: 'codicon:account', language: 'Markdown' },
+}
+
 function Bar() {
     const section = useSelector((state) => state.section).section
     const { pathname } = useLocation()
-    return section !== 'chat' && <div className="bar">
-        <div className='barContent'>
-            <SectionLink className={`buttonSection ${section === 'home' ? 'active' : ''}`} to="/">
-                <text className='label desktop'>HOME</text>
-                <Icon className='iconSection mobile' icon={'mingcute:home-4-fill'} />
-            </SectionLink>
-            <SectionLink className={`buttonSection ${section === 'projects' ? 'active' : ''}`} to="/projects">
-                <text className='label desktop'>PROJECTS</text>
-                <Icon className='iconSection mobile' icon={'tdesign:code'} />
-            </SectionLink>
-            <SectionLink className={`buttonSection ${section === 'experience' ? 'active' : ''}`} to="/experience">
-                <text className='label desktop'>EXPERIENCE</text>
-                <Icon className='iconSection mobile' icon={'mdi:briefcase'} />
-            </SectionLink>
-            <SectionLink className={`buttonSection ${section === 'skills' ? 'active' : ''}`} to="/skills">
-                <text className='label desktop'>SKILLS & LANGUAGES</text>
-                <Icon className='iconSection mobile' icon={'ion:stats-chart'} />
-            </SectionLink>
-            <SectionLink className={`buttonSection ${section === 'about' ? 'active' : ''}`} to="/about">
-                <text className='label desktop'>ABOUT</text>
-                <Icon className='iconSection mobile' icon={'iconamoon:profile-fill'} />
-            </SectionLink>
+    const current = sectionFiles[section]
 
-            <SectionLink state={{ from: pathname }} className={`buttonSection mobile ${section === 'chat' ? 'active' : ''}`} to="/chat">
-                <Icon className='iconSection mobile' icon={'majesticons:message'} />
+    return section !== 'chat' && <nav className="bar" aria-label='Sections'>
+        <div className='barContent'>
+            {Object.entries(sectionFiles).map(([key, tab]) => (
+                <SectionLink key={key} to={tab.to} aria-label={tab.label}
+                    aria-current={section === key ? 'page' : undefined}
+                    className={`buttonSection ${section === key ? 'active' : ''}`}>
+                    <Icon className={`tabIcon desktop ${tab.tone}`} icon={tab.icon} aria-hidden='true' />
+                    <span className='label desktop' aria-hidden='true'>{tab.file}</span>
+                    <Icon className='iconSection mobile' icon={tab.mobileIcon} aria-hidden='true' />
+                </SectionLink>
+            ))}
+
+            <SectionLink state={{ from: pathname }} aria-label='Assistant'
+                className={`buttonSection mobile ${section === 'chat' ? 'active' : ''}`} to="/chat">
+                <Icon className='iconSection mobile' icon={'codicon:terminal'} aria-hidden='true' />
             </SectionLink>
         </div>
-    </div>
+
+        {current &&
+            <div className='barCrumbs desktop' aria-hidden='true'>
+                <div className='barCrumbsContent'>
+                    <span>rb58853</span>
+                    <Icon icon='codicon:chevron-right' />
+                    <span>portfolio</span>
+                    <Icon icon='codicon:chevron-right' />
+                    <Icon className={`tabIcon ${current.tone}`} icon={current.icon} />
+                    <span className='barCrumbsFile'>{current.file}</span>
+                </div>
+            </div>}
+    </nav>
 }
 export default Bar
-

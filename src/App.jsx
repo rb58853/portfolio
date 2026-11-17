@@ -8,7 +8,7 @@ import './environment/styles/dark.css'
 import './environment/styles/light.css'
 import { store } from './redux/store';
 import Bar from './components/bar/bar';
-import { ChatButton, ThemeButton } from './components/bar/floatButtons';
+import { ChatButton, StatusBar, ThemeButton } from './components/bar/floatButtons';
 import seo from './environment/data/seo';
 
 function App({ content }) {
@@ -32,6 +32,7 @@ function App({ content }) {
         <ThemeButton />
         <ChatButton />
         {content}
+        <StatusBar />
       </Provider>
     </div>
   );

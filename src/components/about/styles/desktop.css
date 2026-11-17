@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     place-items: center;
-    margin-top: 70px;
+    margin-top: 82px;
     padding-bottom: 96px;
     color: var(--text-color);
     transition: color 350ms ease;
@@ -30,26 +30,28 @@
 .abEyebrow,
 .abLabel {
     margin: 0;
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
     font-weight: 600;
     line-height: 1.6;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    letter-spacing: 0;
     color: var(--ab-muted);
 }
 
 .abEyebrow {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
 }
 
 .abEyebrow::before {
-    content: '';
-    width: 28px;
-    height: 1px;
-    background-color: var(--ab-accent);
+    content: '#';
+    color: var(--ab-accent);
+}
+
+.abLabel::before {
+    content: '## ';
+    color: var(--ab-accent);
 }
 
 /* ---------- Sections ---------- */
@@ -101,8 +103,8 @@
 
 .abBody h3 {
     margin: 28px 0 10px;
-    font-size: 1.25rem;
-    font-weight: 400;
+    font-size: 1.05rem;
+    font-weight: 600;
     line-height: 1.2;
 }
 
@@ -145,11 +147,10 @@
 }
 
 .abDetails .abBody strong {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ab-faint);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--syn-comment);
 }
 
 .abDetails .abBody a {

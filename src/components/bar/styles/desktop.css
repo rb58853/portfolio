@@ -1,4 +1,4 @@
-/* ---------- Top bar ---------- */
+/* ---------- Top bar: editor tabs and breadcrumbs ---------- */
 
 .bar {
     position: fixed;
@@ -7,18 +7,18 @@
     right: 0;
     z-index: 3;
     display: flex;
-    place-content: center;
-    background-color: color-mix(in srgb, var(--background-color) 78%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
-    backdrop-filter: blur(16px);
+    flex-direction: column;
+    background-color: var(--chrome-bg);
+    border-bottom: 1px solid var(--chrome-border);
+    font-family: var(--font-mono);
 }
 
 .barContent {
     width: min(90%, 1040px);
-    height: 56px;
+    height: 40px;
     display: flex;
     align-items: stretch;
-    gap: 30px;
+    margin: 0 auto;
     padding-right: 48px;
     overflow-x: auto;
     scrollbar-width: none;
@@ -29,53 +29,142 @@
 }
 
 .buttonSection {
-    border-bottom: 1px solid transparent;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    color: color-mix(in srgb, var(--text-color) 62%, transparent);
+    position: relative;
+    flex: none;
+    font-size: 0.8rem;
+    color: var(--chrome-text);
     text-decoration: none;
     white-space: nowrap;
-    transition: color 200ms ease, border-color 200ms ease;
+    transition: color 160ms ease, background-color 160ms ease;
 }
 
 .barContent>.buttonSection:not(.mobile) {
     display: flex;
     align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    border-right: 1px solid var(--chrome-border);
+}
+
+.barContent>.buttonSection:not(.mobile):first-child {
+    border-left: 1px solid var(--chrome-border);
 }
 
 .buttonSection:hover {
     color: var(--text-color);
 }
 
+/* The active tab joins the page below it, with the accent along its top edge */
 .buttonSection.active {
     color: var(--text-color);
-    border-bottom-color: var(--default-highlight-color);
+    background-color: var(--tab-active-bg);
 }
 
-/* ---------- Theme toggle (sits at the right end of the bar) ---------- */
+.buttonSection.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--default-highlight-color);
+}
+
+.buttonSection.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background-color: var(--tab-active-bg);
+}
+
+.buttonSection:focus-visible {
+    outline: 1px solid var(--default-highlight-color);
+    outline-offset: -1px;
+}
+
+.tabIcon {
+    flex: none;
+    font-size: 15px;
+}
+
+.tabIcon.md {
+    color: var(--syn-keyword);
+}
+
+.tabIcon.py {
+    color: var(--syn-function);
+}
+
+.tabIcon.yaml {
+    color: var(--syn-control);
+}
+
+/* File icons in the editor stay muted until their tab is open */
+.buttonSection:not(.active) .tabIcon {
+    opacity: 0.7;
+}
+
+.barCrumbs {
+    background-color: var(--tab-active-bg);
+    border-top: 1px solid var(--chrome-border);
+}
+
+.barCrumbsContent {
+    width: min(90%, 1040px);
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto;
+    padding-left: 16px;
+    font-size: 0.74rem;
+    color: var(--chrome-text);
+}
+
+.barCrumbsContent>svg {
+    flex: none;
+    font-size: 13px;
+}
+
+.barCrumbsFile {
+    color: var(--text-color);
+}
+
+/* ---------- Theme toggle (sits at the right end of the tabs) ---------- */
 
 .themeToggleButton {
-    position: fixed;
-    z-index: 4;
-    top: 10px;
-    right: calc(max(5vw, (100vw - 1040px) / 2) - 9px);
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: grid;
     place-items: center;
+    padding: 0;
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 50%;
-    color: color-mix(in srgb, var(--text-color) 62%, transparent);
-    font-size: 18px;
+    border-radius: 5px;
+    color: var(--chrome-text);
+    font-size: 17px;
     cursor: pointer;
-    transition: color 180ms ease, border-color 180ms ease;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+
+.themeToggleButton.floating {
+    position: fixed;
+    z-index: 4;
+    top: 5px;
+    right: calc(max(5vw, (100vw - 1040px) / 2) + 2px);
 }
 
 .themeToggleButton:hover {
     color: var(--text-color);
-    border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
+    background-color: var(--default-hover-color);
+}
+
+.themeToggleButton:focus-visible {
+    outline: 1px solid var(--default-highlight-color);
+    outline-offset: -1px;
 }
 
 /* ---------- Chat shortcut ---------- */
@@ -86,19 +175,19 @@
     position: fixed;
     z-index: 3;
     right: max(24px, 3%);
-    bottom: max(24px, 3%);
+    bottom: calc(max(24px, 3%) + 22px);
     width: 48px;
     height: 48px;
     display: grid;
     place-items: center;
     box-sizing: border-box;
-    border-radius: 50%;
+    border-radius: 8px;
     border: 1px solid color-mix(in srgb, var(--default-highlight-color) 55%, transparent);
     background: linear-gradient(135deg,
             color-mix(in srgb, var(--default-highlight-color) 24%, var(--background-color)),
             color-mix(in srgb, var(--secundary-highlight-color) 18%, var(--background-color)));
     color: var(--text-color);
-    font-size: 20px;
+    font-size: 22px;
     box-shadow: 0 0 14px color-mix(in srgb, var(--default-highlight-color) 20%, transparent);
     transition: border-color 200ms ease, box-shadow 200ms ease;
 }
@@ -107,4 +196,83 @@
     border-color: color-mix(in srgb, var(--default-highlight-color) 85%, transparent);
     box-shadow: 0 0 20px color-mix(in srgb, var(--default-highlight-color) 40%, transparent),
         inset 0 0 12px color-mix(in srgb, var(--default-highlight-color) 14%, transparent);
+}
+
+.chatButton:focus-visible {
+    outline: 2px solid var(--default-highlight-color);
+    outline-offset: 2px;
+}
+
+/* ---------- Status bar ---------- */
+
+.App>.statusBar {
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 22px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0 6px;
+    background-color: var(--statusbar-bg);
+    color: var(--statusbar-text);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1;
+}
+
+.statusGroup {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.statusItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 8px;
+    white-space: nowrap;
+    color: inherit;
+    text-decoration: none;
+}
+
+.statusItem>svg {
+    font-size: 13px;
+}
+
+.statusRemote {
+    margin-left: -6px;
+    padding: 0 12px;
+    background-color: color-mix(in srgb, var(--statusbar-text) 14%, transparent);
+}
+
+.statusLink {
+    transition: background-color 160ms ease;
+}
+
+.statusLink:hover {
+    background-color: var(--statusbar-hover);
+}
+
+.statusLink:focus-visible {
+    outline: 1px solid var(--statusbar-text);
+    outline-offset: -2px;
+}
+
+.statusDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--statusbar-text);
+}
+
+@media(max-width:900px) {
+
+    .statusGroup:first-child>.statusItem:nth-child(3),
+    .statusGroup:last-child>.statusItem:nth-last-child(-n+2) {
+        display: none;
+    }
 }

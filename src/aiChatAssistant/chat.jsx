@@ -8,11 +8,21 @@ import './styles/mobile.css'
 import AutoResizeTextarea from './utils/textArea/textArea'
 import UserMessage from './chatComponents/message/userMessage';
 import ServerMessage from './chatComponents/message/serverMessage';
+import ShellPrompt from './chatComponents/message/shellPrompt';
 import { connectChat, sendChatMessage, sendQueuedQuestion } from './core/socket';
 import setSectionFunction from '../redux/sections/functions';
 import { useSectionNavigate } from '../routes/navigation';
+import { ThemeToggle } from '../components/bar/floatButtons';
 
-const STATUS_LABEL = { idle: 'Connecting', connecting: 'Connecting', ready: 'Online', offline: 'Offline' }
+const STATUS_LABEL = { idle: 'connecting', connecting: 'connecting', ready: 'online', offline: 'offline' }
+
+// Questions offered as commands before the conversation starts
+const SUGGESTIONS = [
+    'What are you working on right now?',
+    'Show me your computer vision projects',
+    'Which technologies do you use most?',
+    'How can I contact you?',
+]
 
 function Chat() {
     const { status, messages, pendingQuestion } = useSelector((state) => state.ws)
@@ -37,18 +47,28 @@ function Chat() {
         if (sendChatMessage(dispatch, text)) setQuery('')
     };
 
+    // A suggested question is sent as it is, under the same rule as typing it
+    const canAsk = status === 'ready' && !answering
+    const suggest = (text) => {
+        if (canAsk) sendChatMessage(dispatch, text)
+    }
+
     const retry = () => connectChat(dispatch)
 
     return <div onFocus={setSectionFunction(dispatch, 'chat')} className='chat'>
-        <ChatBar status={status} />
-        <ChatHistory messages={messages} status={status} retry={retry}
-            awaitingQuestion={pendingQuestion !== null && status !== 'offline'} />
-        {(status !== 'offline' || messages.length > 0) &&
-            <ChatComposer status={status} retry={retry} answering={answering}
-                sendMessage={sendMessage} query={query} setQuery={setQuery} />}
+        <div className='chatWindow'>
+            <ChatBar status={status} />
+            <ChatHistory messages={messages} status={status} retry={retry}
+                awaitingQuestion={pendingQuestion !== null && status !== 'offline'}
+                canAsk={canAsk} suggest={suggest} />
+            {(status !== 'offline' || messages.length > 0) &&
+                <ChatComposer status={status} retry={retry} answering={answering}
+                    sendMessage={sendMessage} query={query} setQuery={setQuery} />}
+        </div>
     </div>
 }
 
+// Title bar of the terminal window
 function ChatBar({ status }) {
     const go = useSectionNavigate()
     const location = useLocation()
@@ -56,11 +76,18 @@ function ChatBar({ status }) {
     return <header className='chatBar'>
         <div className='chatBarContent'>
             <button className='chatBack' onClick={() => { go(location.state?.from || '/') }}>
-                <Icon icon='mdi:arrow-left' />
+                <Icon icon='codicon:arrow-left' />
                 <span>Back</span>
             </button>
-            <span className='chatBarTitle'>Assistant</span>
-            <span className={`chatStatus ${status}`}>{STATUS_LABEL[status]}</span>
+            <span className='chatBarTitle'>
+                <Icon icon='codicon:terminal' aria-hidden='true' />
+                <span aria-hidden='true'>visitor@rb58853: ~/assistant</span>
+                <span className='srOnly'>Assistant</span>
+            </span>
+            <div className='chatBarActions'>
+                <span className={`chatStatus ${status}`}>{STATUS_LABEL[status]}</span>
+                <ThemeToggle className='inChat' />
+            </div>
         </div>
     </header>
 }
@@ -75,7 +102,7 @@ const MAX_FRAME_SECONDS = 0.05
 // How close to its resting position the view must be to follow the answer again
 const REATTACH_DISTANCE = 48
 
-function ChatHistory({ messages, status, retry, awaitingQuestion }) {
+function ChatHistory({ messages, status, retry, awaitingQuestion, canAsk, suggest }) {
     const scrollRef = useRef(null)
     const columnRef = useRef(null)
     // The view follows the conversation until the visitor scrolls away to read
@@ -187,8 +214,8 @@ function ChatHistory({ messages, status, retry, awaitingQuestion }) {
         onScroll={() => { if (!following.current) onUserScroll() }}
         onPointerDown={(e) => { if (e.target === scrollRef.current) onUserScroll() }}>
         <div className='chatColumn chatHistory' ref={columnRef}>
-            {messages.length === 0 && !awaitingQuestion &&
-                <ChatIntro offline={status === 'offline'} retry={retry} />}
+            <ChatIntro offline={status === 'offline'} retry={retry} canAsk={canAsk} suggest={suggest}
+                showSuggestions={messages.length === 0 && !awaitingQuestion} />
             {messages.map((message, index) => message.role === 'user'
                 ? <UserMessage key={index} text={message.text} current={index >= messages.length - 2} />
                 : <ServerMessage key={index} message={message} />)}
@@ -196,18 +223,35 @@ function ChatHistory({ messages, status, retry, awaitingQuestion }) {
     </div>
 }
 
-function ChatIntro({ offline, retry }) {
+// When this visit opened the terminal, as a shell greets a new session
+const OPENED = new Date().toLocaleString('en-GB', {
+    weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+})
+
+// Session banner: stays at the top of the conversation, like a shell's welcome text
+function ChatIntro({ offline, retry, canAsk, suggest, showSuggestions }) {
     return <div className='chatIntro'>
-        <span className='chatEyebrow'>Assistant</span>
-        <h1 className='chatIntroTitle'>
-            {offline ? 'The assistant is offline right now.' : 'Ask me about my experience, projects or skills.'}
-        </h1>
+        <p className='chatMotd' aria-hidden='true'>Last login: {OPENED} on web</p>
+        <h1 className='chatIntroTitle'>Ask me about my experience, projects or skills.</h1>
         <p className='chatIntroText'>
-            {offline
-                ? 'Try again in a moment, or use the contact details on the home page.'
-                : 'This is an AI assistant that answers on my behalf, using what is published on this site.'}
+            An AI assistant answers on my behalf, using only what is published on this site.
         </p>
-        {offline && <button className='chatLink' onClick={retry}>Try again</button>}
+
+        {offline
+            ? <div className='chatIntroOffline' role='status'>
+                <p><span className='chatErrorTag'>error:</span> the assistant is offline right now. Try again in a moment, or use the contact details on the home page.</p>
+                <button className='chatLink' onClick={retry}>Try again</button>
+            </div>
+            : showSuggestions && <div className='chatSuggestions'>
+                <p className='chatSuggestionsLabel'># try one of these</p>
+                {SUGGESTIONS.map((text) => (
+                    <button key={text} type='button' className='chatSuggestion' disabled={!canAsk}
+                        onClick={() => suggest(text)}>
+                        <span className='chatSuggestionMark' aria-hidden='true'>$</span>
+                        <span>{text}</span>
+                    </button>
+                ))}
+            </div>}
     </div>
 }
 
@@ -216,23 +260,27 @@ function ChatComposer({ status, retry, answering, sendMessage, query, setQuery }
 
     return <footer className='chatComposer'>
         <div className='chatColumn chatComposerRow'>
-            <span className='chatRowLabel'>You</span>
             {status === 'offline'
                 ? <div className='chatNotice'>
-                    <span>The assistant is offline.</span>
+                    <span><span className='chatErrorTag'>error:</span> the assistant is offline.</span>
                     <button className='chatLink' onClick={retry}>Try again</button>
                 </div>
                 : <div className='chatField'>
                     <div className='chatInput'>
+                        <ShellPrompt />
                         <AutoResizeTextarea query={query} setQuery={setQuery} sendMessage={sendMessage}
-                            disabled={!ready} placeholder={ready ? 'Write a message' : 'Connecting'} />
-                        <button className='chatSend' aria-label='Send message'
+                            disabled={!ready} ariaLabel='Message to the assistant'
+                            placeholder={ready ? 'ask me anything about my work' : 'connecting…'} />
+                        <button className='chatSend' aria-label='Send message' title='Send (Enter)'
                             disabled={!ready || answering || query.trim() === ''}
                             onClick={() => { sendMessage() }}>
-                            <Icon icon='mdi:arrow-up' />
+                            <Icon icon='codicon:newline' />
                         </button>
                     </div>
-                    <p className='chatFootnote'>AI assistant answering on Raúl's behalf. Answers may contain mistakes.</p>
+                    <p className='chatFootnote'>
+                        <span># AI assistant answering on Raúl's behalf. Answers may contain mistakes.</span>
+                        <span className='chatKeys' aria-hidden='true'><kbd>Enter</kbd> send · <kbd>Shift</kbd>+<kbd>Enter</kbd> new line</span>
+                    </p>
                 </div>}
         </div>
     </footer>

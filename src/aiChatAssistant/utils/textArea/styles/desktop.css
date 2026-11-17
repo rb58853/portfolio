@@ -6,10 +6,11 @@
     outline: none;
     resize: none;
     background: transparent;
-    font-family: inherit;
-    font-size: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
     line-height: 1.5;
-    color: var(--text-color);
+    color: var(--ch-bright);
+    caret-color: var(--term-user);
 }
 
 .chatTextarea::placeholder {

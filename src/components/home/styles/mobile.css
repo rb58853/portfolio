@@ -1,4 +1,9 @@
 @media(max-width:900px) {
+    .hmHeader {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
     .hmContact {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -6,8 +11,16 @@
 
 @media(max-width:640px) {
     .hmHeader {
-        gap: 16px;
+        gap: 28px;
         padding-bottom: 40px;
+    }
+
+    .hmIntro {
+        gap: 16px;
+    }
+
+    .hmCodeBody {
+        font-size: 0.72rem;
     }
 
     .hmContact {

@@ -22,23 +22,29 @@
 }
 
 .viewMyWorkNote {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
     color: var(--pg-faint);
 }
 
 .viewWorkButton {
-    padding: 12px 28px;
+    padding: 11px 22px;
     border: 1px solid color-mix(in srgb, var(--text-color) 24%, transparent);
-    border-radius: 3px;
-    font-size: 1.05rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
     font-weight: 500;
     color: var(--text-color);
     transition-property: border-color, box-shadow;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
+}
+
+/* Reads like a command run from the palette */
+.viewWorkButton::before {
+    content: '> ';
+    color: var(--default-highlight-color);
 }
 
 .viewWorkButton.active {

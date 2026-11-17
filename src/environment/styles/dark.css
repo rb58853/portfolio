@@ -1,45 +1,81 @@
+/* Dark theme: a code editor's dark surfaces (greys and near blacks) with the
+   site's green as the only accent. The syntax colours are for text that reads
+   as code; they never fill surfaces or glow. */
 :root,
 :root[data-theme='dark'] {
-    --bar-color: rgba(18, 20, 20, 0.82);
-    --background-color: rgb(11, 12, 12);
-    --chat-background-color: rgb(18, 20, 20);
+    --bar-color: #181818;
+    --background-color: #1f1f1f;
+    --chat-background-color: #181818;
 
-    --line-color: rgba(255, 255, 255, 0.14);
-    --text-color: rgb(236, 238, 237);
+    --line-color: rgba(255, 255, 255, 0.1);
+    --text-color: rgb(214, 216, 215);
 
     --contribution-color: rgb(72, 158, 121);
 
     --default-highlight-color: rgb(72, 158, 121);
     --secundary-highlight-color: rgb(36, 96, 72);
 
-    --presentation-background-color: rgba(20, 22, 22, 0.85);
+    --presentation-background-color: #252526;
     --presentation-button-border-color: white;
 
-    --about-background-color: rgba(17, 19, 19, 0.78);
-    --info-box-background-color: rgba(26, 29, 28, 0.94);
+    --about-background-color: #1f1f1f;
+    --info-box-background-color: #252526;
 
     --progress-bar-background-color: rgba(255, 255, 255, 0.1);
-    --progress-bar-color:  rgb(176, 182, 180);
+    --progress-bar-color: rgb(176, 182, 180);
     --progress-bar-highlight-color: rgb(72, 158, 121);
     --progress-bar-label-color: rgb(24, 27, 26);
     --progress-bar-label-highlight-color: rgb(34, 92, 70);
 
     --default-container-background-color: rgba(255, 255, 255, 0.04);
 
-    --projects-background-color: rgba(11, 12, 12, 0.92);
+    --projects-background-color: #1f1f1f;
     --skill-label-color: rgba(222, 226, 224, 0.9);
 
-    --default-hover-color: rgba(255, 255, 255, 0.08);
+    --default-hover-color: rgba(255, 255, 255, 0.06);
 
-    --project-window-color: rgba(17, 19, 19, 0.98);
+    --project-window-color: #1f1f1f;
 
     --my-messages-background-color: rgb(31, 84, 64);
-    --input-message-backgroundcolor: rgb(22, 24, 24);
+    --input-message-backgroundcolor: #252526;
 
-    --surface-1: rgba(24, 26, 26, 0.72);
-    --surface-2: rgba(32, 35, 34, 0.82);
-    --surface-border: rgba(255, 255, 255, 0.12);
-    --soft-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-    --hero-gradient: radial-gradient(circle at 14% 10%, rgba(34, 88, 67, 0.2), transparent 40%), radial-gradient(circle at 86% 18%, rgba(255, 255, 255, 0.03), transparent 36%), linear-gradient(160deg, rgb(10, 11, 11) 0%, rgb(16, 18, 18) 52%, rgb(9, 10, 10) 100%);
+    --surface-1: #181818;
+    --surface-2: #252526;
+    --surface-border: #2f2f2f;
+    --soft-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    --hero-gradient: none;
 
+    /* ---------- Editor chrome ---------- */
+    --chrome-bg: #181818;
+    --chrome-border: #2b2b2b;
+    --chrome-text: #9d9d9d;
+    --tab-active-bg: #1f1f1f;
+    --gutter-text: #6e7681;
+    --statusbar-bg: #1d5b44;
+    --statusbar-text: #e6f2ec;
+    --statusbar-hover: rgba(255, 255, 255, 0.12);
+    --scrollbar-thumb: rgba(121, 121, 121, 0.4);
+    --scrollbar-thumb-hover: rgba(100, 100, 100, 0.7);
+
+    /* ---------- Syntax ---------- */
+    --syn-keyword: #569cd6;
+    --syn-control: #c586c0;
+    --syn-string: #ce9178;
+    --syn-function: #dcdcaa;
+    --syn-type: #4ec9b0;
+    --syn-variable: #9cdcfe;
+    --syn-number: #b5cea8;
+    --syn-comment: #6a9955;
+    --syn-punct: #8b949e;
+
+    /* ---------- Terminal (assistant) ---------- */
+    --term-bg: #141414;
+    --term-titlebar: #232323;
+    --term-border: #333333;
+    --term-text: #d4d4d4;
+    --term-bright: #f0f0f0;
+    --term-user: #5fc994;
+    --term-path: #6fa8dc;
+    --term-error: #f17171;
+    --term-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
 }

@@ -3,7 +3,7 @@ import './styles/desktop.css';
 
 const MAX_HEIGHT = 180
 
-const AutoResizeTextarea = ({ query, setQuery, sendMessage, disabled, placeholder }) => {
+const AutoResizeTextarea = ({ query, setQuery, sendMessage, disabled, placeholder, ariaLabel }) => {
     const textareaRef = useRef(null);
 
     // Grows with its content up to MAX_HEIGHT, then scrolls
@@ -17,6 +17,7 @@ const AutoResizeTextarea = ({ query, setQuery, sendMessage, disabled, placeholde
         <textarea
             className='chatTextarea'
             placeholder={placeholder}
+            aria-label={ariaLabel}
             maxLength={800}
             rows={1}
             disabled={disabled}

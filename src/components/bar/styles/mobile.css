@@ -1,20 +1,52 @@
-@media(max-width:700px) {
+/* Narrow windows: the tabs take the whole width and drop their file icons,
+   so all five fit next to the theme toggle */
+@media(max-width:860px) {
     .barContent {
-        gap: 18px;
+        width: 100%;
+        padding-left: 6px;
+    }
+
+    .barCrumbsContent {
+        width: 100%;
+        padding-left: 18px;
+    }
+
+    .barContent>.buttonSection:not(.mobile) {
+        padding: 0 11px;
+    }
+
+    .tabIcon.desktop {
+        display: none;
     }
 
     .buttonSection {
-        font-size: 0.66rem;
-        letter-spacing: 0.1em;
+        font-size: 0.74rem;
+    }
+
+    .themeToggleButton.floating {
+        right: 8px;
+        background-color: var(--chrome-bg);
     }
 }
 
+@media(max-width:620px) {
+    .barContent>.buttonSection:not(.mobile) {
+        padding: 0 8px;
+    }
+
+    .buttonSection {
+        font-size: 0.7rem;
+    }
+}
+
+/* Phones: the tabs become an icon bar along the bottom edge, like an
+   activity bar, and the status bar and breadcrumbs go away. */
 @media(max-width:500px) {
     .bar {
         top: auto;
         bottom: 0;
         border-bottom: none;
-        border-top: 1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
+        border-top: 1px solid var(--chrome-border);
     }
 
     .barContent {
@@ -26,19 +58,28 @@
         padding: 0 22px;
     }
 
-    .barContent>.buttonSection {
+    .barContent>.buttonSection,
+    .barContent>.buttonSection:not(.mobile),
+    .barContent>.buttonSection:not(.mobile):first-child {
         display: flex;
         align-items: center;
         height: 100%;
         margin: 0;
         padding: 0 6px;
-        border-bottom: none;
-        color: color-mix(in srgb, var(--text-color) 55%, transparent);
+        border: none;
+        color: var(--chrome-text);
+        background-color: transparent;
+    }
+
+    .barContent>.buttonSection::before,
+    .barContent>.buttonSection::after {
+        display: none;
     }
 
     .barContent>.buttonSection:hover,
     .barContent>.buttonSection.active {
         color: var(--default-highlight-color);
+        background-color: transparent;
     }
 
     .iconSection {
@@ -46,30 +87,19 @@
         height: 24px;
     }
 
-    .App>.chatButton {
+    .App>.chatButton,
+    .App>.statusBar {
         display: none;
     }
 
-    .themeToggleButton {
+    .themeToggleButton.floating {
         top: auto;
         right: 14px;
         bottom: 72px;
         width: 40px;
         height: 40px;
-        background-color: var(--bar-color);
-        border-color: color-mix(in srgb, var(--text-color) 12%, transparent);
-        backdrop-filter: blur(12px);
-    }
-
-    /* The chat has no bottom bar: the toggle stays in its top strip */
-    .themeToggleButton.inChat {
-        top: 10px;
-        right: 12px;
-        bottom: auto;
-        width: 36px;
-        height: 36px;
-        background-color: transparent;
-        border-color: transparent;
-        backdrop-filter: none;
+        background-color: var(--chrome-bg);
+        border-color: var(--chrome-border);
+        border-radius: 8px;
     }
 }

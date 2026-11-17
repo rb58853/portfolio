@@ -10,7 +10,7 @@
 }
 
 button {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-mono);
 }
 
 
@@ -27,7 +27,7 @@ button {
     display: flex;
     flex-direction: column;
     place-items: center;
-    margin-top: 70px;
+    margin-top: 82px;
     padding-bottom: 96px;
     color: var(--text-color);
     transition: color 350ms ease;
@@ -43,29 +43,33 @@ button {
     padding: 56px 0 28px;
 }
 
+/* Eyebrows and section labels read as headings in a source file: "# Page"
+   and "## Section". The markers are decoration, added by CSS only. */
 .pageEyebrow,
 .pageLabel {
     margin: 0;
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
     font-weight: 600;
     line-height: 1.6;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    letter-spacing: 0;
     color: var(--pg-muted);
 }
 
 .pageEyebrow {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
 }
 
 .pageEyebrow::before {
-    content: '';
-    width: 28px;
-    height: 1px;
-    background-color: var(--pg-accent);
+    content: '#';
+    color: var(--pg-accent);
+}
+
+.pageLabel::before {
+    content: '## ';
+    color: var(--pg-accent);
 }
 
 .pageSection {

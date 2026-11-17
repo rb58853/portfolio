@@ -1,35 +1,65 @@
 @media(max-width:900px) {
-    .chatComposerRow {
-        grid-template-columns: 1fr;
-        gap: 0;
-        padding: 12px 0 10px;
-    }
-
-    .chatComposerRow>.chatRowLabel {
+    .chatKeys {
         display: none;
     }
 }
 
+/* Phones: the terminal fills the screen */
 @media(max-width:640px) {
+    .App>.chat {
+        padding: 0;
+    }
+
+    .chatWindow {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
     .chatColumn {
-        width: 100%;
         padding-inline: 16px;
-        box-sizing: border-box;
     }
 
     .chatBarContent {
-        width: 100%;
-        gap: 20px;
-        padding: 0 58px 0 16px;
-        box-sizing: border-box;
+        grid-template-columns: auto 1fr auto;
+        gap: 8px;
+        padding: 0 6px;
+    }
+
+    .chatBack>span,
+    .chatStatus {
+        font-size: 0;
+        gap: 0;
+    }
+
+    .chatBarTitle {
+        justify-content: center;
+        overflow: hidden;
+        font-size: 0.74rem;
+    }
+
+    .chatBarTitle>span {
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .chatIntro {
-        gap: 16px;
-        padding: 32px 0 20px;
+        padding-top: 16px;
     }
 
-    .chatFootnote {
-        text-align: center;
+    /* The prompt is long for a phone: the composer keeps only "$" */
+    .chatInput>.chatPrompt>.chatPromptUser,
+    .chatInput>.chatPrompt>.chatPromptPath {
+        display: none;
+    }
+
+    .chatInput>.chatPrompt {
+        font-size: 0;
+    }
+
+    .chatInput>.chatPrompt::after {
+        content: '$';
+        font-size: 0.9rem;
+        color: var(--term-user);
     }
 }

@@ -72,6 +72,24 @@ function settle(partial) {
     return text
 }
 
+// Spinner a command line shows while it works
+const SPINNER = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+
+function Spinner() {
+    const [frame, setFrame] = useState(0)
+
+    useEffect(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+        const timer = setInterval(() => setFrame((index) => (index + 1) % SPINNER.length), 80)
+        return () => clearInterval(timer)
+    }, []);
+
+    return <div className='chatSpinner' role='status'>
+        <span className='chatSpinnerGlyph' aria-hidden='true'>{SPINNER[frame]}</span>
+        <span>thinking…</span>
+    </div>
+}
+
 function ServerMessage({ message }) {
     const [windowProject, setWindowProject] = useState(false)
     const [project, setProject] = useState(null)
@@ -98,7 +116,7 @@ function ServerMessage({ message }) {
 
             <div className='chatRowBody'>
                 {text.trim() === '' && !written
-                    ? <div className='chatDots' aria-label='Writing'><span /><span /><span /></div>
+                    ? <Spinner />
                     : <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents} {...ASSISTANT_MARKDOWN}
                         className={`chatAnswer ${written ? '' : 'typing'}`}>
                         {text}
