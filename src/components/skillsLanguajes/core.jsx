@@ -68,8 +68,10 @@ function ProgressBar({ label, icon, svg, info, percentage, setBoxInfoActive, set
 
             <label className={`progressBarLabel ${highlight ? 'highlight' : ''}`}>
 
-                {icon && <Icon className='skillIcon' icon={icon} />}
-                {svg && <img className='skillIconImg' src={svg} alt="" />}
+                <span className='skillTile' aria-hidden='true'>
+                    {icon && <Icon className='skillIcon' icon={icon} />}
+                    {svg && <img className='skillIconImg' src={svg} alt="" />}
+                </span>
 
                 <span>{label}</span>
             </label>

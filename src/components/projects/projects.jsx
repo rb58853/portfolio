@@ -222,8 +222,9 @@ export function ProjectWindow({ project, setWindowProject, windowProject }) {
     const textRef = React.useRef();
     const [boxInfoActive, setBoxInfoActive] = useState(false)
     const info = studentInfo(project.asStudent)
-    //Se usa hide desde aqui para que se aplique a todos las vistas de proyecto
-    const [hide, setHide] = useState(false)
+    // Kept here so it applies to every project view. A project opens with its
+    // images folded away: the description comes first, the gallery on demand.
+    const [hide, setHide] = useState(true)
 
 
 

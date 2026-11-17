@@ -3,38 +3,24 @@
 
 technical_skills:
   strongest:
-    - LLM and applied AI (prompt engineering, agents, RAG, tool orchestration, evaluation)
+    - LLM and applied AI (prompt design, agents, RAG, tool orchestration, evaluation)
     - MCP (Model Context Protocol) servers and clients
-    - Design and analysis of algorithms
+    - Algorithm design and analysis
     - Unity
   solid:
     - Computer vision (object and keypoint detection, OCR, camera calibration, pixel-to-robot mapping)
     - Machine learning
     - PyTorch (detection and pose models, Optuna search, ONNX export)
-    - Artificial intelligence (search, planning, optimisation, probabilistic reasoning)
-    - Godot
     - FastAPI
-    - Information retrieval systems
-    - Compilers
-    - ReactJS
+    - Information retrieval
+    - React
   working:
-    - React Native
     - Docker
     - Distributed systems
-    - Simulation
-    - .NET
-    - Operating systems and shell
-    - Django
-    - Telegram bots
-    - Flutter
-  basic:
-    - Networks
 
 programming_languages:
   strongest: [Python, "C#"]
-  solid: [JavaScript, GDScript, MIPS assembly]
-  working: [CSS, HTML, Dart]
-  basic: ["C++", C, Rust, Go, Haskell, Prolog]
+  solid: [JavaScript]
 
 knowledge_areas:
   - Computer vision and deep learning (RF-DETR, PyTorch, ONNX Runtime)

@@ -4,13 +4,13 @@
     position: fixed;
     z-index: 9999;
     left: 50%;
-    bottom: 28px;
+    bottom: 40px;
     translate: -50% 8px;
     width: min(720px, calc(100% - 32px));
     padding: 18px 22px;
     background-color: var(--info-box-background-color);
     border: 1px solid var(--surface-border);
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: var(--soft-shadow);
     backdrop-filter: blur(12px);
     font-size: 0.92rem;
@@ -40,10 +40,9 @@
 }
 
 .infoBoxHint {
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
     color: color-mix(in srgb, var(--text-color) 56%, transparent);
 }
 
@@ -51,7 +50,7 @@
 
 .progressBarsContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 30px 28px;
 }
 
@@ -73,7 +72,8 @@
     align-items: center;
     gap: 12px;
     min-width: 0;
-    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
     font-weight: 500;
     color: var(--pg-muted);
     transition: color 200ms ease;
@@ -89,15 +89,30 @@
     white-space: nowrap;
 }
 
-.skillIcon,
-.skillIconImg {
+/* Every icon sits in the same tile, like extension icons in the editor:
+   monochrome, and green while its skill is highlighted. */
+.skillTile {
     flex: none;
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--chrome-border);
+    border-radius: 6px;
+    background-color: var(--chrome-bg);
+    color: var(--pg-muted);
+    transition: color 200ms ease, border-color 200ms ease;
 }
 
+.progressBarLabel.highlight .skillTile {
+    color: var(--pg-accent);
+    border-color: color-mix(in srgb, var(--pg-accent) 55%, transparent);
+}
+
+.skillIcon,
 .skillIconImg {
-    border-radius: 22%;
+    width: 17px;
+    height: 17px;
 }
 
 .progressBarBackground {
